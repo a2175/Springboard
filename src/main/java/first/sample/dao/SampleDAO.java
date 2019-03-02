@@ -20,6 +20,11 @@ public class SampleDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectPagingList("sample.selectBoardSearchList", map);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectBoardEGList(Map<String, Object> map) throws Exception{
+	    return (Map<String, Object>)selectEGPagingList("sample.selectBoardList", map);
+	}
+	
     public void insertBoard(Map<String, Object> map) throws Exception{
         insert("sample.insertBoard", map);
     }

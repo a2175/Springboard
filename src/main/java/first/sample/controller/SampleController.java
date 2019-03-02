@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import first.common.common.CommandMap;
 import first.sample.service.SampleService;
  
@@ -46,6 +47,18 @@ public class SampleController {
         else{
             mv.addObject("TOTAL", 0);
         }
+         
+        return mv;
+    }
+    
+    @RequestMapping(value="/sample/openBoardEGList.do")
+    public ModelAndView openBoardEGList(CommandMap commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("/sample/boardEGList");
+        
+        Map<String,Object> resultMap = sampleService.selectBoardEGList(commandMap.getMap());
+        
+        mv.addObject("paginationInfo", (PaginationInfo)resultMap.get("paginationInfo"));
+        mv.addObject("list", resultMap.get("result"));
          
         return mv;
     }

@@ -11,6 +11,8 @@ public interface SampleService {
 
 	List<Map<String, Object>> selectBoardSearchList(Map<String, Object> map) throws Exception;
 	
+	Map<String, Object> selectBoardEGList(Map<String, Object> map) throws Exception;
+	
 	void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception;
 
 	Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception;

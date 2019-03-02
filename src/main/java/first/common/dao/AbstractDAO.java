@@ -1,5 +1,6 @@
 package first.common.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 
 public class AbstractDAO {
     protected Log log = LogFactory.getLog(AbstractDAO.class);
@@ -58,9 +62,8 @@ public class AbstractDAO {
         return sqlSession.selectList(queryId,params);
     }
     
-    /**
     @SuppressWarnings({ "rawtypes", "unchecked" }) //전자정부
-    public Map selectPagingList(String queryId, Object params){ 
+    public Map selectEGPagingList(String queryId, Object params){ 
         printQueryId(queryId);
          
         Map<String,Object> map = (Map<String,Object>)params;
@@ -109,7 +112,6 @@ public class AbstractDAO {
         returnMap.put("result", list);
         return returnMap;
     }
-    **/
     
     @SuppressWarnings("unchecked") //json
     public Object selectPagingList(String queryId, Object params){

@@ -32,6 +32,11 @@ public class SampleServiceImpl implements SampleService{
 	public List<Map<String, Object>> selectBoardSearchList(Map<String, Object> map) throws Exception {
     	return sampleDAO.selectBoardSearchList(map);
 	}
+    
+    @Override
+	public Map<String, Object> selectBoardEGList(Map<String, Object> map) throws Exception {
+    	return sampleDAO.selectBoardEGList(map);
+    }
  
     @Override
     public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
