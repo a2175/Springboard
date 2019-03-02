@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="sample">
+     
+    <select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT
+				BOARD.TITLE,
+				BOARD.IDX,
+				BOARD.CREA_ID,
+				BOARD.HIT_CNT,
+				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
+				USER.NICKNAME,
+				(SELECT COUNT(IDX) FROM TB_COMMENT WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+			FROM 
+				TB_BOARD AS BOARD
+			JOIN
+				TB_USER AS USER
+			ON
+				BOARD.CREA_ID = USER.ID
+			WHERE
+            	BOARD.DEL_GB = 'N'
+			ORDER BY BOARD.IDX DESC
+			LIMIT #{START}, #{END}
+        ]]>
+    </select>
+    
+    <select id="selectBoardSearchList" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT
+				BOARD.TITLE,
+				BOARD.IDX,
+				BOARD.CREA_ID,
+				BOARD.HIT_CNT,
+				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
+				USER.NICKNAME,
+				(SELECT COUNT(IDX) FROM TB_COMMENT WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+			FROM 
+				TB_BOARD AS BOARD
+			JOIN
+				TB_USER AS USER
+			ON
+				BOARD.CREA_ID = USER.ID
+			WHERE
+            	BOARD.DEL_GB = 'N'
+            	AND BOARD.TITLE LIKE CONCAT('%',#{KEYWORD},'%')
+			ORDER BY BOARD.IDX DESC
+			LIMIT #{START}, #{END}
+        ]]>
+    </select>
+    
+    <select id="totalCount" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT 
+				COUNT(*) AS TOTAL_COUNT 
+			FROM 
+				TB_BOARD
+			WHERE
+            	DEL_GB = 'N'
+        ]]>
+    </select>
+    
+    <select id="searchCount" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT 
+				COUNT(*) AS SEARCH_COUNT
+			FROM 
+				TB_BOARD
+			WHERE
+            	DEL_GB = 'N'
+            	AND TITLE LIKE CONCAT('%',#{KEYWORD},'%')
+        ]]>
+    </select>
+    
+    <select id="selectFileList" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	IDX,
+            	ORIGINAL_FILE_NAME,
+            	ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+        	FROM
+            	TB_FILE
+        	WHERE
+            	BOARD_IDX = #{IDX}
+            	AND DEL_GB = 'N'
+    	]]>
+	</select>
+    
+    <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		<![CDATA[
+        	INSERT INTO TB_BOARD
+        	(
+            	IDX,
+            	TITLE,
+            	CONTENTS,
+            	HIT_CNT,
+            	DEL_GB,
+            	CREA_DTM,
+            	CREA_ID
+        	)
+        	VALUES
+        	(
+            	null,
+            	#{TITLE},
+            	#{CONTENTS},
+            	0,
+            	'N',
+            	null,
+            	#{ID}
+        	)
+    	]]>
+	</insert>
+	
+	<insert id="insertFile" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO TB_FILE
+        	(
+            	IDX,
+            	BOARD_IDX,
+            	ORIGINAL_FILE_NAME,
+            	STORED_FILE_NAME,
+            	FILE_SIZE,
+            	CREA_ID
+        	)
+        	VALUES
+        	(
+            	null,
+            	#{BOARD_IDX},
+            	#{ORIGINAL_FILE_NAME},
+            	#{STORED_FILE_NAME},
+            	#{FILE_SIZE},
+            	#{ID}
+        	)
+    	]]>
+	</insert>
+
+	<update id="updateHitCnt" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_BOARD
+        	SET
+            	HIT_CNT = ifnull(HIT_CNT, 0) + 1
+        	WHERE
+            	IDX = #{IDX}   
+    	]]>
+	</update>
+ 
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	BOARD.IDX,
+            	BOARD.HIT_CNT,
+            	BOARD.CREA_ID,
+            	DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
+            	BOARD.TITLE,
+            	BOARD.CONTENTS,
+				USER.NICKNAME
+        	FROM
+            	TB_BOARD AS BOARD
+			JOIN
+				TB_USER AS USER
+			ON
+				BOARD.CREA_ID = USER.ID
+        	WHERE
+            	BOARD.IDX = #{IDX}
+    	]]>
+	</select>
+	
+	<update id="updateBoard" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_BOARD
+        	SET
+            	TITLE = #{TITLE},
+            	CONTENTS = #{CONTENTS}
+        	WHERE
+            	IDX = #{IDX}   
+    	]]>
+	</update>
+	
+	<update id="deleteBoard" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_BOARD
+        	SET
+            	DEL_GB = 'Y'
+        	WHERE
+            	IDX = #{IDX}
+    	]]>
+	</update>
+	
+	<update id="deleteFileList" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_FILE SET
+            	DEL_GB = 'Y'
+        	WHERE
+            	BOARD_IDX = #{IDX}
+    	]]>
+	</update>
+ 
+	<update id="updateFile" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_FILE SET
+            	DEL_GB = 'N'
+        	WHERE
+            	IDX = #{FILE_IDX}
+    	]]>
+	</update>
+	
+	<select id="selectBoardNextAndPrev" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+				IDX,
+				TITLE
+			FROM 
+				TB_BOARD
+			WHERE
+				IDX IN ( 
+					(SELECT IDX FROM TB_BOARD WHERE DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM TB_BOARD WHERE DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+			)
+    	]]>
+	</select>
+	
+	<select id="selectBoardSearchNextAndPrev" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+				IDX,
+				TITLE
+			FROM 
+				TB_BOARD
+			WHERE
+				IDX IN ( 
+					(SELECT IDX FROM TB_BOARD WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM TB_BOARD WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+			)
+    	]]>
+	</select>
+	
+	<select id="selectCommentList" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+        		COMMENT.IDX,
+				COMMENT.CONTENTS,
+				DATE_FORMAT(COMMENT.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
+				USER.NICKNAME
+			FROM 
+				TB_COMMENT AS COMMENT
+			JOIN
+				TB_USER AS USER
+			ON
+				COMMENT.CREA_ID = USER.ID
+			WHERE
+            	COMMENT.DEL_GB = 'N'
+            	AND COMMENT.BOARD_IDX = #{IDX}
+			ORDER BY COMMENT.IDX
+    	]]>
+	</select>
+	
+	<insert id="insertComment" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO TB_COMMENT
+			(
+ 				IDX,
+ 				BOARD_IDX,
+ 				CONTENTS,
+ 				CREA_DTM,
+ 				CREA_ID,
+ 				DEL_GB
+			)
+			VALUES
+			(
+    			null,
+    			#{IDX},
+    			#{COMMENT},
+    			null,
+    			#{ID},
+    			'N'
+			)
+    	]]>
+	</insert>
+	
+	<update id="deleteComment" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE TB_COMMENT
+        	SET
+            	DEL_GB = 'Y'
+        	WHERE
+            	IDX = #{CMT_IDX}
+    	]]>
+	</update>
+	
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="login">
+
+	<select id="selectUserDetail" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	ID,
+            	PASSWORD,
+            	NICKNAME,
+            	EMAIL,
+            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+        	FROM
+            	TB_USER
+        	WHERE
+            	ID = #{IDX}
+    	]]>
+	</select>
+	
+	<select id="selectLoginCheck" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	ID,
+            	PASSWORD,
+            	NICKNAME,
+            	EMAIL,
+            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+        	FROM
+            	TB_USER
+        	WHERE
+            	ID = #{ID}
+            	AND PASSWORD = #{PASSWORD}
+    	]]>
+	</select>
+	
+	<select id="selectIdCheck" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	ID,
+            	PASSWORD,
+            	NICKNAME,
+            	EMAIL,
+            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+        	FROM
+            	TB_USER
+        	WHERE
+            	ID = #{ID}
+    	]]>
+	</select>
+	
+	<select id="selectNicknameCheck" parameterType="hashmap" resultType="hashmap">
+    	<![CDATA[
+        	SELECT
+            	ID,
+            	PASSWORD,
+            	NICKNAME,
+            	EMAIL,
+            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+        	FROM
+            	TB_USER
+        	WHERE
+            	NICKNAME = #{NICKNAME}
+    	]]>
+	</select>
+	
+	<insert id="insertUser" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO TB_USER
+			(
+ 				ID,
+ 				PASSWORD,
+ 				NICKNAME,
+ 				EMAIL,
+ 				CREA_DTM
+			)
+			VALUES
+			(
+    			#{ID},
+    			#{PASSWORD},
+    			#{NICKNAME},
+    			#{EMAIL},
+    			null
+			)
+    	]]>
+	</insert>
+
+</mapper>
