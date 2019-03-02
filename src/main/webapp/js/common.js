@@ -8,6 +8,12 @@ function gfn_isNull(str) {
     if (chkStr.toString().length == 0 ) return true;  
     return false;
 }
+
+function idxInit() {
+	if(gfn_isNull($("[name='IDX']").val())==false){
+		$("[name='IDX']").remove();
+	}
+}
  
 function ComSubmit(opt_formId) {
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;

@@ -163,12 +163,10 @@
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />");
         	
-        	if(gfn_isNull($("[name='IDX']").val())==false){
-				$("[name='IDX']").remove();
-			}
+        	idxInit();
         	
         	comSubmit.addParam("IDX", idx);
-        	comSubmit.addParam("ID", id);
+        	comSubmit.addParam("CREA_ID", id);
         	comSubmit.submit();
     	}
     	
@@ -177,8 +175,11 @@
     		var id = "${map.CREA_ID}";
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+            
+            idxInit();
+            
             comSubmit.addParam("IDX", idx);
-            comSubmit.addParam("ID", id);
+            comSubmit.addParam("CREA_ID", id);
             comSubmit.submit();
         }
      
@@ -187,9 +188,7 @@
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/common/downloadFile.do' />");
 
-        	if(gfn_isNull($("[name='IDX']").val())==false){
-				$("[name='IDX']").remove();
-			}
+        	idxInit();
 
 			comSubmit.addParam("IDX", idx);
         	comSubmit.submit();
@@ -201,6 +200,9 @@
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+        	
+        	idxInit();
+        	
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);
@@ -213,6 +215,9 @@
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+        	
+        	idxInit();
+        	
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);

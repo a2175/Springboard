@@ -33,7 +33,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 		
-		String id = request.getParameter("ID");
+		String id = request.getParameter("CREA_ID");
 		if (id != null)
 			if(!id.equals((String)session.getAttribute("ID"))) {
 				request.setAttribute("MSG", "정상적인 접근이 아닙니다.");
