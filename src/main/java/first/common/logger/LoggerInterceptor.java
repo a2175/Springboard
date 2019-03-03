@@ -26,7 +26,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 		
 		if (session.getAttribute("ID") == null) {
 			request.setAttribute("MSG", "로그인 해주세요.");
-			request.setAttribute("ADDRESS", "/first/login/openLoginPage.do");
+			request.setAttribute("ADDRESS", "/first/sample/openBoardList.do");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/common/openErrorPage.do");
 			dispatcher.forward(request, response);
 			//response.sendRedirect("/first/login/openBoardList.do");

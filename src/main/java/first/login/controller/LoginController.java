@@ -30,11 +30,10 @@ public class LoginController {
     
     @RequestMapping(value="/login/doLogin.do")
     public ModelAndView doLogin(CommandMap commandMap, HttpServletRequest request) throws Exception{
-    	ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+    	ModelAndView mv = new ModelAndView("/sample/boardList");
     		
     	Map<String,Object> userInfo = loginService.selectLoginCheck(commandMap.getMap());
         if(userInfo == null) {
-        	mv.setViewName("/login/loginPage");
         	mv.addObject("dologin", false);
         }      
         else {
@@ -43,12 +42,15 @@ public class LoginController {
         	session.setAttribute("NICKNAME", userInfo.get("NICKNAME"));
         }
         
+        mv.addObject("PAGE_INDEX", commandMap.get("PAGE_INDEX"));
+        mv.addObject("KEYWORD", commandMap.get("KEYWORD"));
+        
         return mv;
     }
     
     @RequestMapping(value="/login/doLogout.do")
     public ModelAndView doLogout(CommandMap commandMap, HttpServletRequest request) throws Exception{
-    	ModelAndView mv = new ModelAndView("redirect:/login/openLoginPage.do");
+    	ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
     		
         HttpSession session = request.getSession();
         session.invalidate();
@@ -85,7 +87,7 @@ public class LoginController {
     
     @RequestMapping(value="/login/doSubmit.do")
     public ModelAndView doSubmit(CommandMap commandMap) throws Exception{
-        ModelAndView mv = new ModelAndView("/login/loginPage");
+        ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
         
         loginService.insertUser(commandMap.getMap());
         

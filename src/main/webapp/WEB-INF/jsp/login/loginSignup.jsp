@@ -4,12 +4,12 @@
 <head>
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
 	<style>
-      input {
-        width: 120px;
-      }
-      #submit {
-        margin-left: 80px;
-      }
+		input {
+			width: 120px;
+		}
+		#submit {
+        	margin-left: 80px;
+		}
     </style>
 </head>
 <body>
@@ -109,7 +109,7 @@
      
     	function fn_doCancel(){
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/login/openLoginPage.do' />");
+        	comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
         	comSubmit.submit();
     	}
     	

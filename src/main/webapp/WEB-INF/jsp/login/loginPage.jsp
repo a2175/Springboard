@@ -7,30 +7,16 @@
       input {
         width: 100px;
       }
-      body {
-        margin: auto; 
-        display: table;
-      }
     </style>
 </head>
 <body>
 	<form id="frm" name="frm">
-        <table>
-            <caption>로그인</caption>
-            <tbody>
-                <tr>
-                    <th scope="row">아이디 </th>
-                    <td><input type="text" id="ID" name="ID"></input></td>
-                </tr>
-                <tr>
-                	<th scope="row">비밀번호</th>
-                    <td><input type="PASSWORD" id="PASSWORD" name="PASSWORD"></input></td>
-                </tr>
-            </tbody>
-        </table>
-        <br/>
-        <a href="#this" class="btn" id="login">로그인</a>
-        <a href="#this" class="btn" id="signup">회원가입</a>
+		<p align="right">	
+			아이디: <input type="text" id="ID" name="ID"></input>
+		 	비밀번호: <input type="PASSWORD" id="PASSWORD" name="PASSWORD"></input>      
+        	<a href="#this" class="btn" id="login">로그인</a>
+        	<a href="#this" class="btn" id="signup">회원가입</a>
+    	</p>    
     </form>
     
     <c:if test="${dologin eq false}">
@@ -56,6 +42,8 @@
     	function fn_doLogin(){
         	var comSubmit = new ComSubmit("frm");
         	comSubmit.setUrl("<c:url value='/login/doLogin.do' />");
+        	comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
+            comSubmit.addParam("KEYWORD", keyword);
         	comSubmit.submit();
     	}
      

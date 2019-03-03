@@ -58,10 +58,12 @@
         </tbody>
     </table>
     
-    <p>
-		<textarea style="width:45%; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
-    	<a href="#this" class="btn" id="submit">댓글등록</a>
-    </p>
+    <c:if test="${ID ne null}">
+    	<p>
+			<textarea style="width:45%; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
+    		<a href="#this" class="btn" id="submit">댓글등록</a>
+    	</p>
+    </c:if>
     
     <a href="#this" class="btn" id="list">목록으로</a>
     <c:if test="${map.CREA_ID eq ID}">
@@ -167,6 +169,7 @@
         	
         	comSubmit.addParam("IDX", idx);
         	comSubmit.addParam("CREA_ID", id);
+        	comSubmit.addParam("isUpdate", true);
         	comSubmit.submit();
     	}
     	

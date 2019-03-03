@@ -15,10 +15,19 @@
 </head>
 <body>
     <h2><a href="/first/sample/openBoardList.do" style="color: black">게시판 목록</a></h2>
-    <p align="right">
-		환영합니다. <b>${NICKNAME}</b>님. 
-		<a href="#this" class="btn" id="logout">로그아웃</a>
-	</p>
+	
+	<c:choose>
+    	<c:when test="${ID eq null}">
+       		 <c:import url="/login/openLoginPage.do" ></c:import>
+    	</c:when>
+    	<c:when test="${ID ne null}">
+			<p align="right">
+				환영합니다. <b>${NICKNAME}</b>님. 
+				<a href="#this" class="btn" id="logout">로그아웃</a>
+			</p>
+    	</c:when>
+	</c:choose>
+	
     <table class="board_list">
         <colgroup>
             <col width="10%"/>
@@ -46,7 +55,9 @@
 
     <p>
 		<span>
-			<a href="#this" class="btn" id="write">글쓰기</a>
+			<c:if test="${ID ne null}">
+				<a href="#this" class="btn" id="write">글쓰기</a>
+			</c:if>
 			제목 검색: <input type="text" id="KEYWORD" name="KEYWORD" value="${KEYWORD}"></input>
         	<a href="#this" class="btn" id="search">검색</a>
 		</span>
