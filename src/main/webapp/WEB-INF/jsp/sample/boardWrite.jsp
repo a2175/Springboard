@@ -20,6 +20,7 @@
                 <tr>
                     <td colspan="2" class="view_text">
                         <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS"></textarea>
+                        <p id="content_length"></p>
                     </td>
                 </tr>
             </tbody>
@@ -46,6 +47,8 @@
      	var filesizecheck = new Array();
      	
         $(document).ready(function(){
+        	fn_doContentCount();
+        	
             $("#list").on("click", function(e){ //목록으로 버튼
                 e.preventDefault();
                 fn_openBoardList();
@@ -70,6 +73,10 @@
             	e.preventDefault();
             	fn_checkFileSize($(this));
             });
+            
+            $("#CONTENTS").on("change paste keyup", function(e){
+            	fn_doContentCount();
+        	});
         });
          
         function fn_openBoardList(){
@@ -87,6 +94,10 @@
         	
         	if($("#TITLE").val().length < 1)
         		alert("제목을 입력해주세요.");
+        	else if($("#TITLE").val().length > 100)
+        		alert("제목이 너무 깁니다.");
+        	else if($("#CONTENTS").val().length > 255)
+        		alert("게시글 내용은 255자를 넘을 수 없습니다.");
         	else if(filecheck == 0)
         		alert("첨부파일이 최대용량을 넘습니다.");
         	else {
@@ -135,6 +146,12 @@
         		filesizecheck[fileindex] = 0;
         	else
         		filesizecheck[fileindex] = 1;
+        }
+        
+        function fn_doContentCount(){
+        	var str = $("#CONTENTS").val().length + "/255";
+        	$("#content_length").empty();
+    		$("#content_length").append(str);
         }
     </script>
 </body>

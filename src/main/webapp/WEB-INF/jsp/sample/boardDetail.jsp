@@ -136,7 +136,10 @@
     		var comment = $("#COMMENT").val();
     		
     		if(comment.length < 1) {
-    			alert("채팅내용을 입력해주세요.");
+    			alert("댓글내용을 입력해주세요.");
+    		}
+    		else if(comment.length > 255) {
+    			alert("댓글내용은 255자를 넘을 수 없습니다.");
     		}
     		else {
     			$("#COMMENT").val("");
@@ -174,16 +177,18 @@
     	}
     	
     	function fn_deleteBoard(){
-    		var idx = "${map.IDX}";
-    		var id = "${map.CREA_ID}";
-            var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
-            
-            idxInit();
-            
-            comSubmit.addParam("IDX", idx);
-            comSubmit.addParam("CREA_ID", id);
-            comSubmit.submit();
+    		if (confirm("정말 삭제하시겠습니까??") == true) {
+    			var idx = "${map.IDX}";
+        		var id = "${map.CREA_ID}";
+                var comSubmit = new ComSubmit();
+                comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+                
+                idxInit();
+                
+                comSubmit.addParam("IDX", idx);
+                comSubmit.addParam("CREA_ID", id);
+                comSubmit.submit();
+    		}	
         }
      
     	function fn_downloadFile(obj){
@@ -279,14 +284,16 @@
 		}
         
         function fn_deleteComment(obj){
-			var cmt_idx = obj.parent().find("#IDX").val();
-			var idx = "${map.IDX}";
-            var comAjax = new ComAjax();
-            comAjax.setUrl("<c:url value='/sample/deleteComment.do' />");
-            comAjax.setCallback("fn_selectCommentListCallback");
-            comAjax.addParam("IDX", idx);
-            comAjax.addParam("CMT_IDX", cmt_idx);
-            comAjax.ajax();
+        	if (confirm("정말 삭제하시겠습니까??") == true) {
+        		var cmt_idx = obj.parent().find("#IDX").val();
+    			var idx = "${map.IDX}";
+                var comAjax = new ComAjax();
+                comAjax.setUrl("<c:url value='/sample/deleteComment.do' />");
+                comAjax.setCallback("fn_selectCommentListCallback");
+                comAjax.addParam("IDX", idx);
+                comAjax.addParam("CMT_IDX", cmt_idx);
+                comAjax.ajax();
+    		}
         }
 	</script>
 </body>

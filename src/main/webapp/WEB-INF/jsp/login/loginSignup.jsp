@@ -69,27 +69,27 @@
             	fn_doCancel();
         	});
         	
-        	$("#ID").bind("change paste keyup", function(e){
+        	$("#ID").on("change paste keyup", function(e){
             	e.preventDefault();
             	fn_doIdDuplicationCheck();
         	});
         	
-        	$("#PASSWORD").bind("change paste keyup", function(e){
+        	$("#PASSWORD").on("change paste keyup", function(e){
             	e.preventDefault();
             	fn_doPasswordCheck();
         	});
         	
-        	$("#RE_PASSWORD").bind("change paste keyup", function(e){
+        	$("#RE_PASSWORD").on("change paste keyup", function(e){
             	e.preventDefault();
             	fn_doRePasswordCheck();
         	});
         	
-        	$("#NICKNAME").bind("change paste keyup", function(e){
+        	$("#NICKNAME").on("change paste keyup", function(e){
             	e.preventDefault();
             	fn_doNicknameDuplicationCheck();
         	});
         	
-        	$("#EMAIL").bind("change paste keyup", function(e){
+        	$("#EMAIL").on("change paste keyup", function(e){
             	e.preventDefault();
             	fn_doEmailCheck();
         	});
