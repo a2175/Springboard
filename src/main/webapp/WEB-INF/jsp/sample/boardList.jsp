@@ -63,7 +63,10 @@
 		</span>
     </p>
 	
-    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+	<c:if test="${ID ne null}">
+		<%@ include file="/WEB-INF/include/include-body.jspf" %>
+	</c:if>
+    
     <script type="text/javascript">
     	var page_index = "${PAGE_INDEX}";
     	var keyword = "${KEYWORD}";

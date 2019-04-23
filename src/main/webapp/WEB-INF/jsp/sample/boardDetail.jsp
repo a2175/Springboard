@@ -4,7 +4,7 @@
 <head>
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
 </head>
-<body>
+<body style="position: absolute;">
     <table class="board_view">
         <colgroup>
             <col width="15%"/>
@@ -52,19 +52,16 @@
     </table>
     <br/>
     
-    <table class="board_comment">
-        <tbody id="comment">
-             
-        </tbody>
-    </table>
+    <div id="board_comment" class="board_comment">
+    </div>
     
     <c:if test="${ID ne null}">
     	<p>
-			<textarea style="width:45%; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
+			<textarea style="width:890px; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
     		<a href="#this" class="btn" id="submit">댓글등록</a>
     	</p>
     </c:if>
-    
+     
     <a href="#this" class="btn" id="list">목록으로</a>
     <c:if test="${map.CREA_ID eq ID}">
     	<a href="#this" class="btn" id="update">수정하기</a>
@@ -92,6 +89,8 @@
 	
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
+    	var gfv_count = 0;
+    
     	$(document).ready(function(){
     		fn_selectCommentList();
     		
@@ -120,15 +119,15 @@
             	fn_downloadFile($(this));
         	});
         	
-        	$("a[id='next']").on("click", function(e){ //다음글
+        	$("#next").on("click", function(e){ //다음글
             	e.preventDefault();
             	fn_openBoardNext();
         	});
         	
-        	$("a[id='prev']").on("click", function(e){ //이전글
+        	$("#prev").on("click", function(e){ //이전글
             	e.preventDefault();
             	fn_openBoardPrev();
-        	});
+        	});     	
     	});
     	
     	function fn_doSubmitComment(){
@@ -243,43 +242,95 @@
          
         function fn_selectCommentListCallback(data){
         	var total = data.TOTAL;
-            var body = $("table>tbody[id='comment']");
+            var body = $("div[id='board_comment']");
             body.empty();
 
             if(total == 0){
-                var str = "<tr>" +
-                                "<td colspan='4'>댓글이 없습니다.</td>" +
-                          "</tr>";
+                var str = "<table>" +
+							"<tr>" +
+								"<td colspan='4'>댓글이 없습니다.</td>" +
+							"</tr>" +
+						  "</table>";
                 body.append(str);
             }
             else{             
                 var str = "";
                 $.each(data.list, function(key, value){
                 	if(value.NICKNAME == "${NICKNAME}"){
-                    	str += "<tr>" +
-                                	"<th>" + value.NICKNAME + "</th>" +
-                                	"<td>" + value.CONTENTS + "</td>" +
-                                	"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
-                                	"<td class='DELETE'>" +
-                                		"<a href='#this' id='delete_cmt'>삭제</a>" +
-                                		"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
-                                	"</td>" +
-                           		"</tr>";
+                    	str += "<table>" +
+                    				"<tr>" +
+                    					"<th colspan='2' width='700'>" +
+										"<font size='2'>" + value.NICKNAME + "</font>" +
+        								"</th>" +
+        								"<td class='thumbs'>" +
+        									"<a href='#this' id='thumbs_up"+(gfv_count)+"'>" +
+        										"<img src='<c:url value='/img/like.jpg' />'>" +
+        										"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
+                        					"</a>" +
+                        					"<a href='#this' id='thumbs_down"+(gfv_count++)+"'>" +
+                								"<img src='<c:url value='/img/dislike.jpg' />'>" +
+                								"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
+                							"</a>" +
+                							"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                                		"</td>" +
+                                		"<td>" +
+                                			"<a href='#this' id='delete_cmt'>" +
+                                				"<img src='<c:url value='/img/delete.jpg' />' style='width: auto; height: 30px; float:right;'>" +
+                                			"</a>" +
+                            				"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                            			"</td>" +
+        							"</tr>" +
+        						"</table>" +
+        						"<table>" +
+        							"<tr>" +
+                                		"<td height='50'>" + value.CONTENTS + "</td>" +
+                                		"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
+                           			"</tr>" +
+                           		"</table>";
                 	}
                 	else{
-                		str += "<tr>" +
-                    				"<th>" + value.NICKNAME + "</th>" +
-                    				"<td>" + value.CONTENTS + "</td>" +
-                    				"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
-                    				"<td class='DELETE'></td>" +
-               					"</tr>";
+                		str += "<table>" +
+                					"<tr>" +
+    									"<th colspan='2' width='700'>" +
+											"<font size='2'>" + value.NICKNAME + "</font>" +
+										"</th>" +
+										"<td class='thumbs'>" +
+											"<a href='#this' id='thumbs_up"+(gfv_count)+"'>" +
+												"<img src='<c:url value='/img/like.jpg' />'>" +
+												"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
+        									"</a>" +
+        									"<a href='#this' id='thumbs_down"+(gfv_count++)+"'>" +
+												"<img src='<c:url value='/img/dislike.jpg' />'>" +
+												"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
+											"</a>" +
+											"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                						"</td>" +
+									"</tr>" +
+								"</table>" +
+								"<table>" +
+									"<tr>" +
+                						"<td height='50'>" + value.CONTENTS + "</td>" +
+                						"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
+           							"</tr>" +
+           						"</table>";
                 	}
                 });
                 body.append(str);
-                $("a[id='delete_cmt']").on("click", function(e){ //삭제 버튼
+                
+                $("a[id='delete_cmt']").on("click", function(e){ //댓글 삭제
                     e.preventDefault();
                     fn_deleteComment($(this));
                 });
+                
+                $("a[id^='thumbs_up']").on("click", function(e){ //좋아요
+                	e.preventDefault();
+                	fn_thumbsUp($(this));
+            	});
+            	
+            	$("a[id^='thumbs_down']").on("click", function(e){ //싫어요
+                	e.preventDefault();
+                	fn_thumbsDown($(this));
+            	});
             }
 		}
         
@@ -295,6 +346,61 @@
                 comAjax.ajax();
     		}
         }
+        
+        var thumbsindex = "";
+        function fn_thumbsUp(obj){
+        	if(gfn_isNull("${ID}"))
+        		alert("로그인 해주세요.");
+        	else {
+        		var cmt_idx = obj.parent().find("#IDX").val();
+            	var comAjax = new ComAjax();
+            	thumbsindex = obj.find("#upcount");
+            
+            	comAjax.setUrl("<c:url value='/sample/thumbsUp.do' />");
+            	comAjax.setCallback("fn_thumbsUpCallback");
+            	comAjax.addParam("CMT_IDX", cmt_idx);
+            	comAjax.ajax();
+        	}
+        }
+        
+        function fn_thumbsDown(obj){
+        	if(gfn_isNull("${ID}"))
+        		alert("로그인 해주세요.");
+        	else {
+        		var cmt_idx = obj.parent().find("#IDX").val();
+            	var comAjax = new ComAjax();
+            	thumbsindex = obj.find("#downcount");
+            
+            	comAjax.setUrl("<c:url value='/sample/thumbsDown.do' />");
+            	comAjax.setCallback("fn_thumbsDownCallback");
+            	comAjax.addParam("CMT_IDX", cmt_idx);
+            	comAjax.ajax();
+        	}
+        }
+        
+        function fn_thumbsUpCallback(data){
+        	var checkThumbsup = data.checkThumbsup;
+            var upcount = thumbsindex.text();
+
+            if(checkThumbsup == 1) {
+            	thumbsindex.text(Number(upcount)+1);
+            }
+            else {
+            	alert("이미 좋아요를 한 댓글입니다.");
+            }
+		}
+        
+        function fn_thumbsDownCallback(data){
+        	var checkThumbsdown = data.checkThumbsdown;
+            var downcount = thumbsindex.text();
+ 			
+            if(checkThumbsdown == 1) {
+            	thumbsindex.text(Number(downcount)+1);
+            }
+            else {
+            	alert("이미 싫어요를 한 댓글입니다.");
+            }
+		}
 	</script>
 </body>
 </html>

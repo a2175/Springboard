@@ -44,7 +44,8 @@ function ComAjax(opt_formId){
     this.url = "";     
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
     this.param = "";
-     
+    fv_ajaxCallback = "";
+    
     if(this.formId == "commonForm"){
         var frm = $("#commonForm");
         if(frm.length > 0){

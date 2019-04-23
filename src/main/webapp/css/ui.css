@@ -2,11 +2,12 @@
  
 a:link, a:visited {text-decoration: none; color: #656565;}
 
-.board_comment {width:50%;border-collapse:separate;border-spacing:1px;text-align:left;line-height:1.5;border-top:1px solid #ccc;margin:20px 10px;}
-.board_comment tbody th {width:20%;padding:10px;font-weight:bold;vertical-align:top;border-bottom:1px solid #ccc;background:#efefef;}
-.board_comment tbody td {width:50%;padding:10px;vertical-align:top;border-bottom:1px solid #ccc;}
-.board_comment tbody td.CREA_DTM {width:20%;text-align:right;padding:10px;vertical-align:top;border-bottom:1px solid #ccc;}
-.board_comment tbody td.DELETE {width:10%;text-align:right;padding:10px;vertical-align:top;border-bottom:1px solid #ccc;}
+.board_comment table {width:1000px;border-collapse:separate;border-spacing:1px;text-align:left;line-height:1.5;border-top:1px solid #ccc;}
+.board_comment th {padding:10px;font-weight:bold;vertical-align:left;border-bottom:1px solid #ccc;}
+.board_comment td {word-break:break-all;padding:10px;vertical-align:left;border-bottom:1px solid #ccc;}
+.board_comment td.thumbs img {vertical-align:middle; width: 60px; height: auto; margin-right: 3px; margin-left: 5px;}
+.board_comment td.CREA_DTM {width:150px;padding:10px;vertical-align:center;border-bottom:1px solid #ccc;border-left:1px solid #ccc;}
+.board_comment td.DELETE {width:40px;text-align:right;padding:10px;vertical-align:center;border-bottom:1px solid #ccc;}
 
 .board_list {width:100%;border-top:2px solid #252525;border-bottom:1px solid #ccc;word-break:break-all}
 .board_list thead th:first-child{background-image:none}
@@ -16,7 +17,7 @@ a:link, a:visited {text-decoration: none; color: #656565;}
 .board_list tbody td.title {text-align:left; padding-left:20px}
 .board_list tbody td a {display:inline-block}
  
-.board_view {width:50%;border-top:2px solid #252525;border-bottom:1px solid #ccc;word-break:break-all}
+.board_view {width:1000px;border-top:2px solid #252525;border-bottom:1px solid #ccc;word-break:break-all}
 .board_view tbody th {text-align:left;background:#f7f7f7;color:#3b3a3a}
 .board_view tbody th.list_tit {font-size:13px;color:#000;letter-spacing:0.1px}
 .board_view tbody .no_line_b th, .board_view tbody .no_line_b td {border-bottom:none}

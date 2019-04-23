@@ -30,5 +30,13 @@ public interface SampleService {
 	void insertComment(Map<String, Object> map) throws Exception;
 
 	void deleteComment(Map<String, Object> map) throws Exception;
+
+	Map<String, Object> checkThumbsup(Map<String, Object> map) throws Exception;
+
+	void insertThumbsup(Map<String, Object> map) throws Exception;
+	
+	Map<String, Object> checkThumbsdown(Map<String, Object> map) throws Exception;
+
+	void insertThumbsdown(Map<String, Object> map) throws Exception;
 	
 }

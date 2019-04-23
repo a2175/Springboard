@@ -241,7 +241,9 @@
         		COMMENT.IDX,
 				COMMENT.CONTENTS,
 				DATE_FORMAT(COMMENT.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
-				USER.NICKNAME
+				USER.NICKNAME,
+				(SELECT COUNT(*) FROM TB_THUMBS WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
+				(SELECT COUNT(*) FROM TB_THUMBS WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
 			FROM 
 				TB_COMMENT AS COMMENT
 			JOIN
@@ -287,5 +289,65 @@
             	IDX = #{CMT_IDX}
     	]]>
 	</update>
+	
+	<select id="checkThumbsup" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT 
+				*
+			FROM 
+				TB_THUMBS
+			WHERE
+            	CREA_ID = #{ID}
+            	AND COMMENT_IDX = #{CMT_IDX}
+            	AND THUMBS_UP = '1'
+        ]]>
+    </select>
+	
+	<insert id="insertThumbsup" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO TB_THUMBS
+			(
+    			COMMENT_IDX,
+    			CREA_ID,
+    			THUMBS_UP
+			)
+			VALUES
+			(
+				#{CMT_IDX},
+  				#{ID},
+  				'1'
+			);
+    	]]>
+	</insert>
+	
+	<select id="checkThumbsdown" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[			
+			SELECT 
+				*
+			FROM 
+				TB_THUMBS
+			WHERE
+            	CREA_ID = #{ID}
+            	AND COMMENT_IDX = #{CMT_IDX}
+            	AND THUMBS_DOWN = '1'
+        ]]>
+    </select>
+	
+	<insert id="insertThumbsdown" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO TB_THUMBS
+			(
+    			COMMENT_IDX,
+    			CREA_ID,
+    			THUMBS_DOWN
+			)
+			VALUES
+			(
+				#{CMT_IDX},
+  				#{ID},
+  				'1'
+			);
+    	]]>
+	</insert>
 	
 </mapper>

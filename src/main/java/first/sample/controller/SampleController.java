@@ -181,6 +181,40 @@ public class SampleController {
         return mv;
     }
     
+    @RequestMapping(value="/sample/thumbsUp.do")
+    public ModelAndView thumbsUp(CommandMap commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("jsonView");
+        
+        Map<String,Object> map = sampleService.checkThumbsup(commandMap.getMap());
+        
+        if(map == null) {
+        	sampleService.insertThumbsup(commandMap.getMap());
+        	mv.addObject("checkThumbsup", 1);
+        }
+        else {
+        	mv.addObject("checkThumbsup", 0);
+        }
+        
+        return mv;
+    }
+    
+    @RequestMapping(value="/sample/thumbsDown.do")
+    public ModelAndView thumbsDown(CommandMap commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("jsonView");
+        
+        Map<String,Object> map = sampleService.checkThumbsdown(commandMap.getMap());
+        
+        if(map == null) {
+        	sampleService.insertThumbsdown(commandMap.getMap());
+        	mv.addObject("checkThumbsdown", 1);
+        }
+        else {
+        	mv.addObject("checkThumbsdown", 0);
+        }
+        
+        return mv;
+    }
+    
     @RequestMapping(value="/sample/testMapArgumentResolver.do")
     public ModelAndView testMapArgumentResolver(CommandMap commandMap) throws Exception{
         ModelAndView mv = new ModelAndView("");

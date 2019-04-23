@@ -134,4 +134,24 @@ public class SampleServiceImpl implements SampleService{
 	public void deleteComment(Map<String, Object> map) throws Exception {
 		sampleDAO.deleteComment(map);
 	}
+
+	@Override
+	public Map<String, Object> checkThumbsup(Map<String, Object> map) throws Exception {
+		return sampleDAO.checkThumbsup(map);
+	}
+
+	@Override
+	public void insertThumbsup(Map<String, Object> map) throws Exception {
+		sampleDAO.insertThumbsup(map);	
+	}
+	
+	@Override
+	public Map<String, Object> checkThumbsdown(Map<String, Object> map) throws Exception {
+		return sampleDAO.checkThumbsdown(map);
+	}
+
+	@Override
+	public void insertThumbsdown(Map<String, Object> map) throws Exception {
+		sampleDAO.insertThumbsdown(map);	
+	}
 }
