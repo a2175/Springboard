@@ -1,4 +1,8 @@
-#version = 1.4v
+#version = 1.5v
+
+[Springboard 1.5v]
+1. 댓글 좋아요, 싫어요 기능 추가
+2. 댓글창 UI 변경
 
 [Springboard 1.4v]
 1. 게시글, 댓글 삭제시 확인창을 띄우도록 변경
