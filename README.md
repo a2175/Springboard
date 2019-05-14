@@ -1,4 +1,7 @@
-#version = 1.5v
+#version = 1.51v
+
+[Springboard 1.51v]
+1. 게시글 상세보기 방식을 GET으로 변경
 
 [Springboard 1.5v]
 1. 댓글 좋아요, 싫어요 기능 추가
