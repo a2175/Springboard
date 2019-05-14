@@ -117,9 +117,11 @@
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
-            comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
             comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
-            comSubmit.addParam("KEYWORD", keyword);
+            comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
+            if(!gfn_isNull(keyword))
+            	comSubmit.addParam("KEYWORD", keyword);
+            comSubmit.setMethod("get");
             comSubmit.submit();
         }
          

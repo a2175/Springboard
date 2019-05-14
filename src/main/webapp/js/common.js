@@ -18,6 +18,7 @@ function idxInit() {
 function ComSubmit(opt_formId) {
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
     this.url = "";
+    this.method = "post";
     
     if(this.formId == "commonForm"){
         $("#commonForm")[0].reset();
@@ -25,6 +26,10 @@ function ComSubmit(opt_formId) {
      
     this.setUrl = function setUrl(url){
         this.url = url;
+    };
+    
+    this.setMethod = function setMethod(method){
+        this.method = method;
     };
      
     this.addParam = function addParam(key, value){
@@ -34,7 +39,7 @@ function ComSubmit(opt_formId) {
     this.submit = function submit(){
         var frm = $("#"+this.formId)[0];
         frm.action = this.url;
-        frm.method = "post";
+        frm.method = this.method;
         frm.submit();
     };
 }
