@@ -1,4 +1,7 @@
-#version = 1.51v
+#version = 1.52v
+
+[Springboard 1.52v]
+1. common.js 페이징 오류 수정
 
 [Springboard 1.51v]
 1. 게시글 상세보기 방식을 GET으로 변경
