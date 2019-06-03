@@ -56,12 +56,12 @@
     </div>
     
     <c:if test="${ID ne null}">
-    	<p>
-			<textarea style="width:890px; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
-    		<a href="#this" class="btn" id="submit">댓글등록</a>
-    	</p>
+    	<br>
+		<textarea style="width:890px; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
+    	<a href="#this" class="btn" id="submit">댓글등록</a>
     </c:if>
-     
+    
+    <br>
     <a href="#this" class="btn" id="list">목록으로</a>
     <c:if test="${map.CREA_ID eq ID}">
     	<a href="#this" class="btn" id="update">수정하기</a>
