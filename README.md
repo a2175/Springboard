@@ -1,4 +1,7 @@
-#version = 1.52v
+#version = 1.53v
+
+[Springboard 1.53v]
+1. pom.xml 수정
 
 [Springboard 1.52v]
 1. common.js 페이징 오류 수정
