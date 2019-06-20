@@ -1,4 +1,8 @@
-#version = 1.53v
+#version = 1.54v
+
+[Springboard 1.54v]
+1. common.js 수정 및 idxInit() 함수 삭제
+2. view 코드 리펙토링
 
 [Springboard 1.53v]
 1. pom.xml 수정
