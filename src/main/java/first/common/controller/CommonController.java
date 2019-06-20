@@ -37,7 +37,6 @@ public class CommonController {
 		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originalFileName,"UTF-8")+"\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.getOutputStream().write(fileByte);
-		
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}

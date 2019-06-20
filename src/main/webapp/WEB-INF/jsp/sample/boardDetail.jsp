@@ -89,8 +89,6 @@
 	
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
-    	var gfv_count = 0;
-    
     	$(document).ready(function(){
     		fn_selectCommentList();
     		
@@ -160,15 +158,12 @@
         	comSubmit.addParam("KEYWORD", keyword);
         	comSubmit.submit();
     	}
-     
+
     	function fn_openBoardUpdate(){
         	var idx = "${map.IDX}"; 
         	var id = "${map.CREA_ID}";
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />");
-        	
-        	idxInit();
-        	
+        	comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />");     	
         	comSubmit.addParam("IDX", idx);
         	comSubmit.addParam("CREA_ID", id);
         	comSubmit.addParam("isUpdate", true);
@@ -181,9 +176,6 @@
         		var id = "${map.CREA_ID}";
                 var comSubmit = new ComSubmit();
                 comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
-                
-                idxInit();
-                
                 comSubmit.addParam("IDX", idx);
                 comSubmit.addParam("CREA_ID", id);
                 comSubmit.submit();
@@ -194,9 +186,6 @@
         	var idx = obj.parent().find("#IDX").val();
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/common/downloadFile.do' />");
-
-        	idxInit();
-
 			comSubmit.addParam("IDX", idx);
         	comSubmit.submit();
 		}
@@ -207,9 +196,6 @@
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
-        	
-        	idxInit();
-        	
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);
@@ -222,9 +208,6 @@
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
-        	
-        	idxInit();
-        	
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);
@@ -263,11 +246,11 @@
 										"<font size='2'>" + value.NICKNAME + "</font>" +
         								"</th>" +
         								"<td class='thumbs'>" +
-        									"<a href='#this' id='thumbs_up"+(gfv_count)+"'>" +
+        									"<a href='#this' id='thumbs_up'>" +
         										"<img src='<c:url value='/img/like.jpg' />'>" +
         										"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
                         					"</a>" +
-                        					"<a href='#this' id='thumbs_down"+(gfv_count++)+"'>" +
+                        					"<a href='#this' id='thumbs_down'>" +
                 								"<img src='<c:url value='/img/dislike.jpg' />'>" +
                 								"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
                 							"</a>" +
@@ -295,11 +278,11 @@
 											"<font size='2'>" + value.NICKNAME + "</font>" +
 										"</th>" +
 										"<td class='thumbs'>" +
-											"<a href='#this' id='thumbs_up"+(gfv_count)+"'>" +
+											"<a href='#this' id='thumbs_up'>" +
 												"<img src='<c:url value='/img/like.jpg' />'>" +
 												"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
         									"</a>" +
-        									"<a href='#this' id='thumbs_down"+(gfv_count++)+"'>" +
+        									"<a href='#this' id='thumbs_down'>" +
 												"<img src='<c:url value='/img/dislike.jpg' />'>" +
 												"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
 											"</a>" +
@@ -322,12 +305,12 @@
                     fn_deleteComment($(this));
                 });
                 
-                $("a[id^='thumbs_up']").on("click", function(e){ //좋아요
+                $("a[id='thumbs_up']").on("click", function(e){ //좋아요
                 	e.preventDefault();
                 	fn_thumbsUp($(this));
             	});
             	
-            	$("a[id^='thumbs_down']").on("click", function(e){ //싫어요
+            	$("a[id='thumbs_down']").on("click", function(e){ //싫어요
                 	e.preventDefault();
                 	fn_thumbsDown($(this));
             	});

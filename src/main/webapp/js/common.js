@@ -9,19 +9,13 @@ function gfn_isNull(str) {
     return false;
 }
 
-function idxInit() {
-	if(gfn_isNull($("[name='IDX']").val())==false){
-		$("[name='IDX']").remove();
-	}
-}
- 
 function ComSubmit(opt_formId) {
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
     this.url = "";
     this.method = "post";
     
     if(this.formId == "commonForm"){
-        $("#commonForm")[0].reset();
+        $("#commonForm").empty();
     }
      
     this.setUrl = function setUrl(url){
@@ -46,18 +40,12 @@ function ComSubmit(opt_formId) {
 
 var fv_ajaxCallback = "";
 function ComAjax(opt_formId){
-    this.url = "";     
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
-    this.param = "";
+    this.url = "";
     fv_ajaxCallback = "";
     
     if(this.formId == "commonForm"){
-        var frm = $("#commonForm");
-        if(frm.length > 0){
-            frm.remove();
-        }
-        var str = "<form id='commonForm' name='commonForm'></form>";
-        $('body').append(str);
+        $("#commonForm").empty();
     }
      
     this.setUrl = function setUrl(url){
@@ -69,17 +57,14 @@ function ComAjax(opt_formId){
     };
  
     this.addParam = function addParam(key,value){
-        this.param = this.param + "&" + key + "=" + value;
+        $("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
     };
      
     this.ajax = function ajax(){
-        if(this.formId != "commonForm"){
-            this.param += "&" + $("#" + this.formId).serialize();
-        }
         $.ajax({
             url : this.url,   
             type : "POST",  
-            data : this.param,
+            data : $("#" + this.formId).serialize(),
             async : false,
             success : function(data, status) {
                 if(typeof(fv_ajaxCallback) == "function"){
