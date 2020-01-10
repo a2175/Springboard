@@ -12,7 +12,7 @@
             	EMAIL,
             	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
         	FROM
-            	TB_USER
+            	tb_user
         	WHERE
             	ID = #{IDX}
     	]]>
@@ -27,7 +27,7 @@
             	EMAIL,
             	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
         	FROM
-            	TB_USER
+            	tb_user
         	WHERE
             	ID = #{ID}
             	AND PASSWORD = #{PASSWORD}
@@ -43,7 +43,7 @@
             	EMAIL,
             	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
         	FROM
-            	TB_USER
+            	tb_user
         	WHERE
             	ID = #{ID}
     	]]>
@@ -58,7 +58,7 @@
             	EMAIL,
             	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
         	FROM
-            	TB_USER
+            	tb_user
         	WHERE
             	NICKNAME = #{NICKNAME}
     	]]>
@@ -66,7 +66,7 @@
 	
 	<insert id="insertUser" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO TB_USER
+        	INSERT INTO tb_user
 			(
  				ID,
  				PASSWORD,

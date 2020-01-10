@@ -9,7 +9,7 @@
             	STORED_FILE_NAME,
             	ORIGINAL_FILE_NAME
         	FROM
-            	TB_FILE
+            	tb_file
         	WHERE
             	IDX = #{IDX}
     	]]>

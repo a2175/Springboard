@@ -12,11 +12,11 @@
 				BOARD.HIT_CNT,
 				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
 				USER.NICKNAME,
-				(SELECT COUNT(IDX) FROM TB_COMMENT WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+				(SELECT COUNT(IDX) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
 			FROM 
-				TB_BOARD AS BOARD
+				tb_board AS BOARD
 			JOIN
-				TB_USER AS USER
+				tb_user AS USER
 			ON
 				BOARD.CREA_ID = USER.ID
 			WHERE
@@ -35,11 +35,11 @@
 				BOARD.HIT_CNT,
 				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
 				USER.NICKNAME,
-				(SELECT COUNT(IDX) FROM TB_COMMENT WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+				(SELECT COUNT(IDX) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
 			FROM 
-				TB_BOARD AS BOARD
+				tb_board AS BOARD
 			JOIN
-				TB_USER AS USER
+				tb_user AS USER
 			ON
 				BOARD.CREA_ID = USER.ID
 			WHERE
@@ -55,7 +55,7 @@
 			SELECT 
 				COUNT(*) AS TOTAL_COUNT 
 			FROM 
-				TB_BOARD
+				tb_board
 			WHERE
             	DEL_GB = 'N'
         ]]>
@@ -66,7 +66,7 @@
 			SELECT 
 				COUNT(*) AS SEARCH_COUNT
 			FROM 
-				TB_BOARD
+				tb_board
 			WHERE
             	DEL_GB = 'N'
             	AND TITLE LIKE CONCAT('%',#{KEYWORD},'%')
@@ -80,7 +80,7 @@
             	ORIGINAL_FILE_NAME,
             	ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
         	FROM
-            	TB_FILE
+            	tb_file
         	WHERE
             	BOARD_IDX = #{IDX}
             	AND DEL_GB = 'N'
@@ -89,7 +89,7 @@
     
     <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<![CDATA[
-        	INSERT INTO TB_BOARD
+        	INSERT INTO tb_board
         	(
             	IDX,
             	TITLE,
@@ -114,7 +114,7 @@
 	
 	<insert id="insertFile" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO TB_FILE
+        	INSERT INTO tb_file
         	(
             	IDX,
             	BOARD_IDX,
@@ -137,7 +137,7 @@
 
 	<update id="updateHitCnt" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_BOARD
+        	UPDATE tb_board
         	SET
             	HIT_CNT = ifnull(HIT_CNT, 0) + 1
         	WHERE
@@ -156,9 +156,9 @@
             	BOARD.CONTENTS,
 				USER.NICKNAME
         	FROM
-            	TB_BOARD AS BOARD
+            	tb_board AS BOARD
 			JOIN
-				TB_USER AS USER
+				tb_user AS USER
 			ON
 				BOARD.CREA_ID = USER.ID
         	WHERE
@@ -168,7 +168,7 @@
 	
 	<update id="updateBoard" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_BOARD
+        	UPDATE tb_board
         	SET
             	TITLE = #{TITLE},
             	CONTENTS = #{CONTENTS}
@@ -179,7 +179,7 @@
 	
 	<update id="deleteBoard" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_BOARD
+        	UPDATE tb_board
         	SET
             	DEL_GB = 'Y'
         	WHERE
@@ -189,7 +189,7 @@
 	
 	<update id="deleteFileList" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_FILE SET
+        	UPDATE tb_file SET
             	DEL_GB = 'Y'
         	WHERE
             	BOARD_IDX = #{IDX}
@@ -198,7 +198,7 @@
  
 	<update id="updateFile" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_FILE SET
+        	UPDATE tb_file SET
             	DEL_GB = 'N'
         	WHERE
             	IDX = #{FILE_IDX}
@@ -211,11 +211,11 @@
 				IDX,
 				TITLE
 			FROM 
-				TB_BOARD
+				tb_board
 			WHERE
 				IDX IN ( 
-					(SELECT IDX FROM TB_BOARD WHERE DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM TB_BOARD WHERE DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
 			)
     	]]>
 	</select>
@@ -226,11 +226,11 @@
 				IDX,
 				TITLE
 			FROM 
-				TB_BOARD
+				tb_board
 			WHERE
 				IDX IN ( 
-					(SELECT IDX FROM TB_BOARD WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM TB_BOARD WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
 			)
     	]]>
 	</select>
@@ -242,12 +242,12 @@
 				COMMENT.CONTENTS,
 				DATE_FORMAT(COMMENT.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
 				USER.NICKNAME,
-				(SELECT COUNT(*) FROM TB_THUMBS WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
-				(SELECT COUNT(*) FROM TB_THUMBS WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
+				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
+				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
 			FROM 
-				TB_COMMENT AS COMMENT
+				tb_comment AS COMMENT
 			JOIN
-				TB_USER AS USER
+				tb_user AS USER
 			ON
 				COMMENT.CREA_ID = USER.ID
 			WHERE
@@ -259,7 +259,7 @@
 	
 	<insert id="insertComment" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO TB_COMMENT
+        	INSERT INTO tb_comment
 			(
  				IDX,
  				BOARD_IDX,
@@ -282,7 +282,7 @@
 	
 	<update id="deleteComment" parameterType="hashmap">
     	<![CDATA[
-        	UPDATE TB_COMMENT
+        	UPDATE tb_comment
         	SET
             	DEL_GB = 'Y'
         	WHERE
@@ -295,7 +295,7 @@
 			SELECT 
 				*
 			FROM 
-				TB_THUMBS
+				tb_thumbs
 			WHERE
             	CREA_ID = #{ID}
             	AND COMMENT_IDX = #{CMT_IDX}
@@ -305,7 +305,7 @@
 	
 	<insert id="insertThumbsup" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO TB_THUMBS
+        	INSERT INTO tb_thumbs
 			(
     			COMMENT_IDX,
     			CREA_ID,
@@ -325,7 +325,7 @@
 			SELECT 
 				*
 			FROM 
-				TB_THUMBS
+				tb_thumbs
 			WHERE
             	CREA_ID = #{ID}
             	AND COMMENT_IDX = #{CMT_IDX}
@@ -335,7 +335,7 @@
 	
 	<insert id="insertThumbsdown" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO TB_THUMBS
+        	INSERT INTO tb_thumbs
 			(
     			COMMENT_IDX,
     			CREA_ID,
