@@ -1,4 +1,7 @@
-#version = 1.54v
+#version = 1.55v
+
+[Springboard 1.55v]
+1. FileUtils.java의 stored_file_name 확장자명 제거
 
 [Springboard 1.54v]
 1. common.js 수정 및 idxInit() 함수 삭제
