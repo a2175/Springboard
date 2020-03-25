@@ -1,4 +1,8 @@
-#version = 1.55v
+#version = 1.56v
+
+[Springboard 1.56v]
+1. web.xml 설정 수정
+2. comment 코드 분리
 
 [Springboard 1.55v]
 1. FileUtils.java의 stored_file_name 확장자명 제거
