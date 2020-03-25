@@ -50,14 +50,12 @@ public class AbstractDAO {
         return sqlSession.selectOne(queryId, params);
     }
      
-    @SuppressWarnings("rawtypes")
-    public List selectList(String queryId){
+    public Object selectList(String queryId){
         printQueryId(queryId);
         return sqlSession.selectList(queryId);
     }
      
-    @SuppressWarnings("rawtypes")
-    public List selectList(String queryId, Object params){
+    public Object selectList(String queryId, Object params){
         printQueryId(queryId);
         return sqlSession.selectList(queryId,params);
     }

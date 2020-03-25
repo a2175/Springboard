@@ -24,19 +24,5 @@ public interface SampleService {
 	Map<String, Object> totalCount(Map<String, Object> map) throws Exception;
 
 	Map<String, Object> searchCount(Map<String, Object> map) throws Exception;
-
-	List<Map<String, Object>> selectCommentList(Map<String, Object> map) throws Exception;
-
-	void insertComment(Map<String, Object> map) throws Exception;
-
-	void deleteComment(Map<String, Object> map) throws Exception;
-
-	Map<String, Object> checkThumbsup(Map<String, Object> map) throws Exception;
-
-	void insertThumbsup(Map<String, Object> map) throws Exception;
-	
-	Map<String, Object> checkThumbsdown(Map<String, Object> map) throws Exception;
-
-	void insertThumbsdown(Map<String, Object> map) throws Exception;
 	
 }

@@ -19,8 +19,19 @@ import first.common.service.CommonService;
 
 @Controller
 public class CommonController {
+	private static String filePath;
 	Logger log = Logger.getLogger(this.getClass());
 	
+    public CommonController() {
+    	String os = System.getProperty("os.name");
+    	if(os.toLowerCase().contains("windows")) {
+    		filePath = "C:\\Users\\Administrator\\Desktop\\file\\";
+    	}
+    	else {
+    		filePath = "/var/lib/tomcat8/file/";
+    	}
+    }
+    
 	@Resource(name="commonService")
 	private CommonService commonService;
 	
@@ -30,7 +41,7 @@ public class CommonController {
 		String storedFileName = (String)map.get("STORED_FILE_NAME");
 		String originalFileName = (String)map.get("ORIGINAL_FILE_NAME");
 		
-		byte fileByte[] = FileUtils.readFileToByteArray(new File("C:\\Program Files (x86)\\eclipse\\file\\"+storedFileName));
+		byte fileByte[] = FileUtils.readFileToByteArray(new File(filePath+storedFileName));
 		// /var/lib/tomcat8/file/
 		response.setContentType("application/octet-stream");
 		response.setContentLength(fileByte.length);

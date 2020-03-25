@@ -20,6 +20,8 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+	<mvc:default-servlet-handler />
+
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/sample/openBoardWrite.do"/>

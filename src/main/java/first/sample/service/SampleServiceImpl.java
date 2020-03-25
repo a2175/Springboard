@@ -119,39 +119,4 @@ public class SampleServiceImpl implements SampleService{
 	public Map<String, Object> searchCount(Map<String, Object> map) throws Exception {
 		return sampleDAO.searchCount(map);
 	}
-
-	@Override
-	public List<Map<String, Object>> selectCommentList(Map<String, Object> map) throws Exception {
-		return sampleDAO.selectCommentList(map);
-	}
-
-	@Override
-	public void insertComment(Map<String, Object> map) throws Exception {
-		sampleDAO.insertComment(map);
-	}
-
-	@Override
-	public void deleteComment(Map<String, Object> map) throws Exception {
-		sampleDAO.deleteComment(map);
-	}
-
-	@Override
-	public Map<String, Object> checkThumbsup(Map<String, Object> map) throws Exception {
-		return sampleDAO.checkThumbsup(map);
-	}
-
-	@Override
-	public void insertThumbsup(Map<String, Object> map) throws Exception {
-		sampleDAO.insertThumbsup(map);	
-	}
-	
-	@Override
-	public Map<String, Object> checkThumbsdown(Map<String, Object> map) throws Exception {
-		return sampleDAO.checkThumbsdown(map);
-	}
-
-	@Override
-	public void insertThumbsdown(Map<String, Object> map) throws Exception {
-		sampleDAO.insertThumbsdown(map);	
-	}
 }
