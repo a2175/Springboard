@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <h2><a href="/first/sample/openBoardList.do" style="color: black">게시판 목록</a></h2>
+    <h2><a href="/first/board/openBoardList.do" style="color: black">게시판 목록</a></h2>
 	
 	<c:choose>
     	<c:when test="${ID eq null}">
@@ -104,7 +104,7 @@
          
         function fn_openBoardWrite(){
             var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/openBoardWrite.do' />");
+            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
             comSubmit.submit();
         }
         
@@ -116,7 +116,7 @@
          
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+            comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
             comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
             comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
             if(!gfn_isNull(keyword))
@@ -127,7 +127,7 @@
          
         function fn_selectBoardList(pageNo){
             var comAjax = new ComAjax();
-            comAjax.setUrl("<c:url value='/sample/selectBoardList.do' />");
+            comAjax.setUrl("<c:url value='/board/selectBoardList.do' />");
             comAjax.setCallback("fn_selectBoardListCallback");
             comAjax.addParam("PAGE_INDEX", pageNo);
             comAjax.addParam("PAGE_ROW", 15);
@@ -137,7 +137,7 @@
         function fn_selectBoardSearchList(pageNo){
         	keyword = $("#KEYWORD").val();
             var comAjax = new ComAjax();
-            comAjax.setUrl("<c:url value='/sample/selectBoardSearchList.do' />");
+            comAjax.setUrl("<c:url value='/board/selectBoardSearchList.do' />");
             comAjax.setCallback("fn_selectBoardListCallback");
             comAjax.addParam("KEYWORD", keyword);
             comAjax.addParam("PAGE_INDEX", pageNo);

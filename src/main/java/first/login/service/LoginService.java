@@ -4,14 +4,14 @@ import java.util.Map;
 
 public interface LoginService {
 
-	Map<String, Object> selectUserDetail(Map<String, Object> map) throws Exception;
+	Map<String, Object> selectUserDetail(Map<String, Object> map);
 	
-	Map<String,Object> selectLoginCheck(Map<String, Object> map) throws Exception;
+	Map<String,Object> selectLoginCheck(Map<String, Object> map);
 	
-	boolean selectIdCheck(Map<String, Object> map) throws Exception;
+	boolean selectIdCheck(Map<String, Object> map);
 	
-	boolean selectNicknameCheck(Map<String, Object> map) throws Exception;
+	boolean selectNicknameCheck(Map<String, Object> map);
 
-	void insertUser(Map<String, Object> map) throws Exception;
+	void insertUser(Map<String, Object> map);
 
 }

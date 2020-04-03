@@ -84,5 +84,27 @@
 			)
     	]]>
 	</insert>
+	
+	<select id="selectUserById" resultType="first.login.vo.CustomUserDetails">
+        <![CDATA[
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                USERNAME=#{username}
+        ]]>
+	</select>
+	
+	<select id="selectAuthorityById" resultType="String">
+        <![CDATA[
+            SELECT
+                authority
+            FROM
+                authorities
+            WHERE
+                USERNAME=#{username}
+        ]]>
+	</select>
 
 </mapper>

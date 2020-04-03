@@ -1,31 +1,35 @@
-package first.sample.controller;
+package first.board.controller;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import first.board.service.BoardService;
 import first.common.common.CommandMap;
-import first.sample.service.SampleService;
  
 @Controller
-public class SampleController {
+public class BoardController {
     Logger log = Logger.getLogger(this.getClass());
      
-    @Resource(name="sampleService")
-    private SampleService sampleService;
-     
-    @RequestMapping(value="/sample/openBoardList.do")
-    public ModelAndView openBoardList(CommandMap commandMap) throws Exception{
+    private BoardService sampleService;
+    
+    @Autowired
+    public BoardController(BoardService sampleService) {
+    	this.sampleService = sampleService;
+    }
+    
+    @RequestMapping(value="/board/openBoardList.do")
+    public ModelAndView openBoardList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/sample/boardList");
         
         mv.addObject("PAGE_INDEX", commandMap.get("PAGE_INDEX"));
@@ -34,8 +38,8 @@ public class SampleController {
         return mv;
     }
      
-    @RequestMapping(value="/sample/selectBoardList.do")
-    public ModelAndView selectBoardList(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/selectBoardList.do")
+    public ModelAndView selectBoardList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
          
         List<Map<String,Object>> list = sampleService.selectBoardList(commandMap.getMap());
@@ -51,8 +55,8 @@ public class SampleController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/openBoardEGList.do")
-    public ModelAndView openBoardEGList(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/openBoardEGList.do")
+    public ModelAndView openBoardEGList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/sample/boardEGList");
         
         Map<String,Object> resultMap = sampleService.selectBoardEGList(commandMap.getMap());
@@ -63,8 +67,8 @@ public class SampleController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/selectBoardSearchList.do")
-    public ModelAndView selectBoardSearchList(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/selectBoardSearchList.do")
+    public ModelAndView selectBoardSearchList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
          
         List<Map<String,Object>> list = sampleService.selectBoardSearchList(commandMap.getMap());
@@ -80,24 +84,24 @@ public class SampleController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/openBoardWrite.do")
-    public ModelAndView openBoardWrite(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/openBoardWrite.do")
+    public ModelAndView openBoardWrite(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/sample/boardWrite");
         
         return mv;
     }
     
-    @RequestMapping(value="/sample/insertBoard.do")
-    public ModelAndView insertBoard(CommandMap commandMap, HttpServletRequest request) throws Exception{
-        ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+    @RequestMapping(value="/board/insertBoard.do")
+    public ModelAndView insertBoard(CommandMap commandMap, HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         
         sampleService.insertBoard(commandMap.getMap(), request);
         
         return mv;
     }
     
-    @RequestMapping(value="/sample/openBoardDetail.do")
-    public ModelAndView openBoardDetail(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/openBoardDetail.do")
+    public ModelAndView openBoardDetail(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/sample/boardDetail");
         
         Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
@@ -111,8 +115,8 @@ public class SampleController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/openBoardUpdate.do")
-    public ModelAndView openBoardUpdate(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/openBoardUpdate.do")
+    public ModelAndView openBoardUpdate(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/sample/boardUpdate");
          
         Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
@@ -122,9 +126,9 @@ public class SampleController {
         return mv;
     }
      
-    @RequestMapping(value="/sample/updateBoard.do")
-    public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) throws Exception{
-        ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do");
+    @RequestMapping(value="/board/updateBoard.do")
+    public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
          
         sampleService.updateBoard(commandMap.getMap(), request);
          
@@ -132,17 +136,17 @@ public class SampleController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/deleteBoard.do")
-    public ModelAndView deleteBoard(CommandMap commandMap) throws Exception{
-        ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+    @RequestMapping(value="/board/deleteBoard.do")
+    public ModelAndView deleteBoard(CommandMap commandMap) {
+        ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
          
         sampleService.deleteBoard(commandMap.getMap());
          
         return mv;
     }
     
-    @RequestMapping(value="/sample/testMapArgumentResolver.do")
-    public ModelAndView testMapArgumentResolver(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/board/testMapArgumentResolver.do")
+    public ModelAndView testMapArgumentResolver(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("");
          
         if(commandMap.isEmpty() == false){

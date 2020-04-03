@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <h2><a href="/first/sample/openBoardEGList.do" style="color: black">게시판 목록</a></h2>
+    <h2><a href="/first/board/openBoardEGList.do" style="color: black">게시판 목록</a></h2>
     <p align="right">
 		환영합니다. <b>${NICKNAME}</b>님. 
 		<a href="#this" class="btn" id="logout">로그아웃</a>
@@ -88,20 +88,20 @@
         
         function fn_openBoardWrite(){
             var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/openBoardWrite.do' />");
+            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
             comSubmit.submit();
         }
         
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+            comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
             comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
             comSubmit.submit();
         }
          
         function fn_search(pageNo){
             var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/sample/openBoardEGList.do' />");
+            comSubmit.setUrl("<c:url value='/board/openBoardEGList.do' />");
             comSubmit.addParam("currentPageNo", pageNo);
             comSubmit.submit();
         }

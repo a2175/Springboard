@@ -6,12 +6,12 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
  
 import first.common.dao.AbstractDAO;
- 
-@Repository("commentDAO")
+
+@SuppressWarnings("unchecked")
+@Repository
 public class CommentDAO extends AbstractDAO{
- 
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectCommentList(Map<String, Object> map) throws Exception {
+ 	
+	public List<Map<String, Object>> selectCommentList(Map<String, Object> map) {
 		return (List<Map<String, Object>>)selectList("sample.selectCommentList", map);
 	}
 
@@ -23,7 +23,6 @@ public class CommentDAO extends AbstractDAO{
 		update("sample.deleteComment", map);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> checkThumbsup(Map<String, Object> map) {
 		return (Map<String, Object>) selectOne("sample.checkThumbsup", map);
 	}
@@ -31,8 +30,7 @@ public class CommentDAO extends AbstractDAO{
 	public void insertThumbsup(Map<String, Object> map) {
 		insert("sample.insertThumbsup", map);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public Map<String, Object> checkThumbsdown(Map<String, Object> map) {
 		return (Map<String, Object>) selectOne("sample.checkThumbsdown", map);
 	}

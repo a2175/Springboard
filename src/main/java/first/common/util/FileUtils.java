@@ -1,6 +1,7 @@
 package first.common.util;
  
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +28,7 @@ public class FileUtils {
     	}
     }
     
-    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) throws Exception{
+    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
          
@@ -54,7 +55,11 @@ public class FileUtils {
                 storedFileName = CommonUtils.getRandomString();
                  
                 file = new File(filePath + storedFileName);
-                multipartFile.transferTo(file);
+                try {
+					multipartFile.transferTo(file);
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
                  
                 listMap = new HashMap<String,Object>();
                 listMap.put("BOARD_IDX", boardIdx);
@@ -67,7 +72,7 @@ public class FileUtils {
         return list;
     }
 
-    public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) throws Exception{
+    public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
          
@@ -90,7 +95,11 @@ public class FileUtils {
                 originalFileName = multipartFile.getOriginalFilename();
                 storedFileName = CommonUtils.getRandomString();
                  
-                multipartFile.transferTo(new File(filePath + storedFileName));
+                try {
+					multipartFile.transferTo(new File(filePath + storedFileName));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
                  
                 listMap = new HashMap<String,Object>();
                 listMap.put("IS_NEW", "Y");

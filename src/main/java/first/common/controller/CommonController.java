@@ -4,12 +4,12 @@ import java.io.File;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +22,10 @@ public class CommonController {
 	private static String filePath;
 	Logger log = Logger.getLogger(this.getClass());
 	
-    public CommonController() {
+	private CommonService commonService;
+	
+	@Autowired
+    public CommonController(CommonService commonService) {
     	String os = System.getProperty("os.name");
     	if(os.toLowerCase().contains("windows")) {
     		filePath = "C:\\Users\\Administrator\\Desktop\\file\\";
@@ -30,11 +33,10 @@ public class CommonController {
     	else {
     		filePath = "/var/lib/tomcat8/file/";
     	}
+    	
+    	this.commonService = commonService;
     }
     
-	@Resource(name="commonService")
-	private CommonService commonService;
-	
 	@RequestMapping(value="/common/downloadFile.do")
 	public void downloadFile(CommandMap commandMap, HttpServletResponse response) throws Exception{
 		Map<String,Object> map = commonService.selectFileInfo(commandMap.getMap());

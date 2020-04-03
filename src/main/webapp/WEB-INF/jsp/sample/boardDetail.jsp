@@ -141,7 +141,7 @@
     		else {
     			$("#COMMENT").val("");
                 var comAjax = new ComAjax();
-                comAjax.setUrl("<c:url value='/sample/insertComment.do' />");
+                comAjax.setUrl("<c:url value='/comment/insertComment.do' />");
                 comAjax.setCallback("fn_selectCommentListCallback");
                 comAjax.addParam("IDX", idx);
                 comAjax.addParam("COMMENT", comment);
@@ -153,7 +153,7 @@
     		var page_index = "${PAGE_INDEX}";
     		var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+        	comSubmit.setUrl("<c:url value='/board/openBoardList.do' />");
         	comSubmit.addParam("PAGE_INDEX", page_index);
         	comSubmit.addParam("KEYWORD", keyword);
         	comSubmit.submit();
@@ -163,7 +163,7 @@
         	var idx = "${map.IDX}"; 
         	var id = "${map.CREA_ID}";
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />");     	
+        	comSubmit.setUrl("<c:url value='/board/openBoardUpdate.do' />");     	
         	comSubmit.addParam("IDX", idx);
         	comSubmit.addParam("CREA_ID", id);
         	comSubmit.addParam("isUpdate", true);
@@ -175,7 +175,7 @@
     			var idx = "${map.IDX}";
         		var id = "${map.CREA_ID}";
                 var comSubmit = new ComSubmit();
-                comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+                comSubmit.setUrl("<c:url value='/board/deleteBoard.do' />");
                 comSubmit.addParam("IDX", idx);
                 comSubmit.addParam("CREA_ID", id);
                 comSubmit.submit();
@@ -195,7 +195,7 @@
         	var page_index = "${PAGE_INDEX}";
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+        	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);
@@ -207,7 +207,7 @@
         	var page_index = "${PAGE_INDEX}";
         	var keyword = "${KEYWORD}";
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+        	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
 			comSubmit.addParam("IDX", idx);
 			comSubmit.addParam("PAGE_INDEX", page_index);
 			comSubmit.addParam("KEYWORD", keyword);
@@ -217,7 +217,7 @@
     	function fn_selectCommentList(){
     		var idx = "${map.IDX}";
             var comAjax = new ComAjax();
-            comAjax.setUrl("<c:url value='/sample/selectCommentList.do' />");
+            comAjax.setUrl("<c:url value='/comment/selectCommentList.do' />");
             comAjax.setCallback("fn_selectCommentListCallback");
             comAjax.addParam("IDX", idx);
             comAjax.ajax();
@@ -322,7 +322,7 @@
         		var cmt_idx = obj.parent().find("#IDX").val();
     			var idx = "${map.IDX}";
                 var comAjax = new ComAjax();
-                comAjax.setUrl("<c:url value='/sample/deleteComment.do' />");
+                comAjax.setUrl("<c:url value='/comment/deleteComment.do' />");
                 comAjax.setCallback("fn_selectCommentListCallback");
                 comAjax.addParam("IDX", idx);
                 comAjax.addParam("CMT_IDX", cmt_idx);
@@ -339,7 +339,7 @@
             	var comAjax = new ComAjax();
             	thumbsindex = obj.find("#upcount");
             
-            	comAjax.setUrl("<c:url value='/sample/thumbsUp.do' />");
+            	comAjax.setUrl("<c:url value='/comment/thumbsUp.do' />");
             	comAjax.setCallback("fn_thumbsUpCallback");
             	comAjax.addParam("CMT_IDX", cmt_idx);
             	comAjax.ajax();
@@ -354,7 +354,7 @@
             	var comAjax = new ComAjax();
             	thumbsindex = obj.find("#downcount");
             
-            	comAjax.setUrl("<c:url value='/sample/thumbsDown.do' />");
+            	comAjax.setUrl("<c:url value='/comment/thumbsDown.do' />");
             	comAjax.setCallback("fn_thumbsDownCallback");
             	comAjax.addParam("CMT_IDX", cmt_idx);
             	comAjax.ajax();

@@ -3,9 +3,8 @@ package first.comment.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,12 +15,16 @@ import first.common.common.CommandMap;
 @Controller
 public class CommentController {
     Logger log = Logger.getLogger(this.getClass());
-     
-    @Resource(name="commentService")
+    
     private CommentService commentService;
     
-    @RequestMapping(value="/sample/selectCommentList.do")
-    public ModelAndView selectCommentList(CommandMap commandMap) throws Exception{
+    @Autowired
+    public CommentController(CommentService commentService) {
+    	this.commentService = commentService;
+    }
+    
+    @RequestMapping(value="/comment/selectCommentList.do")
+    public ModelAndView selectCommentList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
          
         List<Map<String,Object>> list = commentService.selectCommentList(commandMap.getMap());
@@ -34,8 +37,8 @@ public class CommentController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/insertComment.do")
-    public ModelAndView insertComment(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/comment/insertComment.do")
+    public ModelAndView insertComment(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
         commentService.insertComment(commandMap.getMap());
@@ -45,8 +48,8 @@ public class CommentController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/deleteComment.do")
-    public ModelAndView deleteComment(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/comment/deleteComment.do")
+    public ModelAndView deleteComment(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
         commentService.deleteComment(commandMap.getMap());
@@ -60,8 +63,8 @@ public class CommentController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/thumbsUp.do")
-    public ModelAndView thumbsUp(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/comment/thumbsUp.do")
+    public ModelAndView thumbsUp(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
         Map<String,Object> map = commentService.checkThumbsup(commandMap.getMap());
@@ -77,8 +80,8 @@ public class CommentController {
         return mv;
     }
     
-    @RequestMapping(value="/sample/thumbsDown.do")
-    public ModelAndView thumbsDown(CommandMap commandMap) throws Exception{
+    @RequestMapping(value="/comment/thumbsDown.do")
+    public ModelAndView thumbsDown(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
         Map<String,Object> map = commentService.checkThumbsdown(commandMap.getMap());

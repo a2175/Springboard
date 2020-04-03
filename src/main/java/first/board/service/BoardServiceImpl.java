@@ -1,45 +1,48 @@
-package first.sample.service;
+package first.board.service;
  
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
  
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
  
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
+
+import first.board.dao.BoardDAO;
 import first.common.util.FileUtils;
-import first.sample.dao.SampleDAO;
  
-@Service("sampleService")
-public class SampleServiceImpl implements SampleService{
+@Service
+public class BoardServiceImpl implements BoardService {
     Logger log = Logger.getLogger(this.getClass());
-     
-    @Resource(name="fileUtils")
-    private FileUtils fileUtils;
-     
-    @Resource(name="sampleDAO")
-    private SampleDAO sampleDAO;
+    
+    private FileUtils fileUtils; 
+    private BoardDAO sampleDAO;
+    
+    @Autowired
+    public BoardServiceImpl(FileUtils fileUtils, BoardDAO sampleDAO) {
+    	this.fileUtils = fileUtils;
+    	this.sampleDAO = sampleDAO;
+    }
      
     @Override
-    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception {
+    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) {
         return sampleDAO.selectBoardList(map);
     }
     
     @Override
-	public List<Map<String, Object>> selectBoardSearchList(Map<String, Object> map) throws Exception {
+	public List<Map<String, Object>> selectBoardSearchList(Map<String, Object> map) {
     	return sampleDAO.selectBoardSearchList(map);
 	}
     
     @Override
-	public Map<String, Object> selectBoardEGList(Map<String, Object> map) throws Exception {
+	public Map<String, Object> selectBoardEGList(Map<String, Object> map) {
     	return sampleDAO.selectBoardEGList(map);
     }
  
     @Override
-    public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
+    public void insertBoard(Map<String, Object> map, HttpServletRequest request) {
         sampleDAO.insertBoard(map);
         
         List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(map, request);
@@ -51,7 +54,7 @@ public class SampleServiceImpl implements SampleService{
     }
  
     @Override
-    public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
+    public Map<String, Object> selectBoardDetail(Map<String, Object> map) {
     	if(map.get("isUpdate") == null)
     		sampleDAO.updateHitCnt(map);
         Map<String, Object> resultMap = new HashMap<String,Object>();
@@ -86,7 +89,7 @@ public class SampleServiceImpl implements SampleService{
     }
  
     @Override
-    public void updateBoard(Map<String, Object> map, HttpServletRequest request) throws Exception{
+    public void updateBoard(Map<String, Object> map, HttpServletRequest request) {
         sampleDAO.updateBoard(map);
          
         sampleDAO.deleteFileList(map);
@@ -105,18 +108,18 @@ public class SampleServiceImpl implements SampleService{
     }
  
     @Override
-    public void deleteBoard(Map<String, Object> map) throws Exception {
+    public void deleteBoard(Map<String, Object> map) {
     	sampleDAO.deleteFileList(map);
         sampleDAO.deleteBoard(map);
     }
     
     @Override
-    public Map<String, Object> totalCount(Map<String, Object> map) throws Exception {
+    public Map<String, Object> totalCount(Map<String, Object> map) {
     	return sampleDAO.totalCount(map);
     }
 
 	@Override
-	public Map<String, Object> searchCount(Map<String, Object> map) throws Exception {
+	public Map<String, Object> searchCount(Map<String, Object> map) {
 		return sampleDAO.searchCount(map);
 	}
 }
