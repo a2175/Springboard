@@ -1,4 +1,10 @@
-#version = 1.56v
+#version = 1.57v
+
+[Springboard 1.57v]
+1. sample을 board로 수정
+2. login 기능을 스프링 security를 사용하여 구축하도록 수정 중
+3. throws Exception 제거
+4. 생성자를 통한 주입으로 변경
 
 [Springboard 1.56v]
 1. web.xml 설정 수정
