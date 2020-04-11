@@ -1,22 +1,23 @@
 package first.comment.service;
 
 import java.util.List;
-import java.util.Map;
+
+import first.comment.vo.CommentVO;
 
 public interface CommentService {
 
-	List<Map<String, Object>> selectCommentList(Map<String, Object> map);
+	List<CommentVO> selectCommentList(int board_idx);
 
-	void insertComment(Map<String, Object> map);
+	void insertComment(CommentVO vo);
 
-	void deleteComment(Map<String, Object> map);
+	void deleteComment(int idx);
 
-	Map<String, Object> checkThumbsup(Map<String, Object> map);
+	CommentVO checkThumbsup(CommentVO vo);
 
-	void insertThumbsup(Map<String, Object> map);
+	void insertThumbsup(CommentVO vo);
 	
-	Map<String, Object> checkThumbsdown(Map<String, Object> map);
+	CommentVO checkThumbsdown(CommentVO vo);
 
-	void insertThumbsdown(Map<String, Object> map);
+	void insertThumbsdown(CommentVO vo);
 	
 }

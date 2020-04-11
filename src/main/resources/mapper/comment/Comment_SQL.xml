@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="comment">
+     
+	<select id="selectCommentList" resultType="first.comment.vo.CommentVO">
+    	<![CDATA[
+        	SELECT
+        		COMMENT.IDX,
+				COMMENT.CONTENTS,
+				COMMENT.CREA_DTM,
+				USER.NICKNAME,
+				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
+				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
+			FROM 
+				tb_comment AS COMMENT
+			JOIN
+				tb_user AS USER
+			ON
+				COMMENT.CREA_ID = USER.ID
+			WHERE
+            	COMMENT.DEL_GB = 'N'
+            	AND COMMENT.BOARD_IDX = #{board_idx}
+			ORDER BY COMMENT.IDX
+    	]]>
+	</select>
+	
+	<insert id="insertComment" parameterType="first.comment.vo.CommentVO">
+    	<![CDATA[
+        	INSERT INTO tb_comment
+			(
+ 				BOARD_IDX,
+ 				CONTENTS,
+ 				CREA_ID
+			)
+			VALUES
+			(
+    			#{board_idx},
+    			#{contents},
+    			#{crea_id}
+			)
+    	]]>
+	</insert>
+	
+	<update id="deleteComment">
+    	<![CDATA[
+        	UPDATE tb_comment
+        	SET
+            	DEL_GB = 'Y'
+        	WHERE
+            	IDX = #{idx}
+    	]]>
+	</update>
+	
+	<select id="checkThumbsup" parameterType="first.comment.vo.CommentVO" resultType="first.comment.vo.CommentVO">
+        <![CDATA[			
+			SELECT 
+				*
+			FROM 
+				tb_thumbs
+			WHERE
+            	CREA_ID = #{crea_id}
+            	AND COMMENT_IDX = #{idx}
+            	AND THUMBS_UP = '1'
+        ]]>
+    </select>
+	
+	<insert id="insertThumbsup" parameterType="first.comment.vo.CommentVO">
+    	<![CDATA[
+        	INSERT INTO tb_thumbs
+			(
+    			COMMENT_IDX,
+    			CREA_ID,
+    			THUMBS_UP
+			)
+			VALUES
+			(
+				#{idx},
+  				#{crea_id},
+  				'1'
+			);
+    	]]>
+	</insert>
+	
+	<select id="checkThumbsdown" parameterType="first.comment.vo.CommentVO" resultType="first.comment.vo.CommentVO">
+        <![CDATA[			
+			SELECT 
+				*
+			FROM 
+				tb_thumbs
+			WHERE
+            	CREA_ID = #{crea_id}
+            	AND COMMENT_IDX = #{idx}
+            	AND THUMBS_DOWN = '1'
+        ]]>
+    </select>
+	
+	<insert id="insertThumbsdown" parameterType="first.comment.vo.CommentVO">
+    	<![CDATA[
+        	INSERT INTO tb_thumbs
+			(
+    			COMMENT_IDX,
+    			CREA_ID,
+    			THUMBS_DOWN
+			)
+			VALUES
+			(
+				#{idx},
+  				#{crea_id},
+  				'1'
+			);
+    	]]>
+	</insert>
+	
+</mapper>

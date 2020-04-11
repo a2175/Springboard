@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="sample">
+<mapper namespace="board">
      
     <select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
         <![CDATA[			
@@ -234,120 +234,5 @@
 			)
     	]]>
 	</select>
-	
-	<select id="selectCommentList" parameterType="hashmap" resultType="hashmap">
-    	<![CDATA[
-        	SELECT
-        		COMMENT.IDX,
-				COMMENT.CONTENTS,
-				DATE_FORMAT(COMMENT.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
-				USER.NICKNAME,
-				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
-				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
-			FROM 
-				tb_comment AS COMMENT
-			JOIN
-				tb_user AS USER
-			ON
-				COMMENT.CREA_ID = USER.ID
-			WHERE
-            	COMMENT.DEL_GB = 'N'
-            	AND COMMENT.BOARD_IDX = #{IDX}
-			ORDER BY COMMENT.IDX
-    	]]>
-	</select>
-	
-	<insert id="insertComment" parameterType="hashmap">
-    	<![CDATA[
-        	INSERT INTO tb_comment
-			(
- 				IDX,
- 				BOARD_IDX,
- 				CONTENTS,
- 				CREA_DTM,
- 				CREA_ID,
- 				DEL_GB
-			)
-			VALUES
-			(
-    			null,
-    			#{IDX},
-    			#{COMMENT},
-    			null,
-    			#{ID},
-    			'N'
-			)
-    	]]>
-	</insert>
-	
-	<update id="deleteComment" parameterType="hashmap">
-    	<![CDATA[
-        	UPDATE tb_comment
-        	SET
-            	DEL_GB = 'Y'
-        	WHERE
-            	IDX = #{CMT_IDX}
-    	]]>
-	</update>
-	
-	<select id="checkThumbsup" parameterType="hashmap" resultType="hashmap">
-        <![CDATA[			
-			SELECT 
-				*
-			FROM 
-				tb_thumbs
-			WHERE
-            	CREA_ID = #{ID}
-            	AND COMMENT_IDX = #{CMT_IDX}
-            	AND THUMBS_UP = '1'
-        ]]>
-    </select>
-	
-	<insert id="insertThumbsup" parameterType="hashmap">
-    	<![CDATA[
-        	INSERT INTO tb_thumbs
-			(
-    			COMMENT_IDX,
-    			CREA_ID,
-    			THUMBS_UP
-			)
-			VALUES
-			(
-				#{CMT_IDX},
-  				#{ID},
-  				'1'
-			);
-    	]]>
-	</insert>
-	
-	<select id="checkThumbsdown" parameterType="hashmap" resultType="hashmap">
-        <![CDATA[			
-			SELECT 
-				*
-			FROM 
-				tb_thumbs
-			WHERE
-            	CREA_ID = #{ID}
-            	AND COMMENT_IDX = #{CMT_IDX}
-            	AND THUMBS_DOWN = '1'
-        ]]>
-    </select>
-	
-	<insert id="insertThumbsdown" parameterType="hashmap">
-    	<![CDATA[
-        	INSERT INTO tb_thumbs
-			(
-    			COMMENT_IDX,
-    			CREA_ID,
-    			THUMBS_DOWN
-			)
-			VALUES
-			(
-				#{CMT_IDX},
-  				#{ID},
-  				'1'
-			);
-    	]]>
-	</insert>
-	
+		
 </mapper>

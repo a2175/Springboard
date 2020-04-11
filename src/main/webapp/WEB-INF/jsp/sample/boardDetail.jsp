@@ -142,9 +142,10 @@
     			$("#COMMENT").val("");
                 var comAjax = new ComAjax();
                 comAjax.setUrl("<c:url value='/comment/insertComment.do' />");
-                comAjax.setCallback("fn_selectCommentListCallback");
-                comAjax.addParam("IDX", idx);
-                comAjax.addParam("COMMENT", comment);
+                comAjax.setCallback("fn_selectCommentList");
+                comAjax.addParam("board_idx", idx);    
+                comAjax.addParam("contents", comment);
+                comAjax.addParam("crea_id", "${ID}");
                 comAjax.ajax();
     		}
     	}
@@ -219,16 +220,15 @@
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/comment/selectCommentList.do' />");
             comAjax.setCallback("fn_selectCommentListCallback");
-            comAjax.addParam("IDX", idx);
+            comAjax.addParam("board_idx", idx);
             comAjax.ajax();
         }
          
         function fn_selectCommentListCallback(data){
-        	var total = data.TOTAL;
             var body = $("div[id='board_comment']");
             body.empty();
 
-            if(total == 0){
+            if(data.list.length == 0){
                 var str = "<table>" +
 							"<tr>" +
 								"<td colspan='4'>댓글이 없습니다.</td>" +
@@ -239,35 +239,35 @@
             else{             
                 var str = "";
                 $.each(data.list, function(key, value){
-                	if(value.NICKNAME == "${NICKNAME}"){
+                	if(value.nickname == "${NICKNAME}"){
                     	str += "<table>" +
                     				"<tr>" +
                     					"<th colspan='2' width='700'>" +
-										"<font size='2'>" + value.NICKNAME + "</font>" +
+										"<font size='2'>" + value.nickname + "</font>" +
         								"</th>" +
         								"<td class='thumbs'>" +
         									"<a href='#this' id='thumbs_up'>" +
         										"<img src='<c:url value='/img/like.jpg' />'>" +
-        										"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
+        										"<font id='upcount' color='blue' size='3'>" + value.thumbsup_cnt + "</font>" +
                         					"</a>" +
                         					"<a href='#this' id='thumbs_down'>" +
                 								"<img src='<c:url value='/img/dislike.jpg' />'>" +
-                								"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
+                								"<font id='downcount' color='red' size='3'>" + value.thumbsdown_cnt + "</font>" +
                 							"</a>" +
-                							"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                							"<input type='hidden' id='IDX' value=" + value.idx + ">" +
                                 		"</td>" +
                                 		"<td>" +
                                 			"<a href='#this' id='delete_cmt'>" +
                                 				"<img src='<c:url value='/img/delete.jpg' />' style='width: auto; height: 30px; float:right;'>" +
                                 			"</a>" +
-                            				"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                            				"<input type='hidden' id='IDX' value=" + value.idx + ">" +
                             			"</td>" +
         							"</tr>" +
         						"</table>" +
         						"<table>" +
         							"<tr>" +
-                                		"<td height='50'>" + value.CONTENTS + "</td>" +
-                                		"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
+                                		"<td height='50'>" + value.contents + "</td>" +
+                                		"<td class='CREA_DTM'>" + value.crea_dtm + "</td>" +
                            			"</tr>" +
                            		"</table>";
                 	}
@@ -275,25 +275,25 @@
                 		str += "<table>" +
                 					"<tr>" +
     									"<th colspan='2' width='700'>" +
-											"<font size='2'>" + value.NICKNAME + "</font>" +
+											"<font size='2'>" + value.nickname + "</font>" +
 										"</th>" +
 										"<td class='thumbs'>" +
 											"<a href='#this' id='thumbs_up'>" +
 												"<img src='<c:url value='/img/like.jpg' />'>" +
-												"<font id='upcount' color='blue' size='3'>" + value.THUMBSUP_CNT + "</font>" +
+												"<font id='upcount' color='blue' size='3'>" + value.thumbsup_cnt + "</font>" +
         									"</a>" +
         									"<a href='#this' id='thumbs_down'>" +
 												"<img src='<c:url value='/img/dislike.jpg' />'>" +
-												"<font id='downcount' color='red' size='3'>" + value.THUMBSDOWN_CNT + "</font>" +
+												"<font id='downcount' color='red' size='3'>" + value.thumbsdown_cnt + "</font>" +
 											"</a>" +
-											"<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+											"<input type='hidden' id='IDX' value=" + value.idx + ">" +
                 						"</td>" +
 									"</tr>" +
 								"</table>" +
 								"<table>" +
 									"<tr>" +
-                						"<td height='50'>" + value.CONTENTS + "</td>" +
-                						"<td class='CREA_DTM'>" + value.CREA_DTM + "</td>" +
+                						"<td height='50'>" + value.contents + "</td>" +
+                						"<td class='CREA_DTM'>" + value.crea_dtm + "</td>" +
            							"</tr>" +
            						"</table>";
                 	}
@@ -320,12 +320,10 @@
         function fn_deleteComment(obj){
         	if (confirm("정말 삭제하시겠습니까??") == true) {
         		var cmt_idx = obj.parent().find("#IDX").val();
-    			var idx = "${map.IDX}";
                 var comAjax = new ComAjax();
                 comAjax.setUrl("<c:url value='/comment/deleteComment.do' />");
-                comAjax.setCallback("fn_selectCommentListCallback");
-                comAjax.addParam("IDX", idx);
-                comAjax.addParam("CMT_IDX", cmt_idx);
+                comAjax.setCallback("fn_selectCommentList");
+                comAjax.addParam("idx", cmt_idx);
                 comAjax.ajax();
     		}
         }
@@ -341,7 +339,8 @@
             
             	comAjax.setUrl("<c:url value='/comment/thumbsUp.do' />");
             	comAjax.setCallback("fn_thumbsUpCallback");
-            	comAjax.addParam("CMT_IDX", cmt_idx);
+            	comAjax.addParam("idx", cmt_idx);
+            	comAjax.addParam("crea_id", "${ID}");
             	comAjax.ajax();
         	}
         }
@@ -356,7 +355,8 @@
             
             	comAjax.setUrl("<c:url value='/comment/thumbsDown.do' />");
             	comAjax.setCallback("fn_thumbsDownCallback");
-            	comAjax.addParam("CMT_IDX", cmt_idx);
+            	comAjax.addParam("idx", cmt_idx);
+            	comAjax.addParam("crea_id", "${ID}");
             	comAjax.ajax();
         	}
         }
