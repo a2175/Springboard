@@ -1,4 +1,9 @@
-#version = 1.57v
+#version = 1.58v
+
+[Springboard 1.58v]
+1. sample mapper를 board, comment로 분리 및 수정
+2. CommentVO 추가
+3. Comment 기능에 VO 객체를 사용하도록 수정
 
 [Springboard 1.57v]
 1. sample을 board로 수정
