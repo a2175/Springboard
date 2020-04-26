@@ -1,4 +1,9 @@
-#version = 1.58v
+#version = 1.59v
+
+[Springboard 1.59v]
+1. BoardVO, FileVO 객체를 사용하도록 수정
+2. jsp 경로 sample을 board로 수정
+3. jsp 변수명 수정
 
 [Springboard 1.58v]
 1. sample mapper를 board, comment로 분리 및 수정
