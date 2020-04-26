@@ -16,22 +16,22 @@
         <tbody>
             <tr>
                 <th scope="row">글 번호</th>
-                <td>${map.IDX }</td>
+                <td>${detail.idx }</td>
                 <th scope="row">조회수</th>
-                <td>${map.HIT_CNT }</td>
+                <td>${detail.hit_cnt }</td>
             </tr>
             <tr>
                 <th scope="row">작성자</th>
-                <td>${map.NICKNAME }</td>
+                <td>${detail.nickname }</td>
                 <th scope="row">작성시간</th>
-                <td>${map.CREA_DTM }</td>
+                <td>${detail.crea_dtm }</td>
             </tr>
             <tr>
                 <th scope="row">제목</th>
-                <td colspan="3">${map.TITLE }</td>
+                <td colspan="3">${detail.title }</td>
             </tr>
             <tr>
-                <td colspan="4">${map.CONTENTS }</td>
+                <td colspan="4">${detail.contents }</td>
             </tr>
             <tr>
                 <th scope="row">첨부파일</th>
@@ -39,11 +39,11 @@
                 	<c:if test="${list.size() eq 0}">
     					첨부파일이 없습니다.
 					</c:if>
-                    <c:forEach var="row" items="${list }">
+                    <c:forEach var="row" items="${fileList }">
                     	<p>
-                        	<input type="hidden" id="IDX" value="${row.IDX }">
-                        	<a href="#this" id="file">${row.ORIGINAL_FILE_NAME }</a>
-                        	(${row.FILE_SIZE }kb)
+                        	<input type="hidden" id="IDX" value="${row.idx }">
+                        	<a href="#this" id="file">${row.original_file_name }</a>
+                        	(${row.file_size }kb)
                         </p>
                     </c:forEach> 
                 </td>
@@ -63,26 +63,26 @@
     
     <br>
     <a href="#this" class="btn" id="list">목록으로</a>
-    <c:if test="${map.CREA_ID eq ID}">
+    <c:if test="${detail.crea_id eq ID}">
     	<a href="#this" class="btn" id="update">수정하기</a>
     	<a href="#this" class="btn" id="delete">삭제하기</a>
 	</c:if>
 	<br><br>
 	
 	<c:choose>
-    	<c:when test="${nextmap.IDX ne null}">
-       		 <p><a href="#this" id="next" style="color: black">다음글: ${nextmap.TITLE}</a></p>
+    	<c:when test="${nextmap.idx ne null}">
+       		 <p><a href="#this" id="next" style="color: black">다음글: ${nextmap.title}</a></p>
     	</c:when>
-    	<c:when test="${nextmap.IDX eq null}">
+    	<c:when test="${nextmap.idx eq null}">
        		 <p style="color: gray">다음글: 다음글이 없습니다.</p>
     	</c:when>
 	</c:choose>
 	
 	<c:choose>
-    	<c:when test="${prevmap.IDX ne null}">
-       		 <a href="#this" id="prev" style="color: black">이전글: ${prevmap.TITLE}</a>
+    	<c:when test="${prevmap.idx ne null}">
+       		 <a href="#this" id="prev" style="color: black">이전글: ${prevmap.title}</a>
     	</c:when>
-    	<c:when test="${prevmap.IDX eq null}">
+    	<c:when test="${prevmap.idx eq null}">
        		 <p style="color: gray">이전글: 이전글이 없습니다.</p>
     	</c:when>
 	</c:choose>
@@ -129,7 +129,7 @@
     	});
     	
     	function fn_doSubmitComment(){
-    		var idx = "${map.IDX}";
+    		var idx = "${detail.idx}";
     		var comment = $("#COMMENT").val();
     		
     		if(comment.length < 1) {
@@ -151,33 +151,34 @@
     	}
     	
     	function fn_openBoardList(){
-    		var page_index = "${PAGE_INDEX}";
-    		var keyword = "${KEYWORD}";
+    		var page_index = "${param.pageIdx}";
+    		var keyword = "${param.keyword}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardList.do' />");
-        	comSubmit.addParam("PAGE_INDEX", page_index);
-        	comSubmit.addParam("KEYWORD", keyword);
+        	comSubmit.addParam("pageIdx", page_index);
+            if(!gfn_isNull(keyword))
+            	comSubmit.addParam("keyword", keyword);
+        	comSubmit.setMethod("get");
         	comSubmit.submit();
     	}
 
     	function fn_openBoardUpdate(){
-        	var idx = "${map.IDX}"; 
-        	var id = "${map.CREA_ID}";
+        	var idx = "${detail.idx}";
+        	var id = "${detail.crea_id}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardUpdate.do' />");     	
-        	comSubmit.addParam("IDX", idx);
+        	comSubmit.addParam("idx", idx);
         	comSubmit.addParam("CREA_ID", id);
-        	comSubmit.addParam("isUpdate", true);
         	comSubmit.submit();
     	}
     	
     	function fn_deleteBoard(){
     		if (confirm("정말 삭제하시겠습니까??") == true) {
-    			var idx = "${map.IDX}";
-        		var id = "${map.CREA_ID}";
+            	var idx = "${detail.idx}";
+            	var id = "${detail.crea_id}";
                 var comSubmit = new ComSubmit();
                 comSubmit.setUrl("<c:url value='/board/deleteBoard.do' />");
-                comSubmit.addParam("IDX", idx);
+                comSubmit.addParam("idx", idx);
                 comSubmit.addParam("CREA_ID", id);
                 comSubmit.submit();
     		}	
@@ -187,36 +188,40 @@
         	var idx = obj.parent().find("#IDX").val();
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/common/downloadFile.do' />");
-			comSubmit.addParam("IDX", idx);
+			comSubmit.addParam("idx", idx);
         	comSubmit.submit();
 		}
     	
     	function fn_openBoardNext(){
-        	var idx = "${nextmap.IDX}";
-        	var page_index = "${PAGE_INDEX}";
-        	var keyword = "${KEYWORD}";
+        	var idx = "${nextmap.idx}";
+        	var page_index = "${param.pageIdx}";
+        	var keyword = "${param.keyword}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
-			comSubmit.addParam("IDX", idx);
-			comSubmit.addParam("PAGE_INDEX", page_index);
-			comSubmit.addParam("KEYWORD", keyword);
+			comSubmit.addParam("idx", idx);
+			comSubmit.addParam("pageIdx", page_index);
+            if(!gfn_isNull(keyword))
+            	comSubmit.addParam("keyword", keyword);
+			comSubmit.setMethod("get");
         	comSubmit.submit();
 		}
     	
     	function fn_openBoardPrev(){
-        	var idx = "${prevmap.IDX}";
-        	var page_index = "${PAGE_INDEX}";
-        	var keyword = "${KEYWORD}";
+        	var idx = "${prevmap.idx}";
+        	var page_index = "${param.pageIdx}";
+        	var keyword = "${param.keyword}";
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
-			comSubmit.addParam("IDX", idx);
-			comSubmit.addParam("PAGE_INDEX", page_index);
-			comSubmit.addParam("KEYWORD", keyword);
+			comSubmit.addParam("idx", idx);
+			comSubmit.addParam("pageIdx", page_index);
+            if(!gfn_isNull(keyword))
+            	comSubmit.addParam("keyword", keyword);
+			comSubmit.setMethod("get");
         	comSubmit.submit();
 		}
     	
     	function fn_selectCommentList(){
-    		var idx = "${map.IDX}";
+    		var idx = "${detail.idx}";
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/comment/selectCommentList.do' />");
             comAjax.setCallback("fn_selectCommentListCallback");

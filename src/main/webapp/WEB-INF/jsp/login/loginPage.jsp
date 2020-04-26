@@ -24,8 +24,7 @@
     		alert("아이디 또는 비밀번호를 다시 확인하세요.");
     	</script>
 	</c:if>
-    
-    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+
     <script type="text/javascript">
     	$(document).ready(function(){
         	$("#login").on("click", function(e){ //로그인 버튼
@@ -42,8 +41,8 @@
     	function fn_doLogin(){
         	var comSubmit = new ComSubmit("frm");
         	comSubmit.setUrl("<c:url value='/login/doLogin.do' />");
-        	comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
-            comSubmit.addParam("KEYWORD", keyword);
+        	comSubmit.addParam("pageIdx", $("#PAGE_INDEX").val());
+            comSubmit.addParam("keyword", "${param.keyword}");
         	comSubmit.submit();
     	}
      

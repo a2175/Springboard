@@ -1,6 +1,7 @@
 package first.comment.service;
  
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,37 +22,37 @@ public class CommentServiceImpl implements CommentService{
     }
     
     @Override
-	public List<CommentVO> selectCommentList(int board_idx) {
-		return commentDAO.selectCommentList(board_idx);
+	public List<CommentVO> selectCommentList(Map<String, Object> map) {
+		return commentDAO.selectCommentList(map);
 	}
 
 	@Override
-	public void insertComment(CommentVO vo) {
-		commentDAO.insertComment(vo);
+	public void insertComment(Map<String, Object> map) {
+		commentDAO.insertComment(map);
 	}
 
 	@Override
-	public void deleteComment(int idx) {
-		commentDAO.deleteComment(idx);
+	public void deleteComment(Map<String, Object> map) {
+		commentDAO.deleteComment(map);
 	}
 
 	@Override
-	public CommentVO checkThumbsup(CommentVO vo) {
-		return commentDAO.checkThumbsup(vo);
+	public CommentVO checkThumbsup(Map<String, Object> map) {
+		return commentDAO.checkThumbsup(map);
 	}
 
 	@Override
-	public void insertThumbsup(CommentVO vo) {
-		commentDAO.insertThumbsup(vo);	
+	public void insertThumbsup(Map<String, Object> map) {
+		commentDAO.insertThumbsup(map);	
 	}
 	
 	@Override
-	public CommentVO checkThumbsdown(CommentVO vo) {
-		return commentDAO.checkThumbsdown(vo);
+	public CommentVO checkThumbsdown(Map<String, Object> map) {
+		return commentDAO.checkThumbsdown(map);
 	}
 
 	@Override
-	public void insertThumbsdown(CommentVO vo) {
-		commentDAO.insertThumbsdown(vo);	
+	public void insertThumbsdown(Map<String, Object> map) {
+		commentDAO.insertThumbsdown(map);	
 	}
 }

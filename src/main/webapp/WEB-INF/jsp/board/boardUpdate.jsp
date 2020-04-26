@@ -18,27 +18,26 @@
                 <tr>
                     <th scope="row">글 번호</th>
                     <td>
-                        ${map.IDX }
-                        <input type="hidden" id="IDX" name="IDX" value="${map.IDX }">
+                        ${detail.idx }
                     </td>
                     <th scope="row">조회수</th>
-                    <td>${map.HIT_CNT }</td>
+                    <td>${detail.hit_cnt }</td>
                 </tr>
                 <tr>
                     <th scope="row">작성자</th>
-                    <td>${map.CREA_ID }</td>
+                    <td>${detail.crea_id }</td>
                     <th scope="row">작성시간</th>
-                    <td>${map.CREA_DTM }</td>
+                    <td>${detail.crea_dtm }</td>
                 </tr>
                 <tr>
                     <th scope="row">제목</th>
                     <td colspan="3">
-                        <input type="text" id="TITLE" name="TITLE" class="wdp_90" value="${map.TITLE }"/>
+                        <input type="text" id="TITLE" name="TITLE" class="wdp_90" value="${detail.title }"/>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4" class="view_text">
-                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS">${map.CONTENTS }</textarea>
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS">${detail.contents }</textarea>
                         <p id="content_length"></p>
                     </td>
                 </tr>
@@ -46,12 +45,12 @@
                     <th scope="row">첨부파일</th>
                     <td colspan="3">
                         <div id="fileDiv">               
-                            <c:forEach var="row" items="${list }" varStatus="var">
+                            <c:forEach var="row" items="${fileList }" varStatus="var">
                                 <p>
-                                    <input type="hidden" name="IDX_${var.index }" value="${row.IDX }">
-                                    <a href="#this" id="name_${var.index }">${row.ORIGINAL_FILE_NAME }</a>
+                                    <input type="hidden" name="IDX_${var.index }" value="${row.idx }">
+                                    <a href="#this" id="name_${var.index }">${row.original_file_name }</a>
                                     <input type="file" id="file_${var.index }" name="file_${var.index }">
-                                    (${row.FILE_SIZE }kb)
+                                    (${row.file_size }kb)
                                     <a href="#this" class="btn" id="delete_${var.index }">삭제</a>
                                 </p>
                             </c:forEach>
@@ -69,7 +68,7 @@
      
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
-        var gfv_count = '${fn:length(list)}';
+        var gfv_count = '${fn:length(fileList)}';
         
         $(document).ready(function(){
         	fn_doContentCount();
@@ -123,8 +122,10 @@
          
         function fn_updateBoard(){
         	if(fn_checkBoard()) {
+        		var idx = "${detail.idx}";
         		var comSubmit = new ComSubmit("frm");
                 comSubmit.setUrl("<c:url value='/board/updateBoard.do' />");
+                comSubmit.addParam("idx", idx);
                 comSubmit.submit();
         	}
         }

@@ -41,14 +41,14 @@
                 <c:when test="${fn:length(list) > 0}">
                     <c:forEach var="row" items="${list}" varStatus="status">
                         <tr>
-                            <td>${row.IDX }</td>
+                            <td>${row.idx }</td>
                             <td class="title">
-                                <a href="#this" id="title">${row.TITLE }</a>
-                                <input type="hidden" id="IDX" value="${row.IDX }">
+                                <a href="#this" id="title">${row.title }</a>
+                                <input type="hidden" id="IDX" value="${row.idx }">
                             </td>
-                            <td>${row.NICKNAME }</td>
-                            <td>${row.HIT_CNT }</td>
-                            <td>${row.CREA_DTM }</td>
+                            <td>${row.nickname }</td>
+                            <td>${row.hit_cnt }</td>
+                            <td>${row.crea_dtm }</td>
                         </tr>
                     </c:forEach> 
                 </c:when>
@@ -95,7 +95,7 @@
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
-            comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
+            comSubmit.addParam("idx", obj.parent().find("#IDX").val());
             comSubmit.submit();
         }
          
@@ -103,6 +103,7 @@
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/board/openBoardEGList.do' />");
             comSubmit.addParam("currentPageNo", pageNo);
+            comSubmit.addParam("pageRow", 15);
             comSubmit.submit();
         }
     </script>

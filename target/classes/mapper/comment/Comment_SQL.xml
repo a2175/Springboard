@@ -3,7 +3,7 @@
  
 <mapper namespace="comment">
      
-	<select id="selectCommentList" resultType="first.comment.vo.CommentVO">
+	<select id="selectCommentList" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
     	<![CDATA[
         	SELECT
         		COMMENT.IDX,
@@ -25,7 +25,7 @@
     	]]>
 	</select>
 	
-	<insert id="insertComment" parameterType="first.comment.vo.CommentVO">
+	<insert id="insertComment" parameterType="hashmap">
     	<![CDATA[
         	INSERT INTO tb_comment
 			(
@@ -42,7 +42,7 @@
     	]]>
 	</insert>
 	
-	<update id="deleteComment">
+	<update id="deleteComment" parameterType="hashmap">
     	<![CDATA[
         	UPDATE tb_comment
         	SET
@@ -52,7 +52,7 @@
     	]]>
 	</update>
 	
-	<select id="checkThumbsup" parameterType="first.comment.vo.CommentVO" resultType="first.comment.vo.CommentVO">
+	<select id="checkThumbsup" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
         <![CDATA[			
 			SELECT 
 				*
@@ -65,7 +65,7 @@
         ]]>
     </select>
 	
-	<insert id="insertThumbsup" parameterType="first.comment.vo.CommentVO">
+	<insert id="insertThumbsup" parameterType="hashmap">
     	<![CDATA[
         	INSERT INTO tb_thumbs
 			(
@@ -82,7 +82,7 @@
     	]]>
 	</insert>
 	
-	<select id="checkThumbsdown" parameterType="first.comment.vo.CommentVO" resultType="first.comment.vo.CommentVO">
+	<select id="checkThumbsdown" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
         <![CDATA[			
 			SELECT 
 				*
@@ -95,7 +95,7 @@
         ]]>
     </select>
 	
-	<insert id="insertThumbsdown" parameterType="first.comment.vo.CommentVO">
+	<insert id="insertThumbsdown" parameterType="hashmap">
     	<![CDATA[
         	INSERT INTO tb_thumbs
 			(

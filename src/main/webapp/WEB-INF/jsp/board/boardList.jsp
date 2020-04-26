@@ -58,18 +58,15 @@
 			<c:if test="${ID ne null}">
 				<a href="#this" class="btn" id="write">글쓰기</a>
 			</c:if>
-			제목 검색: <input type="text" id="KEYWORD" name="KEYWORD" value="${KEYWORD}"></input>
+			제목 검색: <input type="text" id="KEYWORD" name="KEYWORD" value="${param.keyword}"></input>
         	<a href="#this" class="btn" id="search">검색</a>
 		</span>
     </p>
 	
-	<c:if test="${ID ne null}">
-		<%@ include file="/WEB-INF/include/include-body.jspf" %>
-	</c:if>
-    
+	<%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
-    	var page_index = "${PAGE_INDEX}";
-    	var keyword = "${KEYWORD}";
+    	var page_index = "${param.pageIdx}";
+    	var keyword = "${param.keyword}";
     	
         $(document).ready(function(){
         	if(!gfn_isNull(page_index) && gfn_isNull(keyword)) {
@@ -117,10 +114,10 @@
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
-            comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
-            comSubmit.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
-            if(!gfn_isNull(keyword))
-            	comSubmit.addParam("KEYWORD", keyword);
+            comSubmit.addParam("idx", obj.parent().find("#IDX").val());
+            comSubmit.addParam("pageIdx", $("#PAGE_INDEX").val());
+            if(!gfn_isNull($("#KEYWORD").val()))
+            	comSubmit.addParam("keyword", $("#KEYWORD").val());
             comSubmit.setMethod("get");
             comSubmit.submit();
         }
@@ -129,27 +126,27 @@
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/board/selectBoardList.do' />");
             comAjax.setCallback("fn_selectBoardListCallback");
-            comAjax.addParam("PAGE_INDEX", pageNo);
-            comAjax.addParam("PAGE_ROW", 15);
+            comAjax.addParam("pageIdx", pageNo);
+            comAjax.addParam("pageRow", 15);
             comAjax.ajax();
         }
         
         function fn_selectBoardSearchList(pageNo){
-        	keyword = $("#KEYWORD").val();
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/board/selectBoardSearchList.do' />");
             comAjax.setCallback("fn_selectBoardListCallback");
-            comAjax.addParam("KEYWORD", keyword);
-            comAjax.addParam("PAGE_INDEX", pageNo);
-            comAjax.addParam("PAGE_ROW", 15);
+            comAjax.addParam("keyword", $("#KEYWORD").val());
+            comAjax.addParam("pageIdx", pageNo);
+            comAjax.addParam("pageRow", 15);
             comAjax.ajax();
         }
         
         function fn_selectBoardListCallback(data){
-            var total = data.TOTAL;
+            var total = data.total;
+            var keyword = $("#KEYWORD").val();
             var body = $("table>tbody");
             body.empty();
-            if(total == 0){
+            if(data.list.length == 0){
                 var str = "<tr>" +
                                 "<td colspan='4'>조회된 결과가 없습니다.</td>" +
                             "</tr>";
@@ -157,8 +154,8 @@
             }
             else{
                 var params = {
-                    divId : "PAGE_NAVI",
-                    pageIndex : "PAGE_INDEX",
+                    divId : $("#PAGE_NAVI"),
+                    pageIndex : $("#PAGE_INDEX"),
                     totalCount : total,
                     eventName : gfn_isNull(keyword) == true ? "fn_selectBoardList" : "fn_selectBoardSearchList"
                 };
@@ -167,19 +164,19 @@
                 var str = "";
                 $.each(data.list, function(key, value){
                 	var comment_cnt;
-                	if(value.COMMENT_CNT > 0)
-                		comment_cnt = " [" + value.COMMENT_CNT +"]";
+                	if(value.comment_cnt > 0)
+                		comment_cnt = " [" + value.comment_cnt +"]";
                 	else
                 		comment_cnt = "";
                     str += "<tr>" +
-                                "<td>" + value.IDX + "</td>" +
+                                "<td>" + value.idx + "</td>" +
                                 "<td class='title'>" +
-                                    "<a href='#this' name='title'>" + value.TITLE + comment_cnt +"</a>" +
-                                    "<input type='hidden' id='IDX' value=" + value.IDX + ">" +
+                                    "<a href='#this' name='title'>" + value.title + comment_cnt +"</a>" +
+                                    "<input type='hidden' id='IDX' value=" + value.idx + ">" +
                                 "</td>" +
-                                "<td>" + value.NICKNAME + "</td>" +
-                                "<td>" + value.HIT_CNT + "</td>" +
-                                "<td>" + value.CREA_DTM + "</td>" +
+                                "<td>" + value.nickname + "</td>" +
+                                "<td>" + value.hit_cnt + "</td>" +
+                                "<td>" + value.crea_dtm + "</td>" +
                             "</tr>";
                 });
                 body.append(str);

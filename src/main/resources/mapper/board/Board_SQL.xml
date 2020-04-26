@@ -3,7 +3,7 @@
  
 <mapper namespace="board">
      
-    <select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+    <select id="selectBoardList" parameterType="hashmap" resultType="first.board.vo.BoardVO">
         <![CDATA[			
 			SELECT
 				BOARD.TITLE,
@@ -12,7 +12,7 @@
 				BOARD.HIT_CNT,
 				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
 				USER.NICKNAME,
-				(SELECT COUNT(IDX) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+				(SELECT COUNT(*) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
 			FROM 
 				tb_board AS BOARD
 			JOIN
@@ -22,11 +22,11 @@
 			WHERE
             	BOARD.DEL_GB = 'N'
 			ORDER BY BOARD.IDX DESC
-			LIMIT #{START}, #{END}
+			LIMIT #{start}, #{end}
         ]]>
     </select>
     
-    <select id="selectBoardSearchList" parameterType="hashmap" resultType="hashmap">
+    <select id="selectBoardSearchList" parameterType="hashmap" resultType="first.board.vo.BoardVO">
         <![CDATA[			
 			SELECT
 				BOARD.TITLE,
@@ -35,7 +35,7 @@
 				BOARD.HIT_CNT,
 				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
 				USER.NICKNAME,
-				(SELECT COUNT(IDX) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
+				(SELECT COUNT(*) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
 			FROM 
 				tb_board AS BOARD
 			JOIN
@@ -44,13 +44,13 @@
 				BOARD.CREA_ID = USER.ID
 			WHERE
             	BOARD.DEL_GB = 'N'
-            	AND BOARD.TITLE LIKE CONCAT('%',#{KEYWORD},'%')
+            	AND BOARD.TITLE LIKE CONCAT('%',#{keyword},'%')
 			ORDER BY BOARD.IDX DESC
-			LIMIT #{START}, #{END}
+			LIMIT #{start}, #{end}
         ]]>
     </select>
     
-    <select id="totalCount" parameterType="hashmap" resultType="hashmap">
+    <select id="totalCount" parameterType="hashmap" resultType="Integer">
         <![CDATA[			
 			SELECT 
 				COUNT(*) AS TOTAL_COUNT 
@@ -61,7 +61,7 @@
         ]]>
     </select>
     
-    <select id="searchCount" parameterType="hashmap" resultType="hashmap">
+    <select id="searchCount" parameterType="hashmap" resultType="Integer">
         <![CDATA[			
 			SELECT 
 				COUNT(*) AS SEARCH_COUNT
@@ -69,11 +69,11 @@
 				tb_board
 			WHERE
             	DEL_GB = 'N'
-            	AND TITLE LIKE CONCAT('%',#{KEYWORD},'%')
+            	AND TITLE LIKE CONCAT('%',#{keyword},'%')
         ]]>
     </select>
     
-    <select id="selectFileList" parameterType="hashmap" resultType="hashmap">
+    <select id="selectFileList" parameterType="hashmap" resultType="first.board.vo.FileVO">
     	<![CDATA[
         	SELECT
             	IDX,
@@ -82,7 +82,7 @@
         	FROM
             	tb_file
         	WHERE
-            	BOARD_IDX = #{IDX}
+            	BOARD_IDX = #{idx}
             	AND DEL_GB = 'N'
     	]]>
 	</select>
@@ -116,7 +116,6 @@
     	<![CDATA[
         	INSERT INTO tb_file
         	(
-            	IDX,
             	BOARD_IDX,
             	ORIGINAL_FILE_NAME,
             	STORED_FILE_NAME,
@@ -125,7 +124,6 @@
         	)
         	VALUES
         	(
-            	null,
             	#{BOARD_IDX},
             	#{ORIGINAL_FILE_NAME},
             	#{STORED_FILE_NAME},
@@ -141,11 +139,11 @@
         	SET
             	HIT_CNT = ifnull(HIT_CNT, 0) + 1
         	WHERE
-            	IDX = #{IDX}   
+            	IDX = #{idx}   
     	]]>
 	</update>
  
-	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="first.board.vo.BoardVO">
     	<![CDATA[
         	SELECT
             	BOARD.IDX,
@@ -162,7 +160,7 @@
 			ON
 				BOARD.CREA_ID = USER.ID
         	WHERE
-            	BOARD.IDX = #{IDX}
+            	BOARD.IDX = #{idx}
     	]]>
 	</select>
 	
@@ -173,7 +171,7 @@
             	TITLE = #{TITLE},
             	CONTENTS = #{CONTENTS}
         	WHERE
-            	IDX = #{IDX}   
+            	IDX = #{idx}   
     	]]>
 	</update>
 	
@@ -183,7 +181,7 @@
         	SET
             	DEL_GB = 'Y'
         	WHERE
-            	IDX = #{IDX}
+            	IDX = #{idx}
     	]]>
 	</update>
 	
@@ -192,7 +190,7 @@
         	UPDATE tb_file SET
             	DEL_GB = 'Y'
         	WHERE
-            	BOARD_IDX = #{IDX}
+            	BOARD_IDX = #{idx}
     	]]>
 	</update>
  
@@ -205,7 +203,7 @@
     	]]>
 	</update>
 	
-	<select id="selectBoardNextAndPrev" parameterType="hashmap" resultType="hashmap">
+	<select id="selectBoardNextAndPrev" parameterType="hashmap" resultType="first.board.vo.BoardVO">
     	<![CDATA[
         	SELECT
 				IDX,
@@ -214,13 +212,13 @@
 				tb_board
 			WHERE
 				IDX IN ( 
-					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX < #{idx} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX > #{idx} LIMIT 1)
 			)
     	]]>
 	</select>
 	
-	<select id="selectBoardSearchNextAndPrev" parameterType="hashmap" resultType="hashmap">
+	<select id="selectBoardSearchNextAndPrev" parameterType="hashmap" resultType="first.board.vo.BoardVO">
     	<![CDATA[
         	SELECT
 				IDX,
@@ -229,8 +227,8 @@
 				tb_board
 			WHERE
 				IDX IN ( 
-					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX < #{IDX} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{KEYWORD},'%') AND DEL_GB = 'N' AND IDX > #{IDX} LIMIT 1)
+					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{keyword},'%') AND DEL_GB = 'N' AND IDX < #{idx} ORDER BY IDX DESC LIMIT 1),
+					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{keyword},'%') AND DEL_GB = 'N' AND IDX > #{idx} LIMIT 1)
 			)
     	]]>
 	</select>

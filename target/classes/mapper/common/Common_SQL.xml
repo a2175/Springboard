@@ -11,7 +11,7 @@
         	FROM
             	tb_file
         	WHERE
-            	IDX = #{IDX}
+            	IDX = #{idx}
     	]]>
 	</select>
 

@@ -72,28 +72,28 @@ public class AbstractDAO {
          
         paginationInfo = new PaginationInfo();
         paginationInfo.setCurrentPageNo(Integer.parseInt(map.get("currentPageNo").toString()));
-        if(map.containsKey("PAGE_ROW") == false || StringUtils.isEmpty(map.get("PAGE_ROW")) == true){
+        if(map.containsKey("pageRow") == false || StringUtils.isEmpty(map.get("pageRow")) == true){
             paginationInfo.setRecordCountPerPage(15);
         }
         else{
-            paginationInfo.setRecordCountPerPage(Integer.parseInt(map.get("PAGE_ROW").toString()));
+            paginationInfo.setRecordCountPerPage(Integer.parseInt(map.get("pageRow").toString()));
         }
         paginationInfo.setPageSize(10);
         
         int start = paginationInfo.getFirstRecordIndex();
         int end = paginationInfo.getRecordCountPerPage();
-        map.put("START",start);
-        map.put("END",end);
+        map.put("start",start);
+        map.put("end",end);
          
         params = map;
          
         Map<String,Object> returnMap = new HashMap<String,Object>();
-        List<Map<String,Object>> list = sqlSession.selectList(queryId,params);
-        Map<String,Object> totalCount = sqlSession.selectOne("sample.totalCount");
+        List<Map<String,Object>> list = sqlSession.selectList(queryId, params);
+        int totalCount = sqlSession.selectOne("board.totalCount");
          
         if(list.size() == 0){
             map = new HashMap<String,Object>();
-            map.put("TOTAL_COUNT",0); 
+            map.put("TOTAL_COUNT", 0); 
             list.add(map);
              
             if(paginationInfo != null){
@@ -103,11 +103,11 @@ public class AbstractDAO {
         }
         else{
             if(paginationInfo != null){
-                paginationInfo.setTotalRecordCount(Integer.parseInt(totalCount.get("TOTAL_COUNT").toString()));
+                paginationInfo.setTotalRecordCount(totalCount);
                 returnMap.put("paginationInfo", paginationInfo);
             }
         }
-        returnMap.put("result", list);
+        returnMap.put("list", list);
         return returnMap;
     }
     
@@ -115,9 +115,9 @@ public class AbstractDAO {
     public Object selectPagingList(String queryId, Object params){
         printQueryId(queryId);
         Map<String,Object> map = (Map<String,Object>)params;
-         
-        String strPageIndex = (String)map.get("PAGE_INDEX");
-        String strPageRow = (String)map.get("PAGE_ROW");
+        
+        String strPageIndex = (String)map.get("pageIdx"); 
+        String strPageRow = (String)map.get("pageRow");
 
         int nPageIndex = 0;
         int nPageRow = 15;
@@ -128,8 +128,8 @@ public class AbstractDAO {
         if(StringUtils.isEmpty(strPageRow) == false){
             nPageRow = Integer.parseInt(strPageRow);
         }
-        map.put("START", (nPageIndex * nPageRow));
-        map.put("END", nPageRow);
+        map.put("start", (nPageIndex * nPageRow));
+        map.put("end", nPageRow);
          
         return sqlSession.selectList(queryId, map);
     }

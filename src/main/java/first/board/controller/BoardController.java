@@ -1,8 +1,6 @@
 package first.board.controller;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import first.board.service.BoardService;
 import first.common.common.CommandMap;
  
@@ -21,126 +18,107 @@ import first.common.common.CommandMap;
 public class BoardController {
     Logger log = Logger.getLogger(this.getClass());
      
-    private BoardService sampleService;
+    private BoardService boardService;
     
     @Autowired
-    public BoardController(BoardService sampleService) {
-    	this.sampleService = sampleService;
+    public BoardController(BoardService boardService) {
+    	this.boardService = boardService;
     }
     
+    // 게시판 페이지로 이동
     @RequestMapping(value="/board/openBoardList.do")
-    public ModelAndView openBoardList(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/sample/boardList");
-        
-        mv.addObject("PAGE_INDEX", commandMap.get("PAGE_INDEX"));
-        mv.addObject("KEYWORD", commandMap.get("KEYWORD"));
+    public ModelAndView openBoardList() {
+        ModelAndView mv = new ModelAndView("/board/boardList");
         
         return mv;
     }
-     
+        
+    // 페이징 게시글 목록 가져오기 (json)
     @RequestMapping(value="/board/selectBoardList.do")
     public ModelAndView selectBoardList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
-         
-        List<Map<String,Object>> list = sampleService.selectBoardList(commandMap.getMap());
-        Map<String,Object> totalCount = sampleService.totalCount(commandMap.getMap());
-        mv.addObject("list", list);
-        if(list.size() > 0){
-            mv.addObject("TOTAL", totalCount.get("TOTAL_COUNT"));
-        }
-        else{
-            mv.addObject("TOTAL", 0);
-        }
-         
+
+        mv.addAllObjects(boardService.selectBoardList(commandMap.getMap()));
+        
         return mv;
     }
     
+    // 전자정부 페이징 페이지로 이동
     @RequestMapping(value="/board/openBoardEGList.do")
     public ModelAndView openBoardEGList(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/sample/boardEGList");
-        
-        Map<String,Object> resultMap = sampleService.selectBoardEGList(commandMap.getMap());
-        
-        mv.addObject("paginationInfo", (PaginationInfo)resultMap.get("paginationInfo"));
-        mv.addObject("list", resultMap.get("result"));
+        ModelAndView mv = new ModelAndView("/board/boardEGList");
+          
+        mv.addAllObjects(boardService.selectBoardEGList(commandMap.getMap()));
          
         return mv;
     }
     
+    // 검색한 페이징 게시글 목록 가져오기 (json)
     @RequestMapping(value="/board/selectBoardSearchList.do")
     public ModelAndView selectBoardSearchList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
-         
-        List<Map<String,Object>> list = sampleService.selectBoardSearchList(commandMap.getMap());
-        Map<String,Object> searchCount = sampleService.searchCount(commandMap.getMap());
-        mv.addObject("list", list);
-        if(list.size() > 0){
-            mv.addObject("TOTAL", searchCount.get("SEARCH_COUNT"));
-        }
-        else{
-            mv.addObject("TOTAL", 0);
-        }
+        
+        mv.addAllObjects(boardService.selectBoardSearchList(commandMap.getMap()));
          
         return mv;
     }
     
+    // 글쓰기 페이지로 이동
     @RequestMapping(value="/board/openBoardWrite.do")
-    public ModelAndView openBoardWrite(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/sample/boardWrite");
+    public ModelAndView openBoardWrite() {
+        ModelAndView mv = new ModelAndView("/board/boardWrite");
         
         return mv;
     }
     
+    // 게시글 삽입
     @RequestMapping(value="/board/insertBoard.do")
     public ModelAndView insertBoard(CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         
-        sampleService.insertBoard(commandMap.getMap(), request);
+        boardService.insertBoard(commandMap.getMap(), request);
         
         return mv;
     }
     
+    // 게시글 페이지로 이동
     @RequestMapping(value="/board/openBoardDetail.do")
     public ModelAndView openBoardDetail(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/sample/boardDetail");
+        ModelAndView mv = new ModelAndView("/board/boardDetail");
         
-        Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
-        mv.addObject("map", map.get("map"));
-        mv.addObject("nextmap", map.get("nextmap"));
-        mv.addObject("prevmap", map.get("prevmap"));
-        mv.addObject("list", map.get("list"));
-        mv.addObject("PAGE_INDEX", commandMap.get("PAGE_INDEX"));
-        mv.addObject("KEYWORD", commandMap.get("KEYWORD"));
+        mv.addAllObjects(boardService.selectBoardDetail(commandMap.getMap()));
+        boardService.updateHitCnt(commandMap.getMap());
         
         return mv;
     }
     
+    // 게시글 수정 페이지로 이동
     @RequestMapping(value="/board/openBoardUpdate.do")
     public ModelAndView openBoardUpdate(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/sample/boardUpdate");
+        ModelAndView mv = new ModelAndView("/board/boardUpdate");
          
-        Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
-        mv.addObject("map", map.get("map"));
-        mv.addObject("list", map.get("list"));
+        mv.addAllObjects(boardService.selectBoardDetail(commandMap.getMap()));
          
         return mv;
     }
-     
+    
+    // 게시글 수정
     @RequestMapping(value="/board/updateBoard.do")
     public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
          
-        sampleService.updateBoard(commandMap.getMap(), request);
-         
-        mv.addObject("IDX", commandMap.get("IDX"));
+        boardService.updateBoard(commandMap.getMap(), request);
+
+        mv.addObject("idx", commandMap.get("idx"));
         return mv;
     }
     
+    // 게시글 삭제
     @RequestMapping(value="/board/deleteBoard.do")
     public ModelAndView deleteBoard(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
          
-        sampleService.deleteBoard(commandMap.getMap());
+        boardService.deleteBoard(commandMap.getMap());
          
         return mv;
     }

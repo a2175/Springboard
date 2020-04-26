@@ -96,7 +96,7 @@ public class LoginController {
     
     @RequestMapping(value="/login/doLogin.do")
     public ModelAndView doLogin(CommandMap commandMap, HttpServletRequest request) {
-    	ModelAndView mv = new ModelAndView("/sample/boardList");
+    	ModelAndView mv = new ModelAndView("/board/boardList");
     		
     	Map<String,Object> userInfo = loginService.selectLoginCheck(commandMap.getMap());
         if(userInfo == null) {
@@ -108,15 +108,15 @@ public class LoginController {
         	session.setAttribute("NICKNAME", userInfo.get("NICKNAME"));
         }
         
-        mv.addObject("PAGE_INDEX", commandMap.get("PAGE_INDEX"));
-        mv.addObject("KEYWORD", commandMap.get("KEYWORD"));
+        mv.addObject("pageIdx", commandMap.get("pageIdx"));
+        mv.addObject("keyword", commandMap.get("keyword"));
         
         return mv;
     }
     
     @RequestMapping(value="/login/doLogout.do")
     public ModelAndView doLogout(CommandMap commandMap, HttpServletRequest request) {
-    	ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+    	ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
     		
         HttpSession session = request.getSession();
         session.invalidate();
@@ -153,7 +153,7 @@ public class LoginController {
     
     @RequestMapping(value="/login/doSubmit.do")
     public ModelAndView doSubmit(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+        ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         
         loginService.insertUser(commandMap.getMap());
         

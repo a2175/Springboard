@@ -91,9 +91,9 @@ function gfn_renderPaging(params){
     var divId = params.divId; //페이징이 그려질 div id
     gfv_pageIndex = params.pageIndex; //현재 위치가 저장될 input 태그
     var totalCount = params.totalCount; //전체 조회 건수
-    var currentIndex = $("#"+params.pageIndex).val(); //현재 위치
+    var currentIndex = params.pageIndex.val(); //현재 위치
     
-    if($("#"+params.pageIndex).length == 0 || gfn_isNull(currentIndex) == true){
+    if(params.pageIndex.length == 0 || gfn_isNull(currentIndex) == true){
         currentIndex = 1;
     }
     
@@ -104,7 +104,7 @@ function gfn_renderPaging(params){
     var totalIndexCount = Math.ceil(totalCount / recordCount); // 전체 인덱스 수
     gfv_eventName = params.eventName;
      
-    $("#"+divId).empty();
+    divId.empty();
     var preStr = "";
     var postStr = "";
     var str = "";
@@ -138,11 +138,11 @@ function gfn_renderPaging(params){
             str += "<b><a href='#this' class='pad_5' onclick='_movePage("+i+")'>"+i+"</a></b>";
         }
     }
-    $("#"+divId).append(preStr + str + postStr);
+    divId.append(preStr + str + postStr);
 }
  
 function _movePage(value){
-    $("#"+gfv_pageIndex).val(value);
+	gfv_pageIndex.val(value);
     if(typeof(gfv_eventName) == "function"){
         gfv_eventName(value);
     }
