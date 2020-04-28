@@ -91,22 +91,16 @@
 		<![CDATA[
         	INSERT INTO tb_board
         	(
-            	IDX,
             	TITLE,
             	CONTENTS,
             	HIT_CNT,
-            	DEL_GB,
-            	CREA_DTM,
             	CREA_ID
         	)
         	VALUES
         	(
-            	null,
-            	#{TITLE},
-            	#{CONTENTS},
+            	#{title},
+            	#{contents},
             	0,
-            	'N',
-            	null,
             	#{ID}
         	)
     	]]>
@@ -168,8 +162,8 @@
     	<![CDATA[
         	UPDATE tb_board
         	SET
-            	TITLE = #{TITLE},
-            	CONTENTS = #{CONTENTS}
+            	TITLE = #{title},
+            	CONTENTS = #{contents}
         	WHERE
             	IDX = #{idx}   
     	]]>

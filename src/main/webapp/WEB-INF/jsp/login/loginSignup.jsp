@@ -19,27 +19,27 @@
             <tbody>
             	<tr>
                     <th scope="row">아이디</th>
-                    <td><input type="text" id="ID" name="ID"></input></td>
+                    <td><input type="text" id="ID" name="id"></input></td>
                     <td id="idcheck"></td>
                 </tr>
                 <tr>
                 	<th scope="row">비밀번호</th>
-                    <td><input type="PASSWORD" id="PASSWORD" name="PASSWORD"></input></td>
+                    <td><input type="PASSWORD" id="PASSWORD" name="password"></input></td>
                     <td id="pwcheck"></td>
                 </tr>
                 <tr>
                     <th scope="row">비밀번호 재확인</th>
-                    <td><input type="PASSWORD" id="RE_PASSWORD" name="RE_PASSWORD"></input></td>
+                    <td><input type="PASSWORD" id="RE_PASSWORD" name="re_password"></input></td>
                     <td id="re_pwcheck"></td>
                 </tr>
                 <tr>
                 	<th scope="row">닉네임</th>
-                    <td><input type="text" id="NICKNAME" name="NICKNAME"></input></td>
+                    <td><input type="text" id="NICKNAME" name="nickname"></input></td>
                     <td id="nicknamecheck"></td>
                 </tr>
                 <tr>
                 	<th scope="row">이메일</th>
-                    <td><input type="text" id="EMAIL" name="EMAIL"></input></td>
+                    <td><input type="text" id="EMAIL" name="email"></input></td>
                     <td id="emailcheck"></td>
                 </tr> 
             </tbody>
@@ -117,7 +117,7 @@
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/login/doIdDuplicationCheck.do' />");
             comAjax.setCallback("fn_doIdDuplicationCheckCallback");
-            comAjax.addParam("ID", $("#ID").val());
+            comAjax.addParam("id", $("#ID").val());
             comAjax.ajax();
         }
          
@@ -225,7 +225,7 @@
             var comAjax = new ComAjax();
             comAjax.setUrl("<c:url value='/login/doNicknameDuplicationCheck.do' />");
             comAjax.setCallback("fn_doNicknameDuplicationCheckCallback");
-            comAjax.addParam("NICKNAME", $("#NICKNAME").val());
+            comAjax.addParam("nickname", $("#NICKNAME").val());
             comAjax.ajax();
         }
          

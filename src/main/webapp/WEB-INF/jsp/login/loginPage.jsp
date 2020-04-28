@@ -12,8 +12,8 @@
 <body>
 	<form id="frm" name="frm">
 		<p align="right">	
-			아이디: <input type="text" id="ID" name="ID"></input>
-		 	비밀번호: <input type="PASSWORD" id="PASSWORD" name="PASSWORD"></input>      
+			아이디: <input type="text" id="ID" name="id"></input>
+		 	비밀번호: <input type="PASSWORD" id="PASSWORD" name="password"></input>      
         	<a href="#this" class="btn" id="login">로그인</a>
         	<a href="#this" class="btn" id="signup">회원가입</a>
     	</p>    

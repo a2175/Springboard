@@ -2,9 +2,12 @@ package first.comment.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,9 +39,11 @@ public class CommentController {
     
     // 댓글 삽입
     @RequestMapping(value="/comment/insertComment.do")
-    public ModelAndView insertComment(CommandMap commandMap) {
+    public ModelAndView insertComment(@Valid CommentVO vo, BindingResult result, CommandMap commandMap) {
     	ModelAndView mv = new ModelAndView("jsonView");
-        commentService.insertComment(commandMap.getMap());
+    	
+    	if(!result.hasErrors()) commentService.insertComment(commandMap.getMap());
+    	 
         return mv;
     }
     

@@ -36,7 +36,7 @@
             <tr>
                 <th scope="row">첨부파일</th>
                 <td colspan="3">
-                	<c:if test="${list.size() eq 0}">
+                	<c:if test="${fileList.size() eq 0}">
     					첨부파일이 없습니다.
 					</c:if>
                     <c:forEach var="row" items="${fileList }">

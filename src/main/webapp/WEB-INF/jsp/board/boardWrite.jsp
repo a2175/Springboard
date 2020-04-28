@@ -15,11 +15,11 @@
             <tbody>
                 <tr>
                     <th scope="row">제목</th>
-                    <td><input type="text" id="TITLE" name="TITLE" class="wdp_90"></input></td>
+                    <td><input type="text" id="TITLE" name="title" class="wdp_90"></input></td>
                 </tr>
                 <tr>
                     <td colspan="2" class="view_text">
-                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS"></textarea>
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="contents"></textarea>
                         <p id="content_length"></p>
                     </td>
                 </tr>
@@ -82,6 +82,7 @@
         	
         	if($("#TITLE").val().length < 1) { alert("제목을 입력해주세요."); return false }
         	if($("#TITLE").val().length > 100) { alert("제목이 너무 깁니다."); return false }
+        	if($("#CONTENTS").val().length == 0) { alert("게시글 내용을 입력해주세요."); return false }	
         	if($("#CONTENTS").val().length > 255) { alert("게시글 내용은 255자를 넘을 수 없습니다."); return false }	
         	for(i=0; i<filearray.length; i++)
         		if(filearray[i].files[0] != undefined)

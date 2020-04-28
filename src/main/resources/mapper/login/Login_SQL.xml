@@ -29,8 +29,8 @@
         	FROM
             	tb_user
         	WHERE
-            	ID = #{ID}
-            	AND PASSWORD = #{PASSWORD}
+            	ID = #{id}
+            	AND PASSWORD = #{password}
     	]]>
 	</select>
 	
@@ -45,7 +45,7 @@
         	FROM
             	tb_user
         	WHERE
-            	ID = #{ID}
+            	ID = #{id}
     	]]>
 	</select>
 	
@@ -60,7 +60,7 @@
         	FROM
             	tb_user
         	WHERE
-            	NICKNAME = #{NICKNAME}
+            	NICKNAME = #{nickname}
     	]]>
 	</select>
 	
@@ -71,16 +71,14 @@
  				ID,
  				PASSWORD,
  				NICKNAME,
- 				EMAIL,
- 				CREA_DTM
+ 				EMAIL
 			)
 			VALUES
 			(
-    			#{ID},
-    			#{PASSWORD},
-    			#{NICKNAME},
-    			#{EMAIL},
-    			null
+    			#{id},
+    			#{password},
+    			#{nickname},
+    			#{email}
 			)
     	]]>
 	</insert>

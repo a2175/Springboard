@@ -4,14 +4,17 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import first.board.service.BoardService;
+import first.board.vo.BoardVO;
 import first.common.common.CommandMap;
  
 @Controller
@@ -73,8 +76,13 @@ public class BoardController {
     
     // 게시글 삽입
     @RequestMapping(value="/board/insertBoard.do")
-    public ModelAndView insertBoard(CommandMap commandMap, HttpServletRequest request) {
+    public ModelAndView insertBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
+        
+    	if(result.hasErrors()) {
+    		mv.setViewName("redirect:/board/openBoardWrite.do");
+    		return mv;
+    	}
         
         boardService.insertBoard(commandMap.getMap(), request);
         
@@ -104,10 +112,10 @@ public class BoardController {
     
     // 게시글 수정
     @RequestMapping(value="/board/updateBoard.do")
-    public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) {
+    public ModelAndView updateBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
          
-        boardService.updateBoard(commandMap.getMap(), request);
+        if(!result.hasErrors()) boardService.updateBoard(commandMap.getMap(), request);
 
         mv.addObject("idx", commandMap.get("idx"));
         return mv;
