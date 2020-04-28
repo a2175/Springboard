@@ -1,4 +1,8 @@
-#version = 1.59v
+#version = 1.60v
+
+[Springboard 1.60v]
+1. 서버에서도 @Valid를 사용하여 검증하도록 수정 
+2. commonVO를 상속하여 VO 객체에서 중복되는 코드 제거
 
 [Springboard 1.59v]
 1. BoardVO, FileVO 객체를 사용하도록 수정
