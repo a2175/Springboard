@@ -1,4 +1,9 @@
-#version = 1.60v
+#version = 1.61v
+
+[Springboard 1.61v]
+1. Mapper 클래스를 사용하여 DAO 클래스에 사용
+2. AbstractDAO 클래스 삭제
+3. AbstractDAO에서 페이징, 전자정부 관련 코드 BoardService로 이동
 
 [Springboard 1.60v]
 1. 서버에서도 @Valid를 사용하여 검증하도록 수정 
