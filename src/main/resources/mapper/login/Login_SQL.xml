@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="login">
+<mapper namespace="first.login.mapper.LoginMapper">
 
-	<select id="selectUserDetail" parameterType="hashmap" resultType="hashmap">
+	<select id="selectUserByIdAndPassword" parameterType="hashmap" resultType="first.login.vo.UserVO">
     	<![CDATA[
         	SELECT
-            	ID,
-            	PASSWORD,
-            	NICKNAME,
-            	EMAIL,
-            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
-        	FROM
-            	tb_user
-        	WHERE
-            	ID = #{IDX}
-    	]]>
-	</select>
-	
-	<select id="selectLoginCheck" parameterType="hashmap" resultType="hashmap">
-    	<![CDATA[
-        	SELECT
-            	ID,
-            	PASSWORD,
-            	NICKNAME,
-            	EMAIL,
-            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+            	*
         	FROM
             	tb_user
         	WHERE
@@ -34,14 +15,10 @@
     	]]>
 	</select>
 	
-	<select id="selectIdCheck" parameterType="hashmap" resultType="hashmap">
+	<select id="selectUserById" parameterType="hashmap" resultType="first.login.vo.UserVO">
     	<![CDATA[
         	SELECT
-            	ID,
-            	PASSWORD,
-            	NICKNAME,
-            	EMAIL,
-            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+            	*
         	FROM
             	tb_user
         	WHERE
@@ -49,14 +26,10 @@
     	]]>
 	</select>
 	
-	<select id="selectNicknameCheck" parameterType="hashmap" resultType="hashmap">
+	<select id="selectUserByNickname" parameterType="hashmap" resultType="first.login.vo.UserVO">
     	<![CDATA[
         	SELECT
-            	ID,
-            	PASSWORD,
-            	NICKNAME,
-            	EMAIL,
-            	DATE_FORMAT(CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM
+            	*
         	FROM
             	tb_user
         	WHERE
@@ -83,6 +56,7 @@
     	]]>
 	</insert>
 	
+	<!--
 	<select id="selectUserById" resultType="first.login.vo.CustomUserDetails">
         <![CDATA[
             SELECT
@@ -104,5 +78,6 @@
                 USERNAME=#{username}
         ]]>
 	</select>
+	-->
 
 </mapper>

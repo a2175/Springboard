@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="board">
+<mapper namespace="first.board.mapper.BoardMapper">
      
     <select id="selectBoardList" parameterType="hashmap" resultType="first.board.vo.BoardVO">
         <![CDATA[			
@@ -50,94 +50,7 @@
         ]]>
     </select>
     
-    <select id="totalCount" parameterType="hashmap" resultType="Integer">
-        <![CDATA[			
-			SELECT 
-				COUNT(*) AS TOTAL_COUNT 
-			FROM 
-				tb_board
-			WHERE
-            	DEL_GB = 'N'
-        ]]>
-    </select>
-    
-    <select id="searchCount" parameterType="hashmap" resultType="Integer">
-        <![CDATA[			
-			SELECT 
-				COUNT(*) AS SEARCH_COUNT
-			FROM 
-				tb_board
-			WHERE
-            	DEL_GB = 'N'
-            	AND TITLE LIKE CONCAT('%',#{keyword},'%')
-        ]]>
-    </select>
-    
-    <select id="selectFileList" parameterType="hashmap" resultType="first.board.vo.FileVO">
-    	<![CDATA[
-        	SELECT
-            	IDX,
-            	ORIGINAL_FILE_NAME,
-            	ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
-        	FROM
-            	tb_file
-        	WHERE
-            	BOARD_IDX = #{idx}
-            	AND DEL_GB = 'N'
-    	]]>
-	</select>
-    
-    <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
-		<![CDATA[
-        	INSERT INTO tb_board
-        	(
-            	TITLE,
-            	CONTENTS,
-            	HIT_CNT,
-            	CREA_ID
-        	)
-        	VALUES
-        	(
-            	#{title},
-            	#{contents},
-            	0,
-            	#{ID}
-        	)
-    	]]>
-	</insert>
-	
-	<insert id="insertFile" parameterType="hashmap">
-    	<![CDATA[
-        	INSERT INTO tb_file
-        	(
-            	BOARD_IDX,
-            	ORIGINAL_FILE_NAME,
-            	STORED_FILE_NAME,
-            	FILE_SIZE,
-            	CREA_ID
-        	)
-        	VALUES
-        	(
-            	#{BOARD_IDX},
-            	#{ORIGINAL_FILE_NAME},
-            	#{STORED_FILE_NAME},
-            	#{FILE_SIZE},
-            	#{ID}
-        	)
-    	]]>
-	</insert>
-
-	<update id="updateHitCnt" parameterType="hashmap">
-    	<![CDATA[
-        	UPDATE tb_board
-        	SET
-            	HIT_CNT = ifnull(HIT_CNT, 0) + 1
-        	WHERE
-            	IDX = #{idx}   
-    	]]>
-	</update>
- 
-	<select id="selectBoardDetail" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+   	<select id="selectBoardDetail" parameterType="hashmap" resultType="first.board.vo.BoardVO">
     	<![CDATA[
         	SELECT
             	BOARD.IDX,
@@ -158,12 +71,122 @@
     	]]>
 	</select>
 	
+	<select id="selectNextBoard" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+    	<![CDATA[
+        	SELECT
+				IDX,
+				TITLE
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N' 
+            	AND IDX < #{idx}
+            ORDER BY IDX DESC LIMIT 1
+    	]]>
+    </select>
+    
+    <select id="selectPrevBoard" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+    	<![CDATA[
+        	SELECT
+				IDX,
+				TITLE
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N' 
+            	AND IDX > #{idx}
+            LIMIT 1
+    	]]>
+    </select>
+    
+  	<select id="selectNextSearchBoard" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+        <![CDATA[
+            SELECT 
+            	IDX,
+				TITLE 
+            FROM 
+            	tb_board 
+            WHERE
+            	TITLE LIKE CONCAT('%',#{keyword},'%')
+            	AND DEL_GB = 'N'
+            	AND IDX < #{idx} 
+            ORDER BY IDX DESC LIMIT 1
+        ]]>
+    </select>
+    
+  	<select id="selectPrevSearchBoard" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+        <![CDATA[
+            SELECT 
+            	IDX,
+				TITLE 
+            FROM 
+            	tb_board 
+            WHERE
+            	TITLE LIKE CONCAT('%',#{keyword},'%')
+            	AND DEL_GB = 'N' 
+            	AND IDX > #{idx}
+            LIMIT 1
+        ]]>
+    </select>
+	
+    <select id="selectBoardTotalCount" parameterType="hashmap" resultType="Integer">
+        <![CDATA[			
+			SELECT 
+				COUNT(*) AS TOTAL_COUNT 
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N'
+        ]]>
+    </select>
+    
+    <select id="selectBoardSearchTotalCount" parameterType="hashmap" resultType="Integer">
+        <![CDATA[			
+			SELECT 
+				COUNT(*) AS SEARCH_COUNT
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N'
+            	AND TITLE LIKE CONCAT('%',#{keyword},'%')
+        ]]>
+    </select>
+    
+	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		<![CDATA[
+        	INSERT INTO tb_board
+        	(
+            	TITLE,
+            	CONTENTS,
+            	HIT_CNT,
+            	CREA_ID
+        	)
+        	VALUES
+        	(
+            	#{title},
+            	#{contents},
+            	0,
+            	#{ID}
+        	)
+    	]]>
+	</insert>
+	
 	<update id="updateBoard" parameterType="hashmap">
     	<![CDATA[
         	UPDATE tb_board
         	SET
             	TITLE = #{title},
             	CONTENTS = #{contents}
+        	WHERE
+            	IDX = #{idx}   
+    	]]>
+	</update>
+	
+	<update id="updateHitCnt" parameterType="hashmap">
+    	<![CDATA[
+        	UPDATE tb_board
+        	SET
+            	HIT_CNT = ifnull(HIT_CNT, 0) + 1
         	WHERE
             	IDX = #{idx}   
     	]]>
@@ -178,16 +201,42 @@
             	IDX = #{idx}
     	]]>
 	</update>
-	
-	<update id="deleteFileList" parameterType="hashmap">
+    
+    <select id="selectFileList" parameterType="hashmap" resultType="first.board.vo.FileVO">
     	<![CDATA[
-        	UPDATE tb_file SET
-            	DEL_GB = 'Y'
+        	SELECT
+            	IDX,
+            	ORIGINAL_FILE_NAME,
+            	ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+        	FROM
+            	tb_file
         	WHERE
             	BOARD_IDX = #{idx}
+            	AND DEL_GB = 'N'
     	]]>
-	</update>
- 
+	</select>
+
+	<insert id="insertFile" parameterType="hashmap">
+    	<![CDATA[
+        	INSERT INTO tb_file
+        	(
+            	BOARD_IDX,
+            	ORIGINAL_FILE_NAME,
+            	STORED_FILE_NAME,
+            	FILE_SIZE,
+            	CREA_ID
+        	)
+        	VALUES
+        	(
+            	#{BOARD_IDX},
+            	#{ORIGINAL_FILE_NAME},
+            	#{STORED_FILE_NAME},
+            	#{FILE_SIZE},
+            	#{ID}
+        	)
+    	]]>
+	</insert>
+	
 	<update id="updateFile" parameterType="hashmap">
     	<![CDATA[
         	UPDATE tb_file SET
@@ -197,34 +246,13 @@
     	]]>
 	</update>
 	
-	<select id="selectBoardNextAndPrev" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+	<update id="deleteFileList" parameterType="hashmap">
     	<![CDATA[
-        	SELECT
-				IDX,
-				TITLE
-			FROM 
-				tb_board
-			WHERE
-				IDX IN ( 
-					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX < #{idx} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM tb_board WHERE DEL_GB = 'N' AND IDX > #{idx} LIMIT 1)
-			)
+        	UPDATE tb_file SET
+            	DEL_GB = 'Y'
+        	WHERE
+            	BOARD_IDX = #{idx}
     	]]>
-	</select>
+	</update>
 	
-	<select id="selectBoardSearchNextAndPrev" parameterType="hashmap" resultType="first.board.vo.BoardVO">
-    	<![CDATA[
-        	SELECT
-				IDX,
-				TITLE
-			FROM 
-				tb_board
-			WHERE
-				IDX IN ( 
-					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{keyword},'%') AND DEL_GB = 'N' AND IDX < #{idx} ORDER BY IDX DESC LIMIT 1),
-					(SELECT IDX FROM tb_board WHERE TITLE LIKE CONCAT('%',#{keyword},'%') AND DEL_GB = 'N' AND IDX > #{idx} LIMIT 1)
-			)
-    	]]>
-	</select>
-		
 </mapper>

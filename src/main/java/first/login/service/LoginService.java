@@ -2,11 +2,11 @@ package first.login.service;
 
 import java.util.Map;
 
+import first.login.vo.UserVO;
+
 public interface LoginService {
 
-	Map<String, Object> selectUserDetail(Map<String, Object> map);
-	
-	Map<String,Object> selectLoginCheck(Map<String, Object> map);
+	UserVO selectLoginCheck(Map<String, Object> map);
 	
 	boolean selectIdCheck(Map<String, Object> map);
 	

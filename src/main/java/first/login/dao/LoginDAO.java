@@ -3,41 +3,45 @@ package first.login.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import first.common.dao.AbstractDAO;
+import first.login.mapper.LoginMapper;
 import first.login.vo.CustomUserDetails;
+import first.login.vo.UserVO;
 
-@SuppressWarnings("unchecked")
 @Repository
-public class LoginDAO extends AbstractDAO{
+public class LoginDAO {
 
-    public Map<String, Object> selectUserDetail(Map<String, Object> map) {
-        return (Map<String, Object>) selectOne("login.selectUserDetail", map);
+	private LoginMapper loginMapper;
+	
+    @Autowired
+    public LoginDAO(LoginMapper loginMapper) {
+    	this.loginMapper = loginMapper;
     }
 		
-	public Map<String, Object> selectLoginCheck(Map<String, Object> map) {
-		return (Map<String, Object>) selectOne("login.selectLoginCheck", map);
+	public UserVO selectUserByIdAndPassword(Map<String, Object> map) {
+		return loginMapper.selectUserByIdAndPassword(map);
     }
 		
-	public Map<String, Object> selectIdCheck(Map<String, Object> map) {
-		return (Map<String, Object>) selectOne("login.selectIdCheck", map);
+	public UserVO selectUserById(Map<String, Object> map) {
+		return loginMapper.selectUserById(map);
+    }
+	
+	public UserVO selectUserByNickname(Map<String, Object> map) {
+		return loginMapper.selectUserByNickname(map);
     }
 
 	public void insertUser(Map<String, Object> map) {
-		insert("login.insertUser", map);
+		loginMapper.insertUser(map);
 	}
 
-	public Map<String, Object> selectNicknameCheck(Map<String, Object> map) {
-		return (Map<String, Object>) selectOne("login.selectNicknameCheck", map);
-    }
-	
 	public CustomUserDetails selectUserById(String username){
-		return (CustomUserDetails) selectOne("login.selectUserById", username);
+		return loginMapper.selectUserById(username);
     }
 	
 	public List<String> selectAuthorityById(String username){
-		return (List<String>) selectList("login.selectAuthorityById", username);
+		return loginMapper.selectAuthorityById(username);
     }
 	
 }

@@ -1,7 +1,5 @@
 package first.login.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -99,20 +97,21 @@ public class LoginController {
     
     @RequestMapping(value="/login/doLogin.do")
     public ModelAndView doLogin(CommandMap commandMap, HttpServletRequest request) {
-    	ModelAndView mv = new ModelAndView("/board/boardList");
+    	ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
     		
-    	Map<String,Object> userInfo = loginService.selectLoginCheck(commandMap.getMap());
+    	UserVO userInfo = loginService.selectLoginCheck(commandMap.getMap());
         if(userInfo == null) {
-        	mv.addObject("dologin", false);
+        	mv.addObject("login", false);
         }      
         else {
         	HttpSession session = request.getSession();
-        	session.setAttribute("ID", userInfo.get("ID"));
-        	session.setAttribute("NICKNAME", userInfo.get("NICKNAME"));
+        	session.setAttribute("ID", userInfo.getId());
+        	session.setAttribute("NICKNAME", userInfo.getNickname());
         }
         
         mv.addObject("pageIdx", commandMap.get("pageIdx"));
-        mv.addObject("keyword", commandMap.get("keyword"));
+        if(commandMap.get("keyword") != null)
+        	mv.addObject("keyword", commandMap.get("keyword"));
         
         return mv;
     }

@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import first.board.vo.FileVO;
 import first.common.dao.CommonDAO;
  
 @Service
@@ -20,7 +21,7 @@ public class CommonServiceImpl implements CommonService{
     }
 
     @Override
-    public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception {
+    public FileVO selectFileInfo(Map<String, Object> map) {
         return commonDAO.selectFileInfo(map);
     }
 

@@ -70,20 +70,20 @@
 	<br><br>
 	
 	<c:choose>
-    	<c:when test="${nextmap.idx ne null}">
-       		 <p><a href="#this" id="next" style="color: black">다음글: ${nextmap.title}</a></p>
+    	<c:when test="${prevBoard.idx ne null}">
+       		 <a href="#this" id="prev" style="color: black">이전글: ${prevBoard.title}</a>
     	</c:when>
-    	<c:when test="${nextmap.idx eq null}">
-       		 <p style="color: gray">다음글: 다음글이 없습니다.</p>
+    	<c:when test="${prevBoard.idx eq null}">
+       		 <p style="color: gray">이전글: 이전글이 없습니다.</p>
     	</c:when>
 	</c:choose>
 	
 	<c:choose>
-    	<c:when test="${prevmap.idx ne null}">
-       		 <a href="#this" id="prev" style="color: black">이전글: ${prevmap.title}</a>
+    	<c:when test="${nextBoard.idx ne null}">
+       		 <p><a href="#this" id="next" style="color: black">다음글: ${nextBoard.title}</a></p>
     	</c:when>
-    	<c:when test="${prevmap.idx eq null}">
-       		 <p style="color: gray">이전글: 이전글이 없습니다.</p>
+    	<c:when test="${nextBoard.idx eq null}">
+       		 <p style="color: gray">다음글: 다음글이 없습니다.</p>
     	</c:when>
 	</c:choose>
 	
@@ -193,7 +193,7 @@
 		}
     	
     	function fn_openBoardNext(){
-        	var idx = "${nextmap.idx}";
+        	var idx = "${nextBoard.idx}";
         	var page_index = "${param.pageIdx}";
         	var keyword = "${param.keyword}";
         	var comSubmit = new ComSubmit();
@@ -207,7 +207,7 @@
 		}
     	
     	function fn_openBoardPrev(){
-        	var idx = "${prevmap.idx}";
+        	var idx = "${prevBoard.idx}";
         	var page_index = "${param.pageIdx}";
         	var keyword = "${param.keyword}";
         	var comSubmit = new ComSubmit();

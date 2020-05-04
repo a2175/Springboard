@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import first.login.dao.LoginDAO;
+import first.login.vo.UserVO;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -20,35 +21,22 @@ public class LoginServiceImpl implements LoginService {
     }
     
 	@Override
-	public Map<String, Object> selectUserDetail(Map<String, Object> map) {	
-		return loginDAO.selectUserDetail(map);
-	}
-
-	@Override
-	public Map<String,Object> selectLoginCheck(Map<String, Object> map) {
-		Map<String, Object> result = loginDAO.selectLoginCheck(map);
-		
-		return result;
+	public UserVO selectLoginCheck(Map<String, Object> map) {	
+		return loginDAO.selectUserByIdAndPassword(map);
 	}
 	
 	@Override
 	public boolean selectIdCheck(Map<String, Object> map) {
-		Map<String, Object> result = loginDAO.selectIdCheck(map);
-			
-		if(result == null)
-			return false;
-		else
-			return true;
+		UserVO result = loginDAO.selectUserById(map);
+		
+		return result == null ? false : true;
 	}
 	
 	@Override
 	public boolean selectNicknameCheck(Map<String, Object> map) {
-		Map<String, Object> result = loginDAO.selectNicknameCheck(map);
+		UserVO result = loginDAO.selectUserByNickname(map);
 		
-		if(result == null)
-			return false;
-		else
-			return true;
+		return result == null ? false : true;
 	}
 
 	@Override

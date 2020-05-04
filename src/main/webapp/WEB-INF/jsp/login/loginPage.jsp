@@ -19,7 +19,7 @@
     	</p>    
     </form>
     
-    <c:if test="${dologin eq false}">
+    <c:if test="${param.login eq false}">
     	<script type="text/javascript">
     		alert("아이디 또는 비밀번호를 다시 확인하세요.");
     	</script>
@@ -42,7 +42,8 @@
         	var comSubmit = new ComSubmit("frm");
         	comSubmit.setUrl("<c:url value='/login/doLogin.do' />");
         	comSubmit.addParam("pageIdx", $("#PAGE_INDEX").val());
-            comSubmit.addParam("keyword", "${param.keyword}");
+        	if(!gfn_isNull(${param.keyword}))
+            	comSubmit.addParam("keyword", "${param.keyword}");
         	comSubmit.submit();
     	}
      

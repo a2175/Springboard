@@ -2,14 +2,24 @@ package first.common.dao;
  
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@SuppressWarnings("unchecked")
+import first.board.vo.FileVO;
+import first.common.mapper.CommonMapper;
+
 @Repository
-public class CommonDAO extends AbstractDAO{
+public class CommonDAO {
 	
-	public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception{
-	    return (Map<String, Object>)selectOne("common.selectFileInfo", map);
+	private CommonMapper commonMapper;
+	
+    @Autowired
+    public CommonDAO(CommonMapper commonMapper) {
+    	this.commonMapper = commonMapper;
+    }
+	
+	public FileVO selectFileInfo(Map<String, Object> map) {
+	    return commonMapper.selectFileInfo(map);
 	}
 
 }

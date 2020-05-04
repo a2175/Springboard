@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import first.board.dao.BoardDAO;
 import first.board.vo.BoardVO;
 import first.common.util.FileUtils;
@@ -30,8 +32,21 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Map<String,Object> selectBoardList(Map<String, Object> map) {
     	Map<String, Object> resultMap = new HashMap<String,Object>();
+    	
+        String strPageIndex = (String)map.get("pageIdx"); 
+        String strPageRow = (String)map.get("pageRow");
+
+        int nPageIndex = 0;
+        int nPageRow = 15;
+                 
+        nPageIndex = StringUtils.isEmpty(strPageIndex) ? nPageIndex : Integer.parseInt(strPageIndex) - 1;
+        nPageRow = StringUtils.isEmpty(strPageRow) ? nPageRow : Integer.parseInt(strPageRow);
+        
+        map.put("start", (nPageIndex * nPageRow));
+        map.put("end", nPageRow);
+    	
     	resultMap.put("list", boardDAO.selectBoardList(map));
-    	resultMap.put("total", boardDAO.totalCount());
+    	resultMap.put("total", boardDAO.selectBoardTotalCount());
     	
         return resultMap;
     }
@@ -39,15 +54,67 @@ public class BoardServiceImpl implements BoardService {
     @Override
 	public Map<String,Object> selectBoardSearchList(Map<String, Object> map) {
     	Map<String, Object> resultMap = new HashMap<String,Object>();
+    	
+        String strPageIndex = (String)map.get("pageIdx"); 
+        String strPageRow = (String)map.get("pageRow");
+
+        int nPageIndex = 0;
+        int nPageRow = 15;
+                 
+        nPageIndex = StringUtils.isEmpty(strPageIndex) ? nPageIndex : Integer.parseInt(strPageIndex) - 1;
+        nPageRow = StringUtils.isEmpty(strPageRow) ? nPageRow : Integer.parseInt(strPageRow);
+        
+        map.put("start", (nPageIndex * nPageRow));
+        map.put("end", nPageRow);
+    	
     	resultMap.put("list", boardDAO.selectBoardSearchList(map));
-    	resultMap.put("total", boardDAO.searchCount(map));
+    	resultMap.put("total", boardDAO.selectBoardSearchTotalCount(map));
     	
         return resultMap;
 	}
     
     @Override
 	public Map<String, Object> selectBoardEGList(Map<String, Object> map) {
-    	return boardDAO.selectBoardEGList(map);
+		PaginationInfo paginationInfo = null;
+        
+        if(map.containsKey("currentPageNo") == false || StringUtils.isEmpty(map.get("currentPageNo")) == true)
+            map.put("currentPageNo", "1");
+         
+        paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(Integer.parseInt(map.get("currentPageNo").toString()));
+        if(map.containsKey("pageRow") == false || StringUtils.isEmpty(map.get("pageRow")) == true){
+            paginationInfo.setRecordCountPerPage(15);
+        }
+        else{
+            paginationInfo.setRecordCountPerPage(Integer.parseInt(map.get("pageRow").toString()));
+        }
+        paginationInfo.setPageSize(10);
+        
+        int start = paginationInfo.getFirstRecordIndex();
+        int end = paginationInfo.getRecordCountPerPage();
+        map.put("start",start);
+        map.put("end",end);
+    	
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+        
+        List<BoardVO> list = boardDAO.selectBoardList(map);
+        int totalCount = boardDAO.selectBoardTotalCount();
+         
+        if(list.size() == 0){            
+            if(paginationInfo != null){
+                paginationInfo.setTotalRecordCount(0);
+                returnMap.put("paginationInfo", paginationInfo);
+            }
+        }
+        else{
+            if(paginationInfo != null){
+                paginationInfo.setTotalRecordCount(totalCount);
+                returnMap.put("paginationInfo", paginationInfo);
+            }
+        }
+        
+        returnMap.put("list", list);
+        return returnMap;
     }
  
     @Override
@@ -68,26 +135,19 @@ public class BoardServiceImpl implements BoardService {
 
         resultMap.put("detail", boardDAO.selectBoardDetail(map));
         
-        List<BoardVO> nextAndPrev;
-        if(map.get("KEYWORD") == null) {
-        	nextAndPrev = boardDAO.selectBoardNextAndPrev(map);
+    	BoardVO nextBoard;
+    	BoardVO prevBoard;
+        if(map.get("keyword") == null) {
+        	nextBoard = boardDAO.selectNextBoard(map);
+        	prevBoard = boardDAO.selectPrevBoard(map);
         }
         else {
-        	nextAndPrev = boardDAO.selectBoardSearchNextAndPrev(map);
+        	nextBoard = boardDAO.selectNextSearchBoard(map);
+        	prevBoard = boardDAO.selectPrevSearchBoard(map);
         }
         
-        int mapidx = Integer.parseInt((String)map.get("idx"));
-        for(int i=0; i<nextAndPrev.size(); i++) {
-        	int idx = nextAndPrev.get(i).getIdx();
-        	if(idx > mapidx) {
-        		BoardVO nextMap = nextAndPrev.get(i);
-        		resultMap.put("nextmap", nextMap);
-        	}
-        	else {
-        		BoardVO prevMap = nextAndPrev.get(i);
-        		resultMap.put("prevmap", prevMap);
-        	}
-        }
+    	resultMap.put("nextBoard", nextBoard);
+    	resultMap.put("prevBoard", prevBoard);
         
         resultMap.put("fileList", boardDAO.selectFileList(map));
          
