@@ -1,4 +1,9 @@
-#version = 1.61v
+#version = 1.62v
+
+[Springboard 1.62v]
+1. resultMap, association, collection 사용하여 SQL 수정
+2. DAO 객체를 인터페이스 클래스와 구현 클래스로 분리
+3. DAO 메소드 명, Mapper SQL id명을 좀 더 직관적으로 변경
 
 [Springboard 1.61v]
 1. Mapper 클래스를 사용하여 DAO 클래스에 사용
