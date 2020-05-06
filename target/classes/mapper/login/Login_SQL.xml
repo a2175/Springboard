@@ -37,6 +37,17 @@
     	]]>
 	</select>
 	
+	<select id="selectNicknameById" resultType="String">
+		<![CDATA[
+	     	SELECT
+				nickname
+			FROM 
+				tb_user
+			WHERE
+	         	ID = #{crea_id}
+		]]>
+	</select>
+	
 	<insert id="insertUser" parameterType="hashmap">
     	<![CDATA[
         	INSERT INTO tb_user

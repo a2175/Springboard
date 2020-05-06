@@ -148,8 +148,6 @@ public class BoardServiceImpl implements BoardService {
         
     	resultMap.put("nextBoard", nextBoard);
     	resultMap.put("prevBoard", prevBoard);
-        
-        resultMap.put("fileList", boardDAO.selectFileList(map));
          
         return resultMap;
     }

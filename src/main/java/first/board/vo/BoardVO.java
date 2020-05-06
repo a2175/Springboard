@@ -1,5 +1,7 @@
 package first.board.vo;
 
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -15,8 +17,10 @@ public class BoardVO extends CommonVO {
 	@Size(max = 255)
 	private String contents;
 	private int hit_cnt;
+
 	private String nickname;
 	private int comment_cnt;
+	private List<FileVO> files;
 	
 	public int getParent_idx() {
 		return parent_idx;
@@ -64,5 +68,13 @@ public class BoardVO extends CommonVO {
 
 	public void setComment_cnt(int comment_cnt) {
 		this.comment_cnt = comment_cnt;
+	}
+
+	public List<FileVO> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<FileVO> files) {
+		this.files = files;
 	}
 }

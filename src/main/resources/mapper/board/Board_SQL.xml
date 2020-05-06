@@ -2,74 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="first.board.mapper.BoardMapper">
-     
-    <select id="selectBoardList" parameterType="hashmap" resultType="first.board.vo.BoardVO">
-        <![CDATA[			
-			SELECT
-				BOARD.TITLE,
-				BOARD.IDX,
-				BOARD.CREA_ID,
-				BOARD.HIT_CNT,
-				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
-				USER.NICKNAME,
-				(SELECT COUNT(*) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
-			FROM 
-				tb_board AS BOARD
-			JOIN
-				tb_user AS USER
-			ON
-				BOARD.CREA_ID = USER.ID
-			WHERE
-            	BOARD.DEL_GB = 'N'
-			ORDER BY BOARD.IDX DESC
-			LIMIT #{start}, #{end}
-        ]]>
-    </select>
-    
-    <select id="selectBoardSearchList" parameterType="hashmap" resultType="first.board.vo.BoardVO">
-        <![CDATA[			
-			SELECT
-				BOARD.TITLE,
-				BOARD.IDX,
-				BOARD.CREA_ID,
-				BOARD.HIT_CNT,
-				DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
-				USER.NICKNAME,
-				(SELECT COUNT(*) FROM tb_comment WHERE DEL_GB = 'N' AND BOARD_IDX = BOARD.IDX) AS COMMENT_CNT
-			FROM 
-				tb_board AS BOARD
-			JOIN
-				tb_user AS USER
-			ON
-				BOARD.CREA_ID = USER.ID
-			WHERE
-            	BOARD.DEL_GB = 'N'
-            	AND BOARD.TITLE LIKE CONCAT('%',#{keyword},'%')
-			ORDER BY BOARD.IDX DESC
-			LIMIT #{start}, #{end}
-        ]]>
-    </select>
-    
-   	<select id="selectBoardDetail" parameterType="hashmap" resultType="first.board.vo.BoardVO">
+
+   	<resultMap id="boardList" type="first.board.vo.BoardVO">
+		<result property="idx" column="IDX" />
+		<result property="crea_id" column="CREA_ID" />
+		<association property="nickname" javaType="String" column="crea_id" select="first.login.mapper.LoginMapper.selectNicknameById" />
+		<association property="comment_cnt" javaType="Integer" column="idx" select="first.comment.mapper.CommentMapper.selectCommentCount" />
+	</resultMap>
+	
+	<resultMap id="boardDetail" type="first.board.vo.BoardVO">
+		<result property="idx" column="IDX" />
+		<result property="crea_id" column="CREA_ID" />
+		<association property="nickname" javaType="String" column="crea_id" select="first.login.mapper.LoginMapper.selectNicknameById" />
+		<collection property="files" column="idx" ofType="first.board.vo.FileVO" select="selectFileList"/>
+	</resultMap>
+
+	<select id="selectBoardList" parameterType="hashmap" resultMap="boardList">
     	<![CDATA[
         	SELECT
-            	BOARD.IDX,
-            	BOARD.HIT_CNT,
-            	BOARD.CREA_ID,
-            	DATE_FORMAT(BOARD.CREA_DTM,'%Y-%m-%d %I:%i:%s') AS CREA_DTM,
-            	BOARD.TITLE,
-            	BOARD.CONTENTS,
-				USER.NICKNAME
-        	FROM
-            	tb_board AS BOARD
-			JOIN
-				tb_user AS USER
-			ON
-				BOARD.CREA_ID = USER.ID
-        	WHERE
-            	BOARD.IDX = #{idx}
+				*
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N'
+			ORDER BY IDX DESC
+			LIMIT #{start}, #{end}
     	]]>
-	</select>
+    </select>
+    
+    <select id="selectBoardSearchList" parameterType="hashmap" resultMap="boardList">
+        <![CDATA[			
+        	SELECT
+				*
+			FROM 
+				tb_board
+			WHERE
+            	DEL_GB = 'N'
+            	AND TITLE LIKE CONCAT('%',#{keyword},'%')
+			ORDER BY IDX DESC
+			LIMIT #{start}, #{end}
+        ]]>
+    </select>
+    
+    <select id="selectBoardDetail" parameterType="hashmap" resultMap="boardDetail">
+    	<![CDATA[
+        	SELECT
+				*
+			FROM 
+				tb_board
+			WHERE
+            	idx = #{idx}
+    	]]>
+    </select>
 	
 	<select id="selectNextBoard" parameterType="hashmap" resultType="first.board.vo.BoardVO">
     	<![CDATA[

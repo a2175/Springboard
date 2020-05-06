@@ -45,7 +45,7 @@
                     <th scope="row">첨부파일</th>
                     <td colspan="3">
                         <div id="fileDiv">               
-                            <c:forEach var="row" items="${fileList }" varStatus="var">
+                            <c:forEach var="row" items="${detail.files }" varStatus="var">
                                 <p>
                                     <input type="hidden" name="IDX_${var.index }" value="${row.idx }">
                                     <a href="#this" id="name_${var.index }">${row.original_file_name }</a>
@@ -68,7 +68,7 @@
      
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
-        var gfv_count = '${fn:length(fileList)}';
+        var gfv_count = '${fn:length(detail.files)}';
         
         $(document).ready(function(){
         	fn_doContentCount();

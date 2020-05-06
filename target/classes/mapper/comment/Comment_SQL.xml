@@ -3,26 +3,36 @@
  
 <mapper namespace="first.comment.mapper.CommentMapper">
      
-	<select id="selectCommentList" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
-    	<![CDATA[
-        	SELECT
-        		COMMENT.IDX,
-				COMMENT.CONTENTS,
-				COMMENT.CREA_DTM,
-				USER.NICKNAME,
-				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_UP = '1') AS THUMBSUP_CNT,
-				(SELECT COUNT(*) FROM tb_thumbs WHERE COMMENT_IDX = COMMENT.IDX AND THUMBS_DOWN = '1') AS THUMBSDOWN_CNT
+   	<resultMap id="comment" type="first.comment.vo.CommentVO">
+		<result property="idx" column="IDX" />
+		<result property="crea_id" column="CREA_ID" />
+		<association property="nickname" javaType="String" column="crea_id" select="first.login.mapper.LoginMapper.selectNicknameById" />
+		<association property="thumbsup_cnt" javaType="Integer" column="idx" select="selectThumbsUpCount" /> 
+		<association property="thumbsdown_cnt" javaType="Integer" column="idx" select="selectThumbsDownCount" /> 
+	</resultMap>
+     
+   	<select id="selectCommentList" resultMap="comment">
+		<![CDATA[
+	     	SELECT
+				*
 			FROM 
-				tb_comment AS COMMENT
-			JOIN
-				tb_user AS USER
-			ON
-				COMMENT.CREA_ID = USER.ID
+				tb_comment
 			WHERE
-            	COMMENT.DEL_GB = 'N'
-            	AND COMMENT.BOARD_IDX = #{board_idx}
-			ORDER BY COMMENT.IDX
-    	]]>
+	         	BOARD_IDX = #{board_idx}
+	         	AND DEL_GB = 'N'
+		]]>
+	</select>
+	
+    <select id="selectCommentCount" resultType="Integer">
+		<![CDATA[
+	     	SELECT 
+	     		COUNT(*) 
+	     	FROM 
+	     		tb_comment 
+	     	WHERE 
+	     		DEL_GB = 'N' 
+	     		AND BOARD_IDX = #{idx}
+		]]>
 	</select>
 	
 	<insert id="insertComment" parameterType="hashmap">
@@ -52,7 +62,31 @@
     	]]>
 	</update>
 	
-	<select id="checkThumbsup" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
+	<select id="selectThumbsUpCount" resultType="Integer">
+		<![CDATA[
+	     	SELECT
+				COUNT(*)
+			FROM 
+				tb_thumbs
+			WHERE
+	         	COMMENT_IDX = #{idx}
+	         	AND THUMBS_UP = '1'
+		]]>
+	</select>
+	
+	<select id="selectThumbsDownCount" resultType="Integer">
+  		<![CDATA[
+	     	SELECT
+				COUNT(*)
+			FROM 
+				tb_thumbs
+			WHERE
+	         	COMMENT_IDX = #{idx}
+	         	AND THUMBS_DOWN = '1'
+		]]>
+	</select>
+	
+	<select id="selectThumbsUpByIdAndIdx" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
         <![CDATA[			
 			SELECT 
 				*
@@ -82,7 +116,7 @@
     	]]>
 	</insert>
 	
-	<select id="checkThumbsdown" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
+	<select id="selectThumbsDownByIdAndIdx" parameterType="hashmap" resultType="first.comment.vo.CommentVO">
         <![CDATA[			
 			SELECT 
 				*

@@ -36,10 +36,10 @@
             <tr>
                 <th scope="row">첨부파일</th>
                 <td colspan="3">
-                	<c:if test="${fileList.size() eq 0}">
+                	<c:if test="${detail.files.size() eq 0}">
     					첨부파일이 없습니다.
 					</c:if>
-                    <c:forEach var="row" items="${fileList }">
+                    <c:forEach var="row" items="${detail.files }">
                     	<p>
                         	<input type="hidden" id="IDX" value="${row.idx }">
                         	<a href="#this" id="file">${row.original_file_name }</a>

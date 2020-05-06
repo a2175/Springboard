@@ -1,91 +1,45 @@
 package first.board.dao;
- 
+
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import first.board.mapper.BoardMapper;
 import first.board.vo.BoardVO;
 import first.board.vo.FileVO;
 
-@Repository
-public class BoardDAO {
+public interface BoardDAO {
 	
-	private BoardMapper boardMapper;
+	List<BoardVO> selectBoardList(Map<String, Object> map);
 	
-    @Autowired
-    public BoardDAO(BoardMapper boardMapper) {
-    	this.boardMapper = boardMapper;
-    }
+	List<BoardVO> selectBoardSearchList(Map<String, Object> map);
 	
-	public List<BoardVO> selectBoardList(Map<String, Object> map) {     
-	    return boardMapper.selectBoardList(map);
-	}
+	BoardVO selectBoardDetail(Map<String, Object> map);
 	
-	public List<BoardVO> selectBoardSearchList(Map<String, Object> map) {      
-	    return boardMapper.selectBoardSearchList(map);
-	}
+	BoardVO selectNextBoard(Map<String, Object> map);
 	
-    public BoardVO selectBoardDetail(Map<String, Object> map) {
-        return boardMapper.selectBoardDetail(map);
-    }
-    
-    public BoardVO selectNextBoard(Map<String, Object> map) {
-        return boardMapper.selectNextBoard(map);
-    }
-    
-    public BoardVO selectPrevBoard(Map<String, Object> map) {
-        return boardMapper.selectPrevBoard(map);
-    }
-    
-    public BoardVO selectNextSearchBoard(Map<String, Object> map) {
-        return boardMapper.selectNextSearchBoard(map);
-    }
-    
-    public BoardVO selectPrevSearchBoard(Map<String, Object> map) {
-        return boardMapper.selectPrevSearchBoard(map);
-    }
-    
-	public int selectBoardTotalCount() { 
-		return boardMapper.selectBoardTotalCount();
-	}
+	BoardVO selectPrevBoard(Map<String, Object> map);
 	
-	public int selectBoardSearchTotalCount(Map<String, Object> map) {
-		return boardMapper.selectBoardSearchTotalCount(map);
-	}
+	BoardVO selectNextSearchBoard(Map<String, Object> map);
 	
-    public void insertBoard(Map<String, Object> map) {
-    	boardMapper.insertBoard(map);
-    }
-    
-	public void updateBoard(Map<String, Object> map) {
-		boardMapper.updateBoard(map);
-	}
+	BoardVO selectPrevSearchBoard(Map<String, Object> map);
 	
-    public void updateHitCnt(Map<String, Object> map) {
-    	boardMapper.updateHitCnt(map);
-    }
-    
-	public void deleteBoard(Map<String, Object> map) {
-		boardMapper.deleteBoard(map);	
-	}
-    
-	public List<FileVO> selectFileList(Map<String, Object> map) {
-	    return boardMapper.selectFileList(map);
-	}
+	int selectBoardTotalCount();
 	
-    public void insertFile(Map<String, Object> map) {
-    	boardMapper.insertFile(map);
-    }
-    
-	public void updateFile(Map<String, Object> map) {
-		boardMapper.updateFile(map);
-	}
-		
-	public void deleteFileList(Map<String, Object> map) {
-		boardMapper.deleteFileList(map);;
-	}
-
+	int selectBoardSearchTotalCount(Map<String, Object> map);
+	
+	void insertBoard(Map<String, Object> map);
+	
+	void updateBoard(Map<String, Object> map);
+	
+	void updateHitCnt(Map<String, Object> map);
+	
+	void deleteBoard(Map<String, Object> map);
+	
+	List<FileVO> selectFileList(Map<String, Object> map);
+	
+	void insertFile(Map<String, Object> map);
+	
+	void updateFile(Map<String, Object> map);
+	
+	void deleteFileList(Map<String, Object> map);
+	
 }

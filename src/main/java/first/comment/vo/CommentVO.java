@@ -10,6 +10,7 @@ public class CommentVO extends CommonVO {
 	@NotEmpty
 	@Size(max = 255)
 	private String contents;
+	
 	private String nickname;
 	private int thumbsup_cnt;
 	private int thumbsdown_cnt;
