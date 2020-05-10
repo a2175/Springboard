@@ -1,4 +1,11 @@
-#version = 1.62v
+#version = 1.63v
+
+[Springboard 1.63v]
+1. FileUtiles 클래스 명을 CustomFileUtils로 변경
+2. 다운로드 기능 common 패키지에서 board 패키지로 이동
+3. 파일 경로 변수 filePath를 운영체제에 따라 동적으로 주입 받도록 수정
+4. CustomfileUtiles에 readFileToByteArray 메소드 추가
+5. 다운로드 기능 처리를 controller에서 service로 처리하도록 수정
 
 [Springboard 1.62v]
 1. resultMap, association, collection 사용하여 SQL 수정
