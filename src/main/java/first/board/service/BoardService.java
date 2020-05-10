@@ -3,6 +3,7 @@ package first.board.service;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface BoardService {
 
@@ -22,4 +23,5 @@ public interface BoardService {
 	
 	void updateHitCnt(Map<String, Object> map);
 	
+	void downloadFile(Map<String, Object> map, HttpServletResponse response);
 }

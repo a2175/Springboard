@@ -36,10 +36,12 @@ public interface BoardDAO {
 	
 	List<FileVO> selectFileList(Map<String, Object> map);
 	
+	FileVO selectFileInfo(Map<String, Object> map);
+
 	void insertFile(Map<String, Object> map);
 	
 	void updateFile(Map<String, Object> map);
 	
 	void deleteFileList(Map<String, Object> map);
-	
+		
 }

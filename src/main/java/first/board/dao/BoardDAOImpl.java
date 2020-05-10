@@ -91,6 +91,11 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 	
     @Override
+    public FileVO selectFileInfo(Map<String, Object> map) {
+		return boardMapper.selectFileInfo(map);
+	}
+    
+    @Override
     public void insertFile(Map<String, Object> map) {
     	boardMapper.insertFile(map);
     }
@@ -104,5 +109,5 @@ public class BoardDAOImpl implements BoardDAO {
 	public void deleteFileList(Map<String, Object> map) {
 		boardMapper.deleteFileList(map);;
 	}
-
+    
 }

@@ -1,9 +1,7 @@
 package first.board.controller;
 
-import java.util.Iterator;
-import java.util.Map.Entry;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -131,18 +129,9 @@ public class BoardController {
         return mv;
     }
     
-    @RequestMapping(value="/board/testMapArgumentResolver.do")
-    public ModelAndView testMapArgumentResolver(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("");
-         
-        if(commandMap.isEmpty() == false){
-            Iterator<Entry<String,Object>> iterator = commandMap.getMap().entrySet().iterator();
-            Entry<String,Object> entry = null;
-            while(iterator.hasNext()){
-                entry = iterator.next();
-                log.debug("key : "+entry.getKey()+", value : "+entry.getValue());
-            }
-        }
-        return mv;
-    }
+    // 파일 다운로드
+	@RequestMapping(value="/board/downloadFile.do")
+	public void downloadFile(CommandMap commandMap, HttpServletResponse response) {
+		boardService.downloadFile(commandMap.getMap(), response);
+	}
 }

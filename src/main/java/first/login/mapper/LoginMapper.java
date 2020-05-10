@@ -19,4 +19,5 @@ public interface LoginMapper {
 	CustomUserDetails selectUserById(String username);
 	
 	List<String> selectAuthorityById(String username);
+	
 }

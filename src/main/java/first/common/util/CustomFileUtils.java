@@ -9,29 +9,30 @@ import java.util.List;
 import java.util.Map;
  
 import javax.servlet.http.HttpServletRequest;
- 
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
  
-@Component("fileUtils")
-public class FileUtils {
-    private static String filePath;
-
-    public FileUtils() {
-    	String os = System.getProperty("os.name");
-    	if(os.toLowerCase().contains("windows")) {
-    		filePath = "C:\\Users\\Administrator\\Desktop\\file\\";
-    	}
-    	else {
-    		filePath = "/var/lib/tomcat8/file/";
-    	}
+@Component
+public class CustomFileUtils {
+    private String filePath;
+    
+    @Autowired
+    public CustomFileUtils(String filePath) {
+    	this.filePath = filePath;
+    }
+    
+    public byte[] readFileToByteArray(String storedFileName) throws IOException {
+    	return FileUtils.readFileToByteArray(new File(filePath + storedFileName));
     }
     
     public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-         
+        
         MultipartFile multipartFile = null;
         String originalFileName = null;
         String storedFileName = null;
@@ -83,7 +84,7 @@ public class FileUtils {
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null;
          
-        String boardIdx = (String)map.get("IDX");
+        String boardIdx = (String)map.get("idx");
         String requestName = null;
         String idx = null;
          

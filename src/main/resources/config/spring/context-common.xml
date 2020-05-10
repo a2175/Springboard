@@ -29,4 +29,8 @@
         <property name="maxUploadSize" value="10000000" />
         <property name="maxInMemorySize" value="10000000" />
     </bean>
+    
+    <bean id="filePath" class="java.lang.String">
+        <constructor-arg type="String" value="#{ T(java.lang.System).getProperty('os.name').toLowerCase().contains('windows') ? 'C:\\Users\\Administrator\\Desktop\\file\\' : '/var/lib/tomcat8/file/' }" />
+	</bean>
 </beans>
