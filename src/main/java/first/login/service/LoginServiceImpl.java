@@ -19,11 +19,6 @@ public class LoginServiceImpl implements LoginService {
     public LoginServiceImpl(LoginDAO loginDAO) {
     	this.loginDAO = loginDAO;
     }
-    
-	@Override
-	public UserVO selectLoginCheck(Map<String, Object> map) {	
-		return loginDAO.selectUserByIdAndPassword(map);
-	}
 	
 	@Override
 	public boolean selectIdCheck(Map<String, Object> map) {

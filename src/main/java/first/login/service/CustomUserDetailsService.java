@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import first.login.dao.LoginDAO;
-import first.login.vo.CustomUserDetails;
+import first.login.vo.UserVO;
 
 public class CustomUserDetailsService implements UserDetailsService {
     
@@ -21,14 +21,14 @@ public class CustomUserDetailsService implements UserDetailsService {
  
 	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		CustomUserDetails user = loginDAO.selectUserById(username);
+		UserVO user = loginDAO.selectUserByUsername(username);
     	
-        if(user==null) {
+        if(user == null) {
             throw new UsernameNotFoundException(username);
         }
              
-        List<String> authority = loginDAO.selectAuthorityById(username);
-        user.setAuthority(authority);
+        List<String> authoritys = loginDAO.selectAuthorityByUsername(username);
+        user.setAuthotitys(authoritys);
         
         return user;
     }

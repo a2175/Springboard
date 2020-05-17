@@ -21,7 +21,7 @@ public class BoardVO extends CommonVO {
 	private String nickname;
 	private int comment_cnt;
 	private List<FileVO> files;
-	
+
 	public int getParent_idx() {
 		return parent_idx;
 	}

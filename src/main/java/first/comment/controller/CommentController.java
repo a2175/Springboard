@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class CommentController {
     }
     
     // 댓글 삽입
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/comment/insertComment.do")
     public ModelAndView insertComment(@Valid CommentVO vo, BindingResult result, CommandMap commandMap) {
     	ModelAndView mv = new ModelAndView("jsonView");
@@ -48,6 +50,7 @@ public class CommentController {
     }
     
     // 댓글 삭제
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/comment/deleteComment.do")
     public ModelAndView deleteComment(CommandMap commandMap) {
 		ModelAndView mv = new ModelAndView("jsonView");
@@ -56,6 +59,7 @@ public class CommentController {
     }
     
     // 댓글 추천
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/comment/thumbsUp.do")
     public ModelAndView thumbsUp(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
@@ -74,6 +78,7 @@ public class CommentController {
     }
     
     // 댓글 비추천
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/comment/thumbsDown.do")
     public ModelAndView thumbsDown(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");

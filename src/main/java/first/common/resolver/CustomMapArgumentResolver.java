@@ -3,15 +3,16 @@ package first.common.resolver;
 import java.util.Enumeration;
  
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
  
 import first.common.common.CommandMap;
+import first.login.vo.UserVO;
  
 public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
     @Override
@@ -24,7 +25,6 @@ public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
         CommandMap commandMap = new CommandMap();
         
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        HttpSession session = request.getSession();
         Enumeration<?> enumeration = request.getParameterNames();
 
         String key = null;
@@ -37,10 +37,12 @@ public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
             }
         }
         
-        if(session.getAttribute("ID") != null) {
-        	commandMap.put("ID", session.getAttribute("ID"));
-        	commandMap.put("NICKNAME", session.getAttribute("NICKNAME"));
-        }
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(!principal.equals("anonymousUser")) {
+			UserVO userVO = (UserVO)principal;
+			commandMap.put("userId", userVO.getId());
+			commandMap.put("userNickname", userVO.getNickname());
+		}
         
         return commandMap;
     }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
- 
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Component
 public class CustomFileUtils {
     private String filePath;
+    private int maxUploadCount;
     
     @Autowired
-    public CustomFileUtils(String filePath) {
+    public CustomFileUtils(String filePath, int maxUploadCount) {
     	this.filePath = filePath;
+    	this.maxUploadCount = maxUploadCount;
     }
     
     public byte[] readFileToByteArray(String storedFileName) throws IOException {
@@ -32,6 +34,9 @@ public class CustomFileUtils {
     public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+        
+        if(multipartHttpServletRequest.getFileMap().size() > maxUploadCount) 
+        	throw new RuntimeException();
         
         MultipartFile multipartFile = null;
         String originalFileName = null;
@@ -67,6 +72,7 @@ public class CustomFileUtils {
                 listMap.put("ORIGINAL_FILE_NAME", originalFileName);
                 listMap.put("STORED_FILE_NAME", storedFileName);
                 listMap.put("FILE_SIZE", multipartFile.getSize());
+                listMap.put("userId", map.get("userId"));
                 list.add(listMap);
             }
         }
@@ -76,7 +82,10 @@ public class CustomFileUtils {
     public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-         
+        
+        if(multipartHttpServletRequest.getFileMap().size() > maxUploadCount) 
+        	throw new RuntimeException();
+        
         MultipartFile multipartFile = null;
         String originalFileName = null;
         String storedFileName = null;
@@ -108,6 +117,7 @@ public class CustomFileUtils {
                 listMap.put("ORIGINAL_FILE_NAME", originalFileName);
                 listMap.put("STORED_FILE_NAME", storedFileName);
                 listMap.put("FILE_SIZE", multipartFile.getSize());
+                listMap.put("userId", map.get("userId"));
                 list.add(listMap);
             }
             else{
@@ -121,6 +131,7 @@ public class CustomFileUtils {
                     listMap = new HashMap<String,Object>();
                     listMap.put("IS_NEW", "N");
                     listMap.put("FILE_IDX", map.get(idx));
+                    listMap.put("userId", map.get("userId"));
                     list.add(listMap);
                 }
             }

@@ -5,6 +5,8 @@
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
 </head>
 <body>
+	<h2 style="color: black">게시글 수정</h2>
+
     <form id="frm" name="frm" enctype="multipart/form-data">
         <table class="board_view">
             <colgroup>
@@ -13,7 +15,7 @@
                 <col width="15%"/>
                 <col width="35%"/>
             </colgroup>
-            <caption>게시글 상세</caption>
+            
             <tbody>
                 <tr>
                     <th scope="row">글 번호</th>
@@ -60,7 +62,7 @@
             </tbody>
         </table>
     </form>
-	첨부파일의 용량은 최대 10MB이며 최대 3개까지 등록 가능합니다.<br/><br/>
+	첨부파일의 용량은 최대 1MB이며 최대 3개까지 등록 가능합니다.<br/><br/>
 	
     <a href="#this" class="btn" id="addFile">파일 추가</a>
     <a href="#this" class="btn" id="list">목록으로</a>
@@ -106,17 +108,21 @@
         
         function fn_checkBoard(){
         	var filearray = $("input[type='file']");
+        	var totalFileSize = 0;
         	
         	if($("#TITLE").val().length < 1) { alert("제목을 입력해주세요."); return false }
         	if($("#TITLE").val().length > 100) { alert("제목이 너무 깁니다."); return false }
         	if($("#CONTENTS").val().length == 0) { alert("게시글 내용을 입력해주세요."); return false }	
         	if($("#CONTENTS").val().length > 255) { alert("게시글 내용은 255자를 넘을 수 없습니다."); return false }	
-        	for(i=0; i<filearray.length; i++)
-        		if(filearray[i].files[0] != undefined)
-            		if(filearray[i].files[0].size > 10000000) {
+        	for(i=0; i<filearray.length; i++) {
+        		if(filearray[i].files[0] != undefined) {
+        			totalFileSize += filearray[i].files[0].size;
+            		if(totalFileSize > 1000000) {
             			alert("첨부파일이 최대용량을 넘습니다."); 
             			return false;
             		}
+        		}
+        	}
         	
         	return true;
         }

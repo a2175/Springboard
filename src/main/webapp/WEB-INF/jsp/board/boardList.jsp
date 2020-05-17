@@ -3,30 +3,9 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
-	<style>
-      #search {
-        margin-left:5px
-      }
-      span {
-        margin:auto;
-        display:table;
-      }
-    </style>
 </head>
-<body>
+<body style="width:1000px">
     <h2><a href="/first/board/openBoardList.do" style="color: black">게시판 목록</a></h2>
-	
-	<c:choose>
-    	<c:when test="${ID eq null}">
-       		 <c:import url="/login/openLoginPage.do" ></c:import>
-    	</c:when>
-    	<c:when test="${ID ne null}">
-			<p align="right">
-				환영합니다. <b>${NICKNAME}</b>님. 
-				<a href="#this" class="btn" id="logout">로그아웃</a>
-			</p>
-    	</c:when>
-	</c:choose>
 	
     <table class="board_list">
         <colgroup>
@@ -54,12 +33,12 @@
     <input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
 
     <p>
-		<span>
-			<c:if test="${ID ne null}">
+		<span style="margin:auto;display:table">
+			<sec:authorize access="isAuthenticated()">
 				<a href="#this" class="btn" id="write">글쓰기</a>
-			</c:if>
+			</sec:authorize>
 			제목 검색: <input type="text" id="KEYWORD" name="KEYWORD" value="${param.keyword}"></input>
-        	<a href="#this" class="btn" id="search">검색</a>
+        	<a style="margin-left:5px" href="#this" class="btn" id="search">검색</a>
 		</span>
     </p>
 	
@@ -67,7 +46,7 @@
     <script type="text/javascript">
     	var page_index = "${param.pageIdx}";
     	var keyword = "${param.keyword}";
-    	
+
         $(document).ready(function(){
         	if(!gfn_isNull(page_index) && gfn_isNull(keyword)) {
         		$("#PAGE_INDEX").val(page_index);
@@ -92,11 +71,6 @@
                 $("#PAGE_INDEX").val(1);
                 fn_selectBoardSearchList(1);
             });
-            
-            $("#logout").on("click", function(e){ //로그아웃 버튼
-                e.preventDefault();
-                fn_doLogout();
-            });
         });
          
         function fn_openBoardWrite(){
@@ -104,13 +78,7 @@
             comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
             comSubmit.submit();
         }
-        
-        function fn_doLogout(){
-            var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/login/doLogout.do' />");
-            comSubmit.submit();
-        }
-         
+                 
         function fn_openBoardDetail(obj){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");

@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="/WEB-INF/include/include-header.jspf" %>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css'/>" />
 	<style>
 		input {
 			width: 120px;
@@ -109,7 +112,7 @@
      
     	function fn_doCancel(){
         	var comSubmit = new ComSubmit();
-        	comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+        	comSubmit.setUrl("<c:url value='/' />");
         	comSubmit.submit();
     	}
     	

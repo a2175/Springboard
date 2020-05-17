@@ -5,6 +5,8 @@
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
 </head>
 <body style="position: absolute;">
+	<h2 style="color: black">게시글 상세</h2>
+
     <table class="board_view">
         <colgroup>
             <col width="15%"/>
@@ -12,7 +14,7 @@
             <col width="15%"/>
             <col width="35%"/>
         </colgroup>
-        <caption>게시글 상세</caption>
+
         <tbody>
             <tr>
                 <th scope="row">글 번호</th>
@@ -54,19 +56,21 @@
     
     <div id="board_comment" class="board_comment">
     </div>
-    
-    <c:if test="${ID ne null}">
+        
+	<sec:authorize access="isAuthenticated()">
     	<br>
 		<textarea style="width:890px; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
     	<a href="#this" class="btn" id="submit">댓글등록</a>
-    </c:if>
-    
+	</sec:authorize>
+        
     <br>
     <a href="#this" class="btn" id="list">목록으로</a>
-    <c:if test="${detail.crea_id eq ID}">
-    	<a href="#this" class="btn" id="update">수정하기</a>
-    	<a href="#this" class="btn" id="delete">삭제하기</a>
-	</c:if>
+   	<sec:authorize access="isAuthenticated()">
+	    <c:if test="${detail.crea_id eq userInfo.id}">
+	    	<a href="#this" class="btn" id="update">수정하기</a>
+	    	<a href="#this" class="btn" id="delete">삭제하기</a>
+		</c:if>
+	</sec:authorize>
 	<br><br>
 	
 	<c:choose>
@@ -145,7 +149,6 @@
                 comAjax.setCallback("fn_selectCommentList");
                 comAjax.addParam("board_idx", idx);    
                 comAjax.addParam("contents", comment);
-                comAjax.addParam("crea_id", "${ID}");
                 comAjax.ajax();
     		}
     	}
@@ -168,7 +171,6 @@
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardUpdate.do' />");     	
         	comSubmit.addParam("idx", idx);
-        	comSubmit.addParam("CREA_ID", id);
         	comSubmit.submit();
     	}
     	
@@ -179,7 +181,6 @@
                 var comSubmit = new ComSubmit();
                 comSubmit.setUrl("<c:url value='/board/deleteBoard.do' />");
                 comSubmit.addParam("idx", idx);
-                comSubmit.addParam("CREA_ID", id);
                 comSubmit.submit();
     		}	
         }
@@ -244,7 +245,7 @@
             else{             
                 var str = "";
                 $.each(data.list, function(key, value){
-                	if(value.nickname == "${NICKNAME}"){
+                	if(value.nickname == "${userInfo.nickname}"){
                     	str += "<table>" +
                     				"<tr>" +
                     					"<th colspan='2' width='700'>" +
@@ -263,7 +264,7 @@
                                 		"</td>" +
                                 		"<td>" +
                                 			"<a href='#this' id='delete_cmt'>" +
-                                				"<img src='<c:url value='/img/delete.jpg' />' style='width: auto; height: 30px; float:right;'>" +
+                                				"<img src='<c:url value='/img/delete.jpg' />' style='width: 30px; height: 30px; float:right;'>" +
                                 			"</a>" +
                             				"<input type='hidden' id='IDX' value=" + value.idx + ">" +
                             			"</td>" +
@@ -293,6 +294,7 @@
 											"</a>" +
 											"<input type='hidden' id='IDX' value=" + value.idx + ">" +
                 						"</td>" +
+                						"<td width='33'></td>" +
 									"</tr>" +
 								"</table>" +
 								"<table>" +
@@ -335,7 +337,7 @@
         
         var thumbsindex = "";
         function fn_thumbsUp(obj){
-        	if(gfn_isNull("${ID}"))
+        	if(gfn_isNull("${userInfo}"))
         		alert("로그인 해주세요.");
         	else {
         		var cmt_idx = obj.parent().find("#IDX").val();
@@ -345,13 +347,12 @@
             	comAjax.setUrl("<c:url value='/comment/thumbsUp.do' />");
             	comAjax.setCallback("fn_thumbsUpCallback");
             	comAjax.addParam("idx", cmt_idx);
-            	comAjax.addParam("crea_id", "${ID}");
             	comAjax.ajax();
         	}
         }
         
         function fn_thumbsDown(obj){
-        	if(gfn_isNull("${ID}"))
+        	if(gfn_isNull("${userInfo}"))
         		alert("로그인 해주세요.");
         	else {
         		var cmt_idx = obj.parent().find("#IDX").val();
@@ -361,7 +362,6 @@
             	comAjax.setUrl("<c:url value='/comment/thumbsDown.do' />");
             	comAjax.setCallback("fn_thumbsDownCallback");
             	comAjax.addParam("idx", cmt_idx);
-            	comAjax.addParam("crea_id", "${ID}");
             	comAjax.ajax();
         	}
         }

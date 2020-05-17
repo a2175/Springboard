@@ -47,7 +47,7 @@
 			(
     			#{board_idx},
     			#{contents},
-    			#{crea_id}
+    			#{userId}
 			)
     	]]>
 	</insert>
@@ -59,6 +59,7 @@
             	DEL_GB = 'Y'
         	WHERE
             	IDX = #{idx}
+            	AND CREA_ID = #{userId}
     	]]>
 	</update>
 	
@@ -93,7 +94,7 @@
 			FROM 
 				tb_thumbs
 			WHERE
-            	CREA_ID = #{crea_id}
+            	CREA_ID = #{userId}
             	AND COMMENT_IDX = #{idx}
             	AND THUMBS_UP = '1'
         ]]>
@@ -110,7 +111,7 @@
 			VALUES
 			(
 				#{idx},
-  				#{crea_id},
+  				#{userId},
   				'1'
 			);
     	]]>
@@ -123,7 +124,7 @@
 			FROM 
 				tb_thumbs
 			WHERE
-            	CREA_ID = #{crea_id}
+            	CREA_ID = #{userId}
             	AND COMMENT_IDX = #{idx}
             	AND THUMBS_DOWN = '1'
         ]]>
@@ -140,7 +141,7 @@
 			VALUES
 			(
 				#{idx},
-  				#{crea_id},
+  				#{userId},
   				'1'
 			);
     	]]>

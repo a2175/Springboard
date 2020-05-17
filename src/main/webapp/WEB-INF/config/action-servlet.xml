@@ -24,13 +24,7 @@
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/sample/openBoardWrite.do"/>
-			<mvc:mapping path="/sample/openBoardUpdate.do"/>
-			<mvc:mapping path="/sample/deleteBoard.do"/>
-			<mvc:mapping path="/sample/insertBoard.do"/>
-			<mvc:mapping path="/sample/updateBoard.do"/>
-			<mvc:mapping path="/sample/insertComment.do"/>
-			<mvc:mapping path="/sample/deleteComment.do"/>
+			<mvc:mapping path="/**"/>
 			<bean id="loggerInterceptor" class="first.common.logger.LoggerInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

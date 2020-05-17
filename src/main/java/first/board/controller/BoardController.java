@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,7 @@ public class BoardController {
     }
     
     // 글쓰기 페이지로 이동
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/openBoardWrite.do")
     public ModelAndView openBoardWrite() {
         ModelAndView mv = new ModelAndView("/board/boardWrite");
@@ -73,6 +75,7 @@ public class BoardController {
     }
     
     // 게시글 삽입
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/insertBoard.do")
     public ModelAndView insertBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
@@ -99,6 +102,7 @@ public class BoardController {
     }
     
     // 게시글 수정 페이지로 이동
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/openBoardUpdate.do")
     public ModelAndView openBoardUpdate(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/board/boardUpdate");
@@ -109,6 +113,7 @@ public class BoardController {
     }
     
     // 게시글 수정
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/updateBoard.do")
     public ModelAndView updateBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
@@ -120,6 +125,7 @@ public class BoardController {
     }
     
     // 게시글 삭제
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/deleteBoard.do")
     public ModelAndView deleteBoard(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");

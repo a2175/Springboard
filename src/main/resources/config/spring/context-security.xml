@@ -17,10 +17,14 @@
     	<form-login
 			username-parameter="loginid"
 			password-parameter="loginpwd" 
-			login-page="/login"
-			default-target-url="/sec"
+			login-page="/?loginRequired=true"
+			default-target-url="/"
             authentication-failure-url="/login?fail=true" />
 		
+		<logout
+        	logout-success-url="/" 
+        	invalidate-session="true" 
+        	delete-cookies="JSESSIONID" />
     </http>
     
 	<authentication-manager alias="authenticationManager">

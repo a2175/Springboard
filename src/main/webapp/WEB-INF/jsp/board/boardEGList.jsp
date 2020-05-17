@@ -3,22 +3,10 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/include/include-header.jspf" %>
-	<style>
-      #search {
-        margin-left:5px
-      }
-      span {
-        margin:auto;
-        display:table;
-      }
-    </style>
 </head>
-<body>
+<body style="width:1000px">
     <h2><a href="/first/board/openBoardEGList.do" style="color: black">게시판 목록</a></h2>
-    <p align="right">
-		환영합니다. <b>${NICKNAME}</b>님. 
-		<a href="#this" class="btn" id="logout">로그아웃</a>
-	</p>
+
     <table class="board_list">
         <colgroup>
             <col width="10%"/>
@@ -62,15 +50,17 @@
     </table>
      
     <p>
-		<span>
+		<span style="margin:auto;display:table">
 			<c:if test="${not empty paginationInfo}">
         		<ui:pagination paginationInfo = "${paginationInfo}" type="text" jsFunction="fn_search"/>
     		</c:if>
     		<input type="hidden" id="currentPageNo" name="currentPageNo"/><br><br>
 		</span>
     </p>
-    
-    <a href="#this" class="btn" id="write">글쓰기</a>
+       
+	<sec:authorize access="isAuthenticated()">
+		<a href="#this" class="btn" id="write">글쓰기</a>
+	</sec:authorize>
     
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">

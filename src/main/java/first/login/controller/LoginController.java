@@ -2,11 +2,11 @@ package first.login.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +44,8 @@ public class LoginController {
 	AuthenticationManager authenticationManager;
 	@Autowired
 	SecurityContextRepository repository;
-
+	
+    @PreAuthorize("isAnonymous()")
 	@RequestMapping(value = "/login.ajax", method = RequestMethod.POST)
 	@ResponseBody
 	public ModelMap login(HttpServletRequest request, HttpServletResponse response,
@@ -88,44 +89,6 @@ public class LoginController {
 		return savedRequest.getRedirectUrl();
 	}
     
-    @RequestMapping(value="/login/openLoginPage.do")
-    public ModelAndView openLoginPage(CommandMap commandMap) {
-        ModelAndView mv = new ModelAndView("/login/loginPage");
-        
-        return mv;
-    }
-    
-    @RequestMapping(value="/login/doLogin.do")
-    public ModelAndView doLogin(CommandMap commandMap, HttpServletRequest request) {
-    	ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
-    		
-    	UserVO userInfo = loginService.selectLoginCheck(commandMap.getMap());
-        if(userInfo == null) {
-        	mv.addObject("login", false);
-        }      
-        else {
-        	HttpSession session = request.getSession();
-        	session.setAttribute("ID", userInfo.getId());
-        	session.setAttribute("NICKNAME", userInfo.getNickname());
-        }
-        
-        mv.addObject("pageIdx", commandMap.get("pageIdx"));
-        if(commandMap.get("keyword") != null)
-        	mv.addObject("keyword", commandMap.get("keyword"));
-        
-        return mv;
-    }
-    
-    @RequestMapping(value="/login/doLogout.do")
-    public ModelAndView doLogout(CommandMap commandMap, HttpServletRequest request) {
-    	ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
-    		
-        HttpSession session = request.getSession();
-        session.invalidate();
-        
-        return mv;
-    }
-    
     @RequestMapping(value="/login/doIdDuplicationCheck.do")
     public ModelAndView doIdDuplicationCheck(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
@@ -146,6 +109,7 @@ public class LoginController {
         return mv;
     }
     
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(value="/login/openLoginSignup.do")
     public ModelAndView openLoginSignup(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/login/loginSignup");
@@ -153,6 +117,7 @@ public class LoginController {
         return mv;
     }
     
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(value="/login/doSubmit.do")
     public ModelAndView doSubmit(@Valid UserVO vo, BindingResult result, CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
@@ -165,11 +130,5 @@ public class LoginController {
         loginService.insertUser(commandMap.getMap());
         
         return mv;
-    }
-    
-    @RequestMapping(value="/login", method=RequestMethod.GET)
-    public String login() {
-
-        return "/login/login";
     }
 }

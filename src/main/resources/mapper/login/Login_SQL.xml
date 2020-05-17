@@ -2,25 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="first.login.mapper.LoginMapper">
-
-	<select id="selectUserByIdAndPassword" parameterType="hashmap" resultType="first.login.vo.UserVO">
-    	<![CDATA[
-        	SELECT
-            	*
-        	FROM
-            	tb_user
-        	WHERE
-            	ID = #{id}
-            	AND PASSWORD = #{password}
-    	]]>
-	</select>
 	
 	<select id="selectUserById" parameterType="hashmap" resultType="first.login.vo.UserVO">
     	<![CDATA[
         	SELECT
             	*
         	FROM
-            	tb_user
+            	users
         	WHERE
             	ID = #{id}
     	]]>
@@ -31,7 +19,7 @@
         	SELECT
             	*
         	FROM
-            	tb_user
+            	users
         	WHERE
             	NICKNAME = #{nickname}
     	]]>
@@ -42,7 +30,7 @@
 	     	SELECT
 				nickname
 			FROM 
-				tb_user
+				users
 			WHERE
 	         	ID = #{crea_id}
 		]]>
@@ -50,45 +38,45 @@
 	
 	<insert id="insertUser" parameterType="hashmap">
     	<![CDATA[
-        	INSERT INTO tb_user
+        	INSERT INTO users
 			(
  				ID,
  				PASSWORD,
  				NICKNAME,
- 				EMAIL
+ 				EMAIL,
+ 				ENABLED
 			)
 			VALUES
 			(
     			#{id},
     			#{password},
     			#{nickname},
-    			#{email}
+    			#{email},
+    			true
 			)
     	]]>
 	</insert>
 	
-	<!--
-	<select id="selectUserById" resultType="first.login.vo.CustomUserDetails">
+	<select id="selectUserByUsername" resultType="first.login.vo.UserVO">
         <![CDATA[
             SELECT
                 *
             FROM
                 users
             WHERE
-                USERNAME=#{username}
+                ID = #{username}
         ]]>
 	</select>
 	
-	<select id="selectAuthorityById" resultType="String">
+	<select id="selectAuthorityByUsername" resultType="String">
         <![CDATA[
             SELECT
                 authority
             FROM
                 authorities
             WHERE
-                USERNAME=#{username}
+                ID = #{username}
         ]]>
 	</select>
-	-->
 
 </mapper>

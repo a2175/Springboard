@@ -128,7 +128,6 @@ public class BoardServiceImpl implements BoardService {
         List<Map<String,Object>> list = customFileUtils.parseInsertFileInfo(map, request);
         
         for(int i=0, size=list.size(); i<size; i++){
-        	list.get(i).put("ID", map.get("ID"));
             boardDAO.insertFile(list.get(i));
         }
     }
@@ -166,7 +165,6 @@ public class BoardServiceImpl implements BoardService {
         for(int i=0, size=list.size(); i<size; i++){
             tempMap = list.get(i);
             if(tempMap.get("IS_NEW").equals("Y")){
-            	tempMap.put("ID", map.get("ID"));
                 boardDAO.insertFile(tempMap);
             }
             else{
