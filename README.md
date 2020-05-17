@@ -1,4 +1,10 @@
-#version = 1.63v
+#version = 1.70v
+
+[Springboard 1.70v]
+1. 기존의 로그인 기능에서 Spring Security를 사용한 로그인, 권한 기능 구현
+2. 기존의 tb_user 테이블에서 users, authorities 테이블을 사용하도록 수정
+3. CommonController 클래스, commonError.jsp 삭제
+4. 최대 업로드 가능 개수 변수 maxUploadCount 빈 추가
 
 [Springboard 1.63v]
 1. FileUtiles 클래스 명을 CustomFileUtils로 변경
