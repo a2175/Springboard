@@ -34,9 +34,7 @@
 
     <p>
 		<span style="margin:auto;display:table">
-			<sec:authorize access="isAuthenticated()">
-				<a href="#this" class="btn" id="write">글쓰기</a>
-			</sec:authorize>
+			<a href="#this" class="btn" id="write">글쓰기</a>
 			제목 검색: <input type="text" id="KEYWORD" name="KEYWORD" value="${param.keyword}"></input>
         	<a style="margin-left:5px" href="#this" class="btn" id="search">검색</a>
 		</span>
@@ -74,9 +72,13 @@
         });
          
         function fn_openBoardWrite(){
-            var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
-            comSubmit.submit();
+        	if(gfn_isNull("${userInfo}"))
+        		alert("로그인 해주세요.");
+        	else {
+	            var comSubmit = new ComSubmit();
+	            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
+	            comSubmit.submit();
+        	}
         }
                  
         function fn_openBoardDetail(obj){

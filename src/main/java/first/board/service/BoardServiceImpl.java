@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -19,7 +21,8 @@ import first.board.dao.BoardDAO;
 import first.board.vo.BoardVO;
 import first.board.vo.FileVO;
 import first.common.util.CustomFileUtils;
- 
+
+@Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
 @Service
 public class BoardServiceImpl implements BoardService {
     Logger log = Logger.getLogger(this.getClass());
@@ -120,15 +123,16 @@ public class BoardServiceImpl implements BoardService {
         returnMap.put("list", list);
         return returnMap;
     }
- 
+    
+    @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
     @Override
     public void insertBoard(Map<String, Object> map, HttpServletRequest request) {
         boardDAO.insertBoard(map);
         
-        List<Map<String,Object>> list = customFileUtils.parseInsertFileInfo(map, request);
+        List<Map<String,Object>> fileList = customFileUtils.parseInsertFileInfo(map, request);
         
-        for(int i=0, size=list.size(); i<size; i++){
-            boardDAO.insertFile(list.get(i));
+        for(Map<String,Object> file : fileList) {
+        	boardDAO.insertFile(file);
         }
     }
  
@@ -154,31 +158,33 @@ public class BoardServiceImpl implements BoardService {
          
         return resultMap;
     }
- 
+    
+    @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
     @Override
     public void updateBoard(Map<String, Object> map, HttpServletRequest request) {
         boardDAO.updateBoard(map);
-        
         boardDAO.deleteFileList(map);
-        List<Map<String,Object>> list = customFileUtils.parseUpdateFileInfo(map, request);
-        Map<String,Object> tempMap = null;
-        for(int i=0, size=list.size(); i<size; i++){
-            tempMap = list.get(i);
-            if(tempMap.get("IS_NEW").equals("Y")){
-                boardDAO.insertFile(tempMap);
+        
+        List<Map<String,Object>> fileList = customFileUtils.parseUpdateFileInfo(map, request);
+
+    	for(Map<String,Object> file : fileList) {
+            if(file.get("IS_NEW").equals("Y")) {
+                boardDAO.insertFile(file);
             }
-            else{
-                boardDAO.updateFile(tempMap);
+            else {
+                boardDAO.updateFile(file);
             }
         }
     }
- 
+    
+    @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
     @Override
     public void deleteBoard(Map<String, Object> map) {
     	boardDAO.deleteFileList(map);
         boardDAO.deleteBoard(map);
     }
-
+    
+    @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	@Override
 	public void updateHitCnt(Map<String, Object> map) {
 		boardDAO.updateHitCnt(map);

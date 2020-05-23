@@ -6,7 +6,12 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-   
+   	
+	<error-page>
+	   <error-code>404</error-code>
+	   <location>/WEB-INF/jsp/common/404error.jsp</location>
+	</error-page>
+   	
 	<filter>
     	<filter-name>encodingFilter</filter-name>
     	<filter-class>

@@ -51,7 +51,7 @@ public class BoardController {
         ModelAndView mv = new ModelAndView("/board/boardEGList");
           
         mv.addAllObjects(boardService.selectBoardEGList(commandMap.getMap()));
-         
+        
         return mv;
     }
     

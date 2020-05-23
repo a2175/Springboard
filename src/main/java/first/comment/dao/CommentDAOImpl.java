@@ -35,7 +35,7 @@ public class CommentDAOImpl implements CommentDAO {
 	}
 	
     @Override
-	public CommentVO checkThumbsup(Map<String, Object> map) {
+	public CommentVO selectThumbsUpByIdAndIdx(Map<String, Object> map) {
 		return commentMapper.selectThumbsUpByIdAndIdx(map);
 	}
 	
@@ -45,7 +45,7 @@ public class CommentDAOImpl implements CommentDAO {
 	}
 	
     @Override
-	public CommentVO checkThumbsdown(Map<String, Object> map) {
+	public CommentVO selectThumbsDownByIdAndIdx(Map<String, Object> map) {
 		return commentMapper.selectThumbsDownByIdAndIdx(map);
 	}
 	

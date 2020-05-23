@@ -13,12 +13,8 @@ public interface CommentService {
 
 	void deleteComment(Map<String, Object> map);
 
-	CommentVO checkThumbsup(Map<String, Object> map);
-
-	void insertThumbsup(Map<String, Object> map);
+	int insertThumbsup(Map<String, Object> map);
 	
-	CommentVO checkThumbsdown(Map<String, Object> map);
-
-	void insertThumbsdown(Map<String, Object> map);
+	int insertThumbsdown(Map<String, Object> map);
 	
 }

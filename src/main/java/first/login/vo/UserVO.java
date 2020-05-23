@@ -35,8 +35,9 @@ public class UserVO implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        for(int i=0; i<authotitys.size(); i++)
-        	auth.add(new SimpleGrantedAuthority(authotitys.get(i)));
+        for(String authotity : authotitys) {
+        	auth.add(new SimpleGrantedAuthority(authotity));
+        }
         return auth;
     }
  

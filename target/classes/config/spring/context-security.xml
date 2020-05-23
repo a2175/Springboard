@@ -17,7 +17,7 @@
     	<form-login
 			username-parameter="loginid"
 			password-parameter="loginpwd" 
-			login-page="/?loginRequired=true"
+			login-page="/"
 			default-target-url="/"
             authentication-failure-url="/login?fail=true" />
 		

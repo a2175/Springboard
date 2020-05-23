@@ -26,9 +26,6 @@
 	</sec:authorize>
   
 	<script type="text/javascript">
-		if("${param.loginRequired}" == "true")
-			alert("로그인이 필요합니다.");
-
 		$(document).ready(function(){	
 		   	$("#logout").on("click", function(e){ //로그인 버튼
 		       	e.preventDefault();
@@ -72,9 +69,10 @@
 		                if(data.success == false)
 		                	alert("로그인에 실패했습니다.");
 		                else
-		                	location.reload(true);
+		                	location.href = location.href.replace("loginRequired=true", "").replace("#this", "");
 		            }
 		        });
 			}
 		});
 	</script>
+	

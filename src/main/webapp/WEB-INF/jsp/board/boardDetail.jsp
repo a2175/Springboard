@@ -57,11 +57,9 @@
     <div id="board_comment" class="board_comment">
     </div>
         
-	<sec:authorize access="isAuthenticated()">
-    	<br>
-		<textarea style="width:890px; overflow:hidden" rows="1" cols="60" title="댓글" id="COMMENT" name="COMMENT"></textarea>
-    	<a href="#this" class="btn" id="submit">댓글등록</a>
-	</sec:authorize>
+   	<br>
+	<textarea style="width:890px; overflow:hidden" rows="1" cols="60" <sec:authorize access="isAnonymous()"> placeholder="로그인이 필요합니다." </sec:authorize> title="댓글" id="COMMENT" name="COMMENT"></textarea>
+   	<a href="#this" class="btn" id="submit">댓글등록</a>
         
     <br>
     <a href="#this" class="btn" id="list">목록으로</a>
@@ -136,11 +134,14 @@
     		var idx = "${detail.idx}";
     		var comment = $("#COMMENT").val();
     		
-    		if(comment.length < 1) {
-    			alert("댓글내용을 입력해주세요.");
+    		if(gfn_isNull("${userInfo}")) {
+        		alert("로그인 해주세요.");
     		}
     		else if(comment.length > 255) {
     			alert("댓글내용은 255자를 넘을 수 없습니다.");
+    		}
+    		else if(comment.length < 1) {
+    			alert("댓글내용을 입력해주세요.");
     		}
     		else {
     			$("#COMMENT").val("");

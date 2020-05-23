@@ -63,16 +63,8 @@ public class CommentController {
     @RequestMapping(value="/comment/thumbsUp.do")
     public ModelAndView thumbsUp(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
-        
-        CommentVO commntVO = commentService.checkThumbsup(commandMap.getMap());
-        
-        if(commntVO == null) {
-        	commentService.insertThumbsup(commandMap.getMap());
-        	mv.addObject("checkThumbsup", 1);
-        }
-        else {
-        	mv.addObject("checkThumbsup", 0);
-        }
+         
+        mv.addObject("checkThumbsup", commentService.insertThumbsup(commandMap.getMap()));
         
         return mv;
     }
@@ -82,16 +74,8 @@ public class CommentController {
     @RequestMapping(value="/comment/thumbsDown.do")
     public ModelAndView thumbsDown(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
-        
-        CommentVO commntVO = commentService.checkThumbsdown(commandMap.getMap());
-        
-        if(commntVO == null) {
-        	commentService.insertThumbsdown(commandMap.getMap());
-        	mv.addObject("checkThumbsdown", 1);
-        }
-        else {
-        	mv.addObject("checkThumbsdown", 0);
-        }
+      
+        mv.addObject("checkThumbsdown", commentService.insertThumbsdown(commandMap.getMap()));
         
         return mv;
     }

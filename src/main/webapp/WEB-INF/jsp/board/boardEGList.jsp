@@ -57,10 +57,8 @@
     		<input type="hidden" id="currentPageNo" name="currentPageNo"/><br><br>
 		</span>
     </p>
-       
-	<sec:authorize access="isAuthenticated()">
-		<a href="#this" class="btn" id="write">글쓰기</a>
-	</sec:authorize>
+
+	<a href="#this" class="btn" id="write">글쓰기</a>
     
     <%@ include file="/WEB-INF/include/include-body.jspf" %>
     <script type="text/javascript">
@@ -77,9 +75,13 @@
         });
         
         function fn_openBoardWrite(){
-            var comSubmit = new ComSubmit();
-            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
-            comSubmit.submit();
+        	if(gfn_isNull("${userInfo}"))
+        		alert("로그인 해주세요.");
+        	else {
+	            var comSubmit = new ComSubmit();
+	            comSubmit.setUrl("<c:url value='/board/openBoardWrite.do' />");
+	            comSubmit.submit();
+        	}
         }
         
         function fn_openBoardDetail(obj){
