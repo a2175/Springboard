@@ -1,4 +1,10 @@
-#version = 1.70v
+#version = 1.80v
+
+[Springboard 1.80v]
+1. for문에서 for-each를 사용하도록 수정
+2. 예외 발생 처리 컨트롤러, 뷰 추가
+3. 서비스 객체에 트랜잭션 적용
+4. Comment 컨트롤러, 서비스 수정
 
 [Springboard 1.70v]
 1. 기존의 로그인 기능에서 Spring Security를 사용한 로그인, 권한 기능 구현
