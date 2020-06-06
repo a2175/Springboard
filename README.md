@@ -1,4 +1,12 @@
-#version = 1.80v
+#version = 1.90v
+
+[Springboard 1.90v]
+1. BoardController Test Code 작성 (나머지 Test Code 작성 예정)
+2. Board 수정, 삭제 파라미터 HttpServletRequest ->  MultipartHttpServletRequest 로 수정
+3. selectFileList, selectBoardDetail SQL문 수정
+4. CustomFileUtils 클래스 deleteFile, isExist 메소드 추가
+5. 삭제된 게시글에 접근할 경우의 view를 보여주도록 boardDetail.jsp 수정
+6. BoardController.insertBoard에서 삽입된 게시글의 idx를 반환하도록 setIdx 추가
 
 [Springboard 1.80v]
 1. for문에서 for-each를 사용하도록 수정
