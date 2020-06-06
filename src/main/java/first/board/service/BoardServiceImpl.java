@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import first.board.dao.BoardDAO;
@@ -126,10 +126,10 @@ public class BoardServiceImpl implements BoardService {
     
     @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
     @Override
-    public void insertBoard(Map<String, Object> map, HttpServletRequest request) {
+    public void insertBoard(Map<String, Object> map, MultipartHttpServletRequest multipartRequest) {
         boardDAO.insertBoard(map);
         
-        List<Map<String,Object>> fileList = customFileUtils.parseInsertFileInfo(map, request);
+        List<Map<String,Object>> fileList = customFileUtils.parseInsertFileInfo(map, multipartRequest);
         
         for(Map<String,Object> file : fileList) {
         	boardDAO.insertFile(file);
@@ -161,11 +161,11 @@ public class BoardServiceImpl implements BoardService {
     
     @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
     @Override
-    public void updateBoard(Map<String, Object> map, HttpServletRequest request) {
+    public void updateBoard(Map<String, Object> map, MultipartHttpServletRequest multipartRequest) {
         boardDAO.updateBoard(map);
         boardDAO.deleteFileList(map);
         
-        List<Map<String,Object>> fileList = customFileUtils.parseUpdateFileInfo(map, request);
+        List<Map<String,Object>> fileList = customFileUtils.parseUpdateFileInfo(map, multipartRequest);
 
     	for(Map<String,Object> file : fileList) {
             if(file.get("IS_NEW").equals("Y")) {

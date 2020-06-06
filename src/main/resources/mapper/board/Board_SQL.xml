@@ -51,7 +51,8 @@
 			FROM 
 				tb_board
 			WHERE
-            	idx = #{idx}
+            	IDX = #{idx}
+            	AND DEL_GB = 'N'
     	]]>
     </select>
 	
@@ -136,7 +137,7 @@
         ]]>
     </select>
     
-	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="idx">
 		<![CDATA[
         	INSERT INTO tb_board
         	(
@@ -192,6 +193,7 @@
     	<![CDATA[
         	SELECT
             	IDX,
+            	STORED_FILE_NAME,
             	ORIGINAL_FILE_NAME,
             	ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
         	FROM

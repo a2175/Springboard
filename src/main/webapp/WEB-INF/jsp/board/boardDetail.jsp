@@ -6,61 +6,75 @@
 </head>
 <body style="position: absolute;">
 	<h2 style="color: black">게시글 상세</h2>
-
-    <table class="board_view">
-        <colgroup>
-            <col width="15%"/>
-            <col width="35%"/>
-            <col width="15%"/>
-            <col width="35%"/>
-        </colgroup>
-
-        <tbody>
-            <tr>
-                <th scope="row">글 번호</th>
-                <td>${detail.idx }</td>
-                <th scope="row">조회수</th>
-                <td>${detail.hit_cnt }</td>
-            </tr>
-            <tr>
-                <th scope="row">작성자</th>
-                <td>${detail.nickname }</td>
-                <th scope="row">작성시간</th>
-                <td>${detail.crea_dtm }</td>
-            </tr>
-            <tr>
-                <th scope="row">제목</th>
-                <td colspan="3">${detail.title }</td>
-            </tr>
-            <tr>
-                <td colspan="4">${detail.contents }</td>
-            </tr>
-            <tr>
-                <th scope="row">첨부파일</th>
-                <td colspan="3">
-                	<c:if test="${detail.files.size() eq 0}">
-    					첨부파일이 없습니다.
-					</c:if>
-                    <c:forEach var="row" items="${detail.files }">
-                    	<p>
-                        	<input type="hidden" id="IDX" value="${row.idx }">
-                        	<a href="#this" id="file">${row.original_file_name }</a>
-                        	(${row.file_size }kb)
-                        </p>
-                    </c:forEach> 
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br/>
-    
-    <div id="board_comment" class="board_comment">
-    </div>
-        
-   	<br>
-	<textarea style="width:890px; overflow:hidden" rows="1" cols="60" <sec:authorize access="isAnonymous()"> placeholder="로그인이 필요합니다." </sec:authorize> title="댓글" id="COMMENT" name="COMMENT"></textarea>
-   	<a href="#this" class="btn" id="submit">댓글등록</a>
-        
+	
+	<c:choose>
+	    <c:when test="${detail eq null}">
+		    <table class="board_view">
+		    	<tbody>
+		    		<tr>
+		    			<th>삭제된 게시글 입니다.</th>
+		    		</tr>
+		    	</tbody>
+		    </table>
+	    </c:when>
+	
+		<c:otherwise>
+		    <table class="board_view">
+		        <colgroup>
+		            <col width="15%"/>
+		            <col width="35%"/>
+		            <col width="15%"/>
+		            <col width="35%"/>
+		        </colgroup>
+		
+		        <tbody>
+		            <tr>
+		                <th scope="row">글 번호</th>
+		                <td>${detail.idx }</td>
+		                <th scope="row">조회수</th>
+		                <td>${detail.hit_cnt }</td>
+		            </tr>
+		            <tr>
+		                <th scope="row">작성자</th>
+		                <td>${detail.nickname }</td>
+		                <th scope="row">작성시간</th>
+		                <td>${detail.crea_dtm }</td>
+		            </tr>
+		            <tr>
+		                <th scope="row">제목</th>
+		                <td colspan="3">${detail.title }</td>
+		            </tr>
+		            <tr>
+		                <td colspan="4">${detail.contents }</td>
+		            </tr>
+		            <tr>
+		                <th scope="row">첨부파일</th>
+		                <td colspan="3">
+		                	<c:if test="${detail.files.size() eq 0}">
+		    					첨부파일이 없습니다.
+							</c:if>
+		                    <c:forEach var="row" items="${detail.files }">
+		                    	<p>
+		                        	<input type="hidden" id="IDX" value="${row.idx }">
+		                        	<a href="#this" id="file">${row.original_file_name }</a>
+		                        	(${row.file_size }kb)
+		                        </p>
+		                    </c:forEach> 
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		    <br/>
+		    
+		    <div id="board_comment" class="board_comment">
+		    </div>
+		        
+		   	<br>
+			<textarea style="width:890px; overflow:hidden" rows="1" cols="60" <sec:authorize access="isAnonymous()"> placeholder="로그인이 필요합니다." </sec:authorize> title="댓글" id="COMMENT" name="COMMENT"></textarea>
+		   	<a href="#this" class="btn" id="submit">댓글등록</a>
+    	</c:otherwise>
+	</c:choose>
+	
     <br>
     <a href="#this" class="btn" id="list">목록으로</a>
    	<sec:authorize access="isAuthenticated()">
@@ -178,7 +192,6 @@
     	function fn_deleteBoard(){
     		if (confirm("정말 삭제하시겠습니까??") == true) {
             	var idx = "${detail.idx}";
-            	var id = "${detail.crea_id}";
                 var comSubmit = new ComSubmit();
                 comSubmit.setUrl("<c:url value='/board/deleteBoard.do' />");
                 comSubmit.addParam("idx", idx);

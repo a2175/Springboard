@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,11 +29,22 @@ public class CustomFileUtils {
     	return FileUtils.readFileToByteArray(new File(filePath + storedFileName));
     }
     
-    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) {
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
-        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+    public void deleteFile(String storedFileName) {
+    	File file = new File(filePath + storedFileName);
+        if(file.exists() == true) {
+            file.delete();
+        }
+    }
+    
+    public boolean isExist(String storedFileName) {
+    	File file = new File(filePath + storedFileName);
+        return file.exists();
+    }
         
-        if(multipartHttpServletRequest.getFileMap().size() > maxUploadCount) 
+    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, MultipartHttpServletRequest multipartRequest) {
+        Iterator<String> iterator = multipartRequest.getFileNames();
+        
+        if(multipartRequest.getFileMap().size() > maxUploadCount) 
         	throw new RuntimeException();
         
         MultipartFile multipartFile = null;
@@ -46,7 +55,7 @@ public class CustomFileUtils {
         Map<String, Object> listMap = null;
          
         //String boardIdx = (String)map.get("IDX");
-        String boardIdx = String.valueOf(map.get("IDX"));
+        String boardIdx = String.valueOf(map.get("idx"));
          
         File file = new File(filePath);
         if(file.exists() == false){
@@ -54,7 +63,7 @@ public class CustomFileUtils {
         }
         
         while(iterator.hasNext()){
-            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            multipartFile = multipartRequest.getFile(iterator.next());
             
             if(multipartFile.isEmpty() == false){
                 originalFileName = multipartFile.getOriginalFilename();
@@ -79,11 +88,10 @@ public class CustomFileUtils {
         return list;
     }
 
-    public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) {
-        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
-        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+    public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, MultipartHttpServletRequest multipartRequest) {
+        Iterator<String> iterator = multipartRequest.getFileNames();
         
-        if(multipartHttpServletRequest.getFileMap().size() > maxUploadCount) 
+        if(multipartRequest.getFileMap().size() > maxUploadCount) 
         	throw new RuntimeException();
         
         MultipartFile multipartFile = null;
@@ -98,7 +106,7 @@ public class CustomFileUtils {
         String idx = null;
          
         while(iterator.hasNext()){
-            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            multipartFile = multipartRequest.getFile(iterator.next());
             //System.out.println("#$)(*%&#)$(*%$%&*)($&%$&%($*%$&(*&#($*)%&$: "+multipartFile.getName());
             //System.out.println("#$)(*%&#)$(*%$%&*)($&%$&%($*%$&(*&#($*)%&$: "+multipartFile.isEmpty());
             if(multipartFile.isEmpty() == false){

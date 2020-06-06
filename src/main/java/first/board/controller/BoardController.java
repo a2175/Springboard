@@ -1,6 +1,5 @@
 package first.board.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -10,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import first.board.service.BoardService;
@@ -77,7 +77,7 @@ public class BoardController {
     // 게시글 삽입
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/insertBoard.do")
-    public ModelAndView insertBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
+    public ModelAndView insertBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, MultipartHttpServletRequest multipartRequest) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         
     	if(result.hasErrors()) {
@@ -85,7 +85,8 @@ public class BoardController {
     		return mv;
     	}
         
-        boardService.insertBoard(commandMap.getMap(), request);
+        boardService.insertBoard(commandMap.getMap(), multipartRequest);
+        vo.setIdx(Integer.valueOf(commandMap.get("idx").toString()));
         
         return mv;
     }
@@ -115,10 +116,10 @@ public class BoardController {
     // 게시글 수정
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/board/updateBoard.do")
-    public ModelAndView updateBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, HttpServletRequest request) {
+    public ModelAndView updateBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, MultipartHttpServletRequest multipartRequest) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
          
-        if(!result.hasErrors()) boardService.updateBoard(commandMap.getMap(), request);
+        if(!result.hasErrors()) boardService.updateBoard(commandMap.getMap(), multipartRequest);
 
         mv.addObject("idx", commandMap.get("idx"));
         return mv;
