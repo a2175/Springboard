@@ -2,7 +2,6 @@ package first;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
@@ -24,7 +24,8 @@ import first.board.vo.BoardVO;
 import first.board.vo.FileVO;
 import first.common.util.CustomFileUtils;
 
-public class BoardControllerTest extends TestConfig {   
+public class BoardControllerTest extends TestConfig {
+	
     @Autowired
     private CustomFileUtils customFileUtils;
     
@@ -47,11 +48,11 @@ public class BoardControllerTest extends TestConfig {
 	        .andExpect(status().isOk())
 	        .andExpect(view().name("jsonView"))
 	        .andReturn();
-	      
-        JSONParser parser = new JSONParser(); 
-        Object obj = parser.parse(mvcResult.getResponse().getContentAsString());
+	    
+        Assert.assertEquals("application/json", mvcResult.getResponse().getContentType());
         
-		JSONObject resultJson = (JSONObject)obj;
+        JSONParser parser = new JSONParser();      
+		JSONObject resultJson = (JSONObject)parser.parse(mvcResult.getResponse().getContentAsString());
 		assertEquals(new Long(200), resultJson.get("total"));
 		
 		JSONArray boardList = (JSONArray)resultJson.get("list");
@@ -67,10 +68,8 @@ public class BoardControllerTest extends TestConfig {
 	        .andExpect(view().name("jsonView"))
 	        .andReturn();
 	    
-        JSONParser parser = new JSONParser(); 
-        Object obj = parser.parse(mvcResult.getResponse().getContentAsString());
-        
-		JSONObject resultJson = (JSONObject)obj;
+        JSONParser parser = new JSONParser();   
+		JSONObject resultJson = (JSONObject)parser.parse(mvcResult.getResponse().getContentAsString());
 		assertEquals(new Long(1), resultJson.get("total"));
 		
 		JSONArray boardList = (JSONArray)resultJson.get("list");
@@ -125,7 +124,6 @@ public class BoardControllerTest extends TestConfig {
     	mvcResult = this.mockMvc
 	        .perform(get("/board/openBoardDetail.do")
 	        .param("idx", String.valueOf(vo.getIdx())))
-	    	.andDo(print())
 			.andExpect(status().is(200))
 			.andExpect(view().name("/board/boardDetail"))
 	    	.andReturn();
@@ -137,6 +135,61 @@ public class BoardControllerTest extends TestConfig {
     	FileVO f = vo.getFiles().get(0);
     	assertEquals("orig", f.getOriginal_file_name());
     	assertEquals(true, customFileUtils.isExist(f.getStored_file_name()));
+    }
+    
+    // 게시글 삽입 검증 테스트
+    @Test
+    @WithUserDetails(value="test", userDetailsServiceBeanName="userService")
+    public void insertBoard_validation_test() throws Exception {
+    	MvcResult mvcResult = null;
+    	String title = "";
+    	String contents = "";
+    	
+    	mvcResult = this.mockMvc
+	        .perform(fileUpload("/board/insertBoard.do")
+	        .param("title", title)
+	        .param("contents", "insert test"))
+			.andExpect(status().is(302))
+			.andExpect(view().name("redirect:/board/openBoardWrite.do"))
+			.andReturn();
+    	
+    	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'title'"));
+    	
+    	mvcResult = this.mockMvc
+    	        .perform(fileUpload("/board/insertBoard.do")
+    	        .param("title", "insert test")
+    	        .param("contents", contents))
+    			.andExpect(status().is(302))
+    			.andExpect(view().name("redirect:/board/openBoardWrite.do"))
+    			.andReturn();
+    	
+    	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'contents'"));
+
+    	for(int i=0; i<101; i++)
+    		title += "1";
+    	
+    	mvcResult = this.mockMvc
+    	        .perform(fileUpload("/board/insertBoard.do")
+    	        .param("title", title)
+    	        .param("contents", "insert test"))
+    			.andExpect(status().is(302))
+    			.andExpect(view().name("redirect:/board/openBoardWrite.do"))
+    			.andReturn();
+        	
+    	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'title'"));
+    	
+    	for(int i=0; i<256; i++)
+    		contents += "1";
+    	
+    	mvcResult = this.mockMvc
+    	        .perform(fileUpload("/board/insertBoard.do")
+    	        .param("title", "insert test")
+    	        .param("contents", contents))
+    			.andExpect(status().is(302))
+    			.andExpect(view().name("redirect:/board/openBoardWrite.do"))
+    			.andReturn();
+    	
+    	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'contents'"));
     }
     
     // 권한이 없는 상태에서 게시글 삽입 테스트
@@ -320,5 +373,22 @@ public class BoardControllerTest extends TestConfig {
     	
     	assertEquals(AccessDeniedException.class, mvcResult.getResolvedException().getClass());
     	assertEquals("Access is denied", mvcResult.getResolvedException().getMessage());
+    }
+    
+    // 파일 다운로드 테스트
+    @Test
+    public void downloadFile_test() throws Exception {
+    	MvcResult mvcResult = null;
+  	  
+    	mvcResult = this.mockMvc
+	        .perform(get("/board/downloadFile.do")
+    		.param("idx", "1"))
+			.andExpect(status().is(200))
+	    	.andReturn();
+    	
+        Assert.assertEquals("application/octet-stream", mvcResult.getResponse().getContentType());
+        Assert.assertEquals(3, mvcResult.getResponse().getContentLength());
+        Assert.assertEquals("bar", mvcResult.getResponse().getContentAsString());
+        Assert.assertEquals("binary", mvcResult.getResponse().getHeader("Content-Transfer-Encoding"));
     }
 }

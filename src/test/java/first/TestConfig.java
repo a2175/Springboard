@@ -2,6 +2,7 @@ package first;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.io.File;
 
@@ -63,11 +64,11 @@ public class TestConfig {
     @AfterClass
     public static void afterAll() throws Exception {
     	String staticTestFile = sqlSession.selectOne("test.selectStaticTestFile");
-       	File file = new File(filePath);
-    	File[] fileList = file.listFiles();
-    	for(File f : fileList) {
-    		if(!f.getName().equals(staticTestFile)) {
-    			f.delete();
+       	File fileFolder = new File(filePath);
+    	File[] fileList = fileFolder.listFiles();
+    	for(File file : fileList) {
+    		if(!file.getName().equals(staticTestFile)) {
+    			file.delete();
     		}
     	}
     } 
@@ -76,7 +77,7 @@ public class TestConfig {
     @Test
     @Rollback(false)
     @WithUserDetails(value="test", userDetailsServiceBeanName="userService")
-    public void inset_db_data() throws Exception {
+    public void insert_test_db_data() throws Exception {
     	for(int i=1; i<=99; i++) {
         	this.mockMvc
 	            .perform(fileUpload("/board/insertBoard.do")
@@ -86,16 +87,23 @@ public class TestConfig {
 
     	MockMultipartFile file = new MockMultipartFile("file", "orig", null, "bar".getBytes());
     	this.mockMvc
-        .perform(fileUpload("/board/insertBoard.do")
-		.file(file)
-        .param("title", "제목 100")
-        .param("contents", "내용 100"));
+	        .perform(fileUpload("/board/insertBoard.do")
+			.file(file)
+	        .param("title", "제목 100")
+	        .param("contents", "내용 100"));
     	
     	for(int i=101; i<=200; i++) {
         	this.mockMvc
 	            .perform(fileUpload("/board/insertBoard.do")
 	            .param("title", "제목 "+String.valueOf(i))
 	            .param("contents", "내용 "+String.valueOf(i)));
+    	}
+    	
+    	for(int i=1; i<=3; i++) {
+        	this.mockMvc
+	        .perform(post("/comment/insertComment.do")
+	        .param("board_idx", "1")
+	        .param("contents", "댓글  "+String.valueOf(i)));
     	}
     	
     }
