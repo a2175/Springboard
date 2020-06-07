@@ -1,4 +1,8 @@
-#version = 1.90v
+#version = 1.91v
+
+[Springboard 1.91v]
+1. BoardController Test Case 추가
+2. CommentController Test Code 작성
 
 [Springboard 1.90v]
 1. BoardController Test Code 작성 (나머지 Test Code 작성 예정)
