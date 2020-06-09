@@ -1,4 +1,7 @@
-#version = 1.91v
+#version = 1.92v
+
+[Springboard 1.92v]
+1. LoginController Test Code 작성
 
 [Springboard 1.91v]
 1. BoardController Test Case 추가
