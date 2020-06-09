@@ -58,7 +58,7 @@ public class TestConfig {
         this.mockMvc = MockMvcBuilders
         				.webAppContextSetup(this.wac)
         				.apply(springSecurity())
-        				.build();	
+        				.build();
     }
     
     @AfterClass

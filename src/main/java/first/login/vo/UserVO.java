@@ -21,7 +21,6 @@ public class UserVO implements UserDetails {
     private String id;
     @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_+|<>?:{}])(?=\\S+$).{8,16}$")
     private String password;
-    @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*()_+|<>?:{}])(?=\\S+$).{8,16}$")
     private String re_password;
     @Pattern(regexp="^[a-zA-Z0-9가-힣]{4,12}$")
 	private String nickname;
