@@ -1,4 +1,9 @@
-#version = 1.92v
+#version = 1.93v
+
+[Springboard 1.93v]
+1. Test Code 주석 작성
+2. Controller @RequestMapping의 method 속성 추가
+3. common.js 수정
 
 [Springboard 1.92v]
 1. LoginController Test Code 작성
