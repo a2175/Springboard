@@ -77,6 +77,7 @@ public class CommentControllerTest extends TestConfig {
     	MvcResult mvcResult = null;
     	String contents = "";
     	
+    	// scenario 1) 댓글 내용이 공백일 경우
     	mvcResult = this.mockMvc
 	        .perform(post("/comment/insertComment.do")
 	        .param("board_idx", "100")
@@ -86,10 +87,11 @@ public class CommentControllerTest extends TestConfig {
 			.andReturn();
 
     	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'commentVO' on field 'contents'"));
-
+    	
+    	// scenario 2) 댓글 내용이 긴 경우
     	for(int i=0; i<256; i++)
     		contents += "1";
-
+    	
     	mvcResult = this.mockMvc
 	        .perform(post("/comment/insertComment.do")
 	        .param("board_idx", "100")

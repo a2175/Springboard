@@ -161,6 +161,7 @@
     			$("#COMMENT").val("");
                 var comAjax = new ComAjax();
                 comAjax.setUrl("<c:url value='/comment/insertComment.do' />");
+                comAjax.setMethod("POST");
                 comAjax.setCallback("fn_selectCommentList");
                 comAjax.addParam("board_idx", idx);    
                 comAjax.addParam("contents", comment);
@@ -174,9 +175,7 @@
         	var comSubmit = new ComSubmit();
         	comSubmit.setUrl("<c:url value='/board/openBoardList.do' />");
         	comSubmit.addParam("pageIdx", page_index);
-            if(!gfn_isNull(keyword))
-            	comSubmit.addParam("keyword", keyword);
-        	comSubmit.setMethod("get");
+            comSubmit.addParam("keyword", keyword);
         	comSubmit.submit();
     	}
 
@@ -194,6 +193,7 @@
             	var idx = "${detail.idx}";
                 var comSubmit = new ComSubmit();
                 comSubmit.setUrl("<c:url value='/board/deleteBoard.do' />");
+                comSubmit.setMethod("POST");
                 comSubmit.addParam("idx", idx);
                 comSubmit.submit();
     		}	
@@ -215,9 +215,7 @@
         	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
 			comSubmit.addParam("idx", idx);
 			comSubmit.addParam("pageIdx", page_index);
-            if(!gfn_isNull(keyword))
-            	comSubmit.addParam("keyword", keyword);
-			comSubmit.setMethod("get");
+            comSubmit.addParam("keyword", keyword);
         	comSubmit.submit();
 		}
     	
@@ -229,9 +227,7 @@
         	comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
 			comSubmit.addParam("idx", idx);
 			comSubmit.addParam("pageIdx", page_index);
-            if(!gfn_isNull(keyword))
-            	comSubmit.addParam("keyword", keyword);
-			comSubmit.setMethod("get");
+            comSubmit.addParam("keyword", keyword);
         	comSubmit.submit();
 		}
     	
@@ -343,6 +339,7 @@
         		var cmt_idx = obj.parent().find("#IDX").val();
                 var comAjax = new ComAjax();
                 comAjax.setUrl("<c:url value='/comment/deleteComment.do' />");
+                comAjax.setMethod("POST");
                 comAjax.setCallback("fn_selectCommentList");
                 comAjax.addParam("idx", cmt_idx);
                 comAjax.ajax();
@@ -359,6 +356,7 @@
             	thumbsindex = obj.find("#upcount");
             
             	comAjax.setUrl("<c:url value='/comment/thumbsUp.do' />");
+            	comAjax.setMethod("POST");
             	comAjax.setCallback("fn_thumbsUpCallback");
             	comAjax.addParam("idx", cmt_idx);
             	comAjax.ajax();
@@ -374,6 +372,7 @@
             	thumbsindex = obj.find("#downcount");
             
             	comAjax.setUrl("<c:url value='/comment/thumbsDown.do' />");
+            	comAjax.setMethod("POST");
             	comAjax.setCallback("fn_thumbsDownCallback");
             	comAjax.addParam("idx", cmt_idx);
             	comAjax.ajax();

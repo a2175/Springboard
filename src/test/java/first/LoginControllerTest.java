@@ -80,7 +80,7 @@ public class LoginControllerTest extends TestConfig {
 		MvcResult mvcResult = null;
 		
 		mvcResult = this.mockMvc
-            .perform(post("/login/doIdDuplicationCheck.do")
+            .perform(get("/login/doIdDuplicationCheck.do")
     		.param("id", "test"))
 	        .andExpect(status().isOk())
 	        .andExpect(view().name("jsonView"))
@@ -99,7 +99,7 @@ public class LoginControllerTest extends TestConfig {
 		MvcResult mvcResult = null;
 		
 		mvcResult = this.mockMvc
-            .perform(post("/login/doNicknameDuplicationCheck.do")
+            .perform(get("/login/doNicknameDuplicationCheck.do")
     		.param("nickname", "test"))
 	        .andExpect(status().isOk())
 	        .andExpect(view().name("jsonView"))
@@ -128,11 +128,11 @@ public class LoginControllerTest extends TestConfig {
 	        .andExpect(view().name("redirect:/board/openBoardList.do"));
 		
 		mvcResult = this.mockMvc
-	            .perform(post("/login.ajax")
-		        .param("loginid","insertTest")
-		        .param("loginpwd","q1w2e3r4A!"))
-				.andExpect(status().is(200))
-				.andReturn();
+            .perform(post("/login.ajax")
+	        .param("loginid","insertTest")
+	        .param("loginpwd","q1w2e3r4A!"))
+			.andExpect(status().is(200))
+			.andReturn();
 		
 		assertEquals("application/json;charset=UTF-8", mvcResult.getResponse().getContentType());
 		

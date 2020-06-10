@@ -90,7 +90,7 @@
             comSubmit.addParam("idx", obj.parent().find("#IDX").val());
             comSubmit.submit();
         }
-         
+        
         function fn_search(pageNo){
             var comSubmit = new ComSubmit();
             comSubmit.setUrl("<c:url value='/board/openBoardEGList.do' />");

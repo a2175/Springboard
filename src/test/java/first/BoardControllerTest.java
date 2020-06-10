@@ -145,6 +145,7 @@ public class BoardControllerTest extends TestConfig {
     	String title = "";
     	String contents = "";
     	
+    	// scenario 1) 제목이 공백인 경우
     	mvcResult = this.mockMvc
 	        .perform(fileUpload("/board/insertBoard.do")
 	        .param("title", title)
@@ -155,6 +156,7 @@ public class BoardControllerTest extends TestConfig {
     	
     	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'title'"));
     	
+    	// scenario 2) 내용이 공백인 경우
     	mvcResult = this.mockMvc
     	        .perform(fileUpload("/board/insertBoard.do")
     	        .param("title", "insert test")
@@ -164,7 +166,8 @@ public class BoardControllerTest extends TestConfig {
     			.andReturn();
     	
     	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'contents'"));
-
+    	
+    	// scenario 3) 제목이 긴 경우
     	for(int i=0; i<101; i++)
     		title += "1";
     	
@@ -178,6 +181,7 @@ public class BoardControllerTest extends TestConfig {
         	
     	assertEquals(true, mvcResult.getModelAndView().toString().contains("Field error in object 'boardVO' on field 'title'"));
     	
+    	// scenario 4) 내용이 긴 경우
     	for(int i=0; i<256; i++)
     		contents += "1";
     	

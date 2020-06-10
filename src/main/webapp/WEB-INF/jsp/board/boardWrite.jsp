@@ -104,6 +104,7 @@
         	if(fn_checkBoard()) {
             	var comSubmit = new ComSubmit("frm");
             	comSubmit.setUrl("<c:url value='/board/insertBoard.do' />");
+            	comSubmit.setMethod("POST");
             	comSubmit.submit();
         	}
         }

@@ -86,9 +86,7 @@
             comSubmit.setUrl("<c:url value='/board/openBoardDetail.do' />");
             comSubmit.addParam("idx", obj.parent().find("#IDX").val());
             comSubmit.addParam("pageIdx", $("#PAGE_INDEX").val());
-            if(!gfn_isNull($("#KEYWORD").val()))
-            	comSubmit.addParam("keyword", $("#KEYWORD").val());
-            comSubmit.setMethod("get");
+            comSubmit.addParam("keyword", $("#KEYWORD").val());
             comSubmit.submit();
         }
          

@@ -12,7 +12,7 @@ function gfn_isNull(str) {
 function ComSubmit(opt_formId) {
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
     this.url = "";
-    this.method = "post";
+    this.method = "GET";
     
     if(this.formId == "commonForm"){
         $("#commonForm").empty();
@@ -27,7 +27,9 @@ function ComSubmit(opt_formId) {
     };
      
     this.addParam = function addParam(key, value){
-        $("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
+    	if(!gfn_isNull(value)) {
+    		$("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
+    	}
     };
      
     this.submit = function submit(){
@@ -42,6 +44,7 @@ var fv_ajaxCallback = "";
 function ComAjax(opt_formId){
     this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
     this.url = "";
+    this.method = "GET";
     fv_ajaxCallback = "";
     
     if(this.formId == "commonForm"){
@@ -55,15 +58,21 @@ function ComAjax(opt_formId){
     this.setCallback = function setCallback(callBack){
         fv_ajaxCallback = callBack;
     };
+    
+    this.setMethod = function setMethod(method){
+        this.method = method;
+    };
  
     this.addParam = function addParam(key,value){
-        $("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
+    	if(!gfn_isNull(value)) {
+    		$("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
+    	}
     };
      
     this.ajax = function ajax(){
         $.ajax({
             url : this.url,   
-            type : "POST",  
+            type : this.method,  
             data : $("#" + this.formId).serialize(),
             async : false,
             success : function(data, status) {

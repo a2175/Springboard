@@ -46,7 +46,7 @@ public class LoginController {
 	SecurityContextRepository repository;
 	
     @PreAuthorize("isAnonymous()")
-	@RequestMapping(value = "/login.ajax", method = RequestMethod.POST)
+	@RequestMapping(value = "/login.ajax", method=RequestMethod.POST)
 	@ResponseBody
 	public ModelMap login(HttpServletRequest request, HttpServletResponse response,
 		@RequestParam(value = "loginid") String username,
@@ -89,7 +89,7 @@ public class LoginController {
 		return savedRequest.getRedirectUrl();
 	}
     
-    @RequestMapping(value="/login/doIdDuplicationCheck.do")
+    @RequestMapping(value="/login/doIdDuplicationCheck.do", method=RequestMethod.GET)
     public ModelAndView doIdDuplicationCheck(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
@@ -99,7 +99,7 @@ public class LoginController {
         return mv;
     }
     
-    @RequestMapping(value="/login/doNicknameDuplicationCheck.do")
+    @RequestMapping(value="/login/doNicknameDuplicationCheck.do", method=RequestMethod.GET)
     public ModelAndView doNicknameDuplicationCheck(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
@@ -110,7 +110,7 @@ public class LoginController {
     }
     
     @PreAuthorize("isAnonymous()")
-    @RequestMapping(value="/login/openLoginSignup.do")
+    @RequestMapping(value="/login/openLoginSignup.do", method=RequestMethod.GET)
     public ModelAndView openLoginSignup(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/login/loginSignup");
         	
@@ -118,7 +118,7 @@ public class LoginController {
     }
     
     @PreAuthorize("isAnonymous()")
-    @RequestMapping(value="/login/doSubmit.do")
+    @RequestMapping(value="/login/doSubmit.do", method=RequestMethod.POST)
     public ModelAndView doSubmit(@Valid UserVO vo, BindingResult result, CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         

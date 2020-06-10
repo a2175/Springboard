@@ -102,6 +102,7 @@
     		if(idcheck == 1 && pwcheck == 1 && re_pwcheck == 1 && nicknamecheck == 1 && emailcheck == 1) {
     			var comSubmit = new ComSubmit("frm");
             	comSubmit.setUrl("<c:url value='/login/doSubmit.do' />");
+            	comSubmit.setMethod("POST");
             	comSubmit.submit();
     		}
     		else {

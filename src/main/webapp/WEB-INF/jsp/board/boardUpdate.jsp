@@ -132,6 +132,7 @@
         		var idx = "${detail.idx}";
         		var comSubmit = new ComSubmit("frm");
                 comSubmit.setUrl("<c:url value='/board/updateBoard.do' />");
+                comSubmit.setMethod("POST");
                 comSubmit.addParam("idx", idx);
                 comSubmit.submit();
         	}

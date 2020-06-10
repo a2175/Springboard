@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +29,7 @@ public class BoardController {
     }
     
     // 게시판 페이지로 이동
-    @RequestMapping(value="/board/openBoardList.do")
+    @RequestMapping(value="/board/openBoardList.do", method=RequestMethod.GET)
     public ModelAndView openBoardList() {
         ModelAndView mv = new ModelAndView("/board/boardList");
         
@@ -36,7 +37,7 @@ public class BoardController {
     }
         
     // 페이징 게시글 목록 가져오기 (json)
-    @RequestMapping(value="/board/selectBoardList.do")
+    @RequestMapping(value="/board/selectBoardList.do", method=RequestMethod.GET)
     public ModelAndView selectBoardList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
 
@@ -46,7 +47,7 @@ public class BoardController {
     }
     
     // 전자정부 페이징 페이지로 이동
-    @RequestMapping(value="/board/openBoardEGList.do")
+    @RequestMapping(value="/board/openBoardEGList.do", method=RequestMethod.GET)
     public ModelAndView openBoardEGList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/board/boardEGList");
           
@@ -56,7 +57,7 @@ public class BoardController {
     }
     
     // 검색한 페이징 게시글 목록 가져오기 (json)
-    @RequestMapping(value="/board/selectBoardSearchList.do")
+    @RequestMapping(value="/board/selectBoardSearchList.do", method=RequestMethod.GET)
     public ModelAndView selectBoardSearchList(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("jsonView");
         
@@ -67,7 +68,7 @@ public class BoardController {
     
     // 글쓰기 페이지로 이동
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/board/openBoardWrite.do")
+    @RequestMapping(value="/board/openBoardWrite.do", method=RequestMethod.GET)
     public ModelAndView openBoardWrite() {
         ModelAndView mv = new ModelAndView("/board/boardWrite");
         
@@ -76,7 +77,7 @@ public class BoardController {
     
     // 게시글 삽입
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/board/insertBoard.do")
+    @RequestMapping(value="/board/insertBoard.do", method=RequestMethod.POST)
     public ModelAndView insertBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, MultipartHttpServletRequest multipartRequest) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
         
@@ -92,7 +93,7 @@ public class BoardController {
     }
     
     // 게시글 페이지로 이동
-    @RequestMapping(value="/board/openBoardDetail.do")
+    @RequestMapping(value="/board/openBoardDetail.do", method=RequestMethod.GET)
     public ModelAndView openBoardDetail(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/board/boardDetail");
         
@@ -104,7 +105,7 @@ public class BoardController {
     
     // 게시글 수정 페이지로 이동
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/board/openBoardUpdate.do")
+    @RequestMapping(value="/board/openBoardUpdate.do", method=RequestMethod.GET)
     public ModelAndView openBoardUpdate(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("/board/boardUpdate");
          
@@ -115,7 +116,7 @@ public class BoardController {
     
     // 게시글 수정
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/board/updateBoard.do")
+    @RequestMapping(value="/board/updateBoard.do", method=RequestMethod.POST)
     public ModelAndView updateBoard(@Valid BoardVO vo, BindingResult result, CommandMap commandMap, MultipartHttpServletRequest multipartRequest) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardDetail.do");
          
@@ -127,7 +128,7 @@ public class BoardController {
     
     // 게시글 삭제
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value="/board/deleteBoard.do")
+    @RequestMapping(value="/board/deleteBoard.do", method=RequestMethod.POST)
     public ModelAndView deleteBoard(CommandMap commandMap) {
         ModelAndView mv = new ModelAndView("redirect:/board/openBoardList.do");
          
@@ -137,7 +138,7 @@ public class BoardController {
     }
     
     // 파일 다운로드
-	@RequestMapping(value="/board/downloadFile.do")
+	@RequestMapping(value="/board/downloadFile.do", method=RequestMethod.GET)
 	public void downloadFile(CommandMap commandMap, HttpServletResponse response) {
 		boardService.downloadFile(commandMap.getMap(), response);
 	}
