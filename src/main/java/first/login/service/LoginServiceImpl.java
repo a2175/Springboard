@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +19,12 @@ public class LoginServiceImpl implements LoginService {
       
     private LoginDAO loginDAO;
     
+    private BCryptPasswordEncoder passwordEncoder;
+    
     @Autowired
-    public LoginServiceImpl(LoginDAO loginDAO) {
+    public LoginServiceImpl(LoginDAO loginDAO, BCryptPasswordEncoder passwordEncoder) {
     	this.loginDAO = loginDAO;
+    	this.passwordEncoder = passwordEncoder;
     }
 	
 	@Override
@@ -40,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	@Override
 	public void insertUser(Map<String, Object> map) {
+    	map.put("password", passwordEncoder.encode((String)map.get("password")));
 		loginDAO.insertUser(map);
 	}
 }

@@ -28,10 +28,13 @@
     </http>
     
 	<authentication-manager alias="authenticationManager">
-		<authentication-provider user-service-ref="userService" />
+		<authentication-provider user-service-ref="userService" >
+			<password-encoder ref="bcryptPasswordEncoder" />
+		</authentication-provider>
 	</authentication-manager>
 
-	
 	<beans:bean id="userService" class="first.login.service.CustomUserDetailsService"/>
+	
+	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 </beans:beans>
