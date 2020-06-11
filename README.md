@@ -1,4 +1,7 @@
-#version = 1.93v
+#version = 1.94v
+
+[Springboard 1.94v]
+1. 패스워드 암호화
 
 [Springboard 1.93v]
 1. Test Code 주석 작성
