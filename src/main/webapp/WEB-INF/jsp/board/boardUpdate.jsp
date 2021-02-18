@@ -34,12 +34,12 @@
                 <tr>
                     <th scope="row">제목</th>
                     <td colspan="3">
-                        <input type="text" id="TITLE" name="title" class="wdp_90" value="${detail.title }"/>
+                        <input type="text" id="TITLE" name="title" class="wdp_90" value="<c:out value="${detail.title }" />" />
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4" class="view_text">
-                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="contents">${detail.contents }</textarea>
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="contents"><c:out value="${detail.contents }" /></textarea>
                         <p id="content_length"></p>
                     </td>
                 </tr>

@@ -42,10 +42,10 @@
 		            </tr>
 		            <tr>
 		                <th scope="row">제목</th>
-		                <td colspan="3">${detail.title }</td>
+		                <td colspan="3"><c:out value="${detail.title }" /></td>
 		            </tr>
 		            <tr>
-		                <td colspan="4">${detail.contents }</td>
+		                <td colspan="4"><c:out value="${detail.contents }" /></td>
 		            </tr>
 		            <tr>
 		                <th scope="row">첨부파일</th>
@@ -282,7 +282,7 @@
         						"</table>" +
         						"<table>" +
         							"<tr>" +
-                                		"<td height='50'>" + value.contents + "</td>" +
+                                		"<td height='50'>" + escapeHtml(value.contents) + "</td>" +
                                 		"<td class='CREA_DTM'>" + value.crea_dtm + "</td>" +
                            			"</tr>" +
                            		"</table>";
@@ -309,7 +309,7 @@
 								"</table>" +
 								"<table>" +
 									"<tr>" +
-                						"<td height='50'>" + value.contents + "</td>" +
+                						"<td height='50'>" + escapeHtml(value.contents) + "</td>" +
                 						"<td class='CREA_DTM'>" + value.crea_dtm + "</td>" +
            							"</tr>" +
            						"</table>";

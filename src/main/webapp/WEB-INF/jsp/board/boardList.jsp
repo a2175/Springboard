@@ -139,7 +139,7 @@
                     str += "<tr>" +
                                 "<td>" + value.idx + "</td>" +
                                 "<td class='title'>" +
-                                    "<a href='#this' name='title'>" + value.title + comment_cnt +"</a>" +
+                                    "<a href='#this' name='title'>" + escapeHtml(value.title) + comment_cnt +"</a>" +
                                     "<input type='hidden' id='IDX' value=" + value.idx + ">" +
                                 "</td>" +
                                 "<td>" + value.nickname + "</td>" +

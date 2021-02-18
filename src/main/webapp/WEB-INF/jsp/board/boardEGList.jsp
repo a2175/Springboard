@@ -31,7 +31,7 @@
                         <tr>
                             <td>${row.idx }</td>
                             <td class="title">
-                                <a href="#this" id="title">${row.title }</a>
+                                <a href="#this" id="title"><c:out value="${row.title }" /></a>
                                 <input type="hidden" id="IDX" value="${row.idx }">
                             </td>
                             <td>${row.nickname }</td>

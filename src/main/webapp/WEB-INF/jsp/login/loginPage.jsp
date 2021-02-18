@@ -3,7 +3,8 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-	<sec:authorize access="hasRole('ROLE_ANONYMOUS')"> 
+	<sec:authorize access="hasRole('ROLE_ANONYMOUS')">
+		공개용 계정: public / 0000
 		<form id="loginfrm" name="loginfrm" method="POST" action="<c:url value='/login'/>">
 			<p align="right">
 				아이디: <input style="width:100px" type="text" id="loginid" name="loginid" value="" />

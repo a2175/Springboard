@@ -159,3 +159,14 @@ function _movePage(value){
         eval(gfv_eventName + "(value);");
     }
 }
+
+function escapeHtml(str) {
+	var map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#039;'
+	};
+	return str.replace(/[&<>"']/g, function(m) { return map[m]; });
+}

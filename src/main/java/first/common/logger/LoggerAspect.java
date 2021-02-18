@@ -11,7 +11,7 @@ public class LoggerAspect {
     protected Log log = LogFactory.getLog(LoggerAspect.class);
     static String name = "";
     static String type = "";
-     
+    
     @Around("execution(* first..controller.*Controller.*(..)) or execution(* first..service.*Impl.*(..)) or execution(* first..dao.*DAO.*(..))")
     public Object logPrint(ProceedingJoinPoint joinPoint) throws Throwable {
         type = joinPoint.getSignature().getDeclaringTypeName();
