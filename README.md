@@ -1,4 +1,8 @@
-#version = 1.94v
+#version = 1.95v
+
+[Springboard 1.95v]
+1. common.js에 escapeHtml(str) 함수 추가
+2. jsp에 escapeHtml 적용
 
 [Springboard 1.94v]
 1. 패스워드 암호화
